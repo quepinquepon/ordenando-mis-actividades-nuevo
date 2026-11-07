@@ -1,8 +1,38 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
-  <rect width="192" height="192" rx="40" fill="#5546d8"/>
-  <rect x="36" y="48" width="120" height="20" rx="6" fill="white"/>
-  <rect x="36" y="80" width="90" height="16" rx="5" fill="white" opacity="0.9"/>
-  <rect x="36" y="108" width="110" height="16" rx="5" fill="white" opacity="0.75"/>
-  <rect x="36" y="136" width="70" height="16" rx="5" fill="white" opacity="0.6"/>
-  <circle cx="150" cy="88" r="14" fill="#ffd54f"/>
+  <!-- Fondo -->
+  <rect width="192" height="192" rx="44" fill="#5546d8"/>
+  
+  <!-- Círculos decorativos -->
+  <circle cx="152" cy="44" r="30" fill="#6b5ce0" opacity="0.45"/>
+  <circle cx="38" cy="154" r="24" fill="#6b5ce0" opacity="0.3"/>
+  
+  <!-- Círculo blanco -->
+  <circle cx="96" cy="78" r="36" fill="white"/>
+  
+  <!-- Check -->
+  <path d="M78 80 L90 92 L118 64" 
+        stroke="#5546d8" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        fill="none"/>
+  
+  <!-- Nombre de la app -->
+  <text x="96" y="140" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="15" 
+        font-weight="700" 
+        fill="white" 
+        text-anchor="middle">Ordenando</text>
+  
+  <text x="96" y="158" 
+        font-family="Arial, Helvetica, sans-serif" 
+        font-size="13" 
+        font-weight="600" 
+        fill="white" 
+        opacity="0.9"
+        text-anchor="middle">mis actividades</text>
+  
+  <!-- Acento amarillo -->
+  <circle cx="140" cy="58" r="7" fill="#ffd54f"/>
 </svg>
