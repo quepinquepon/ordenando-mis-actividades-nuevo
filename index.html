@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Ordenando mis Actividades | Edición Premium Pro</title>
-    <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
@@ -28,7 +27,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Outfit', sans-serif;
         }
 
         body {
@@ -196,7 +195,6 @@
         .task-card.importante { border-left-color: var(--important); }
         .task-card.completed { opacity: 0.6; text-decoration: line-through; }
 
-        /* --- ALERTAS LLAMATIVAS --- */
         @keyframes pulseAlert {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
             70% { transform: scale(1.01); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
@@ -218,7 +216,6 @@
             animation: none;
         }
 
-        /* --- MEJORAS DEL CALENDARIO --- */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -255,7 +252,6 @@
             border-color: var(--primary);
         }
 
-        /* Puntos de actividad destacados */
         .cal-badge {
             width: 10px;
             height: 10px;
@@ -267,7 +263,6 @@
         .cal-badge.importante { background-color: var(--important); box-shadow: 0 0 6px var(--important); }
         .cal-badge.normal { background-color: var(--normal); box-shadow: 0 0 6px var(--normal); }
 
-        /* Día Actual y Seleccionado */
         .cal-day.today {
             border: 2px dashed var(--primary) !important;
             background: #eef2ff;
@@ -311,60 +306,6 @@
         </div>
 
         <nav class="tabs-nav" id="mainNav">
-            <button class="tab-btn active" data-tab="inicio">🏠 Inicio</button>
-            <button class="tab-btn" data-tab="tareas">📋 Tareas</button>
-            <button class="tab-btn" data-tab="agregar">➕ Nueva Tarea</button>
-            <button class="tab-btn" data-tab="calendario">📅 Calendario</button>
-            <button class="tab-btn" data-tab="materias">📚 Materias</button>
-            <button class="tab-btn" data-tab="backup">🛟 Copia de Seguridad</button>
-        </nav>
-
-        <!-- SECCIÓN: INICIO Y ALERTAS -->
-        <section id="tab-inicio" class="tab-content">
-            <h2>📢 Alertas y Vencimientos Pendientes</h2>
-            <div id="alertsContainer"></div>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Estado del almacenamiento de datos:</p>
-            <button class="btn" id="btnTestStorage">Validar Almacenamiento</button>
-            <div id="status-box" style="margin-top:1rem; font-weight:600;"></div>
-        </section>
-
-        <!-- SECCIÓN: LISTA DE TAREAS -->
-        <section id="tab-tareas" class="tab-content hidden">
-            <h2>📋 Mis Tareas Guardadas</h2>
-            <div id="taskList">Cargando tareas...</div>
-        </section>
-
-        <!-- SECCIÓN: AGREGAR TAREA -->
-        <section id="tab-agregar" class="tab-content hidden">
-            <h2>➕ Agregar Nueva Tarea</h2>
-            <form id="taskForm">
-                <div class="form-group">
-                    <label>Título de la Tarea</label>
-                    <input type="text" id="taskTitle" required placeholder="Ej: TP N° 2 de Matemática">
-                </div>
-                <div class="form-group">
-                    <label>Materia</label>
-                    <select id="taskSubject"></select>
-                </div>
-                <div class="form-group">
-                    <label>Prioridad</label>
-                    <select id="taskPriority">
-                        <option value="normal">🟢 Normal</option>
-                        <option value="importante">🟡 Importante</option>
-                        <option value="urgente">🔴 Urgente</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Fecha de Vencimiento</label>
-                    <input type="date" id="taskDueDate" required>
-                </div>
-                <button type="submit" class="btn">Guardar Tarea</button>
-            </form>
-        </section>
-
-        <!-- SECCIÓN: CALENDARIO -->
-        <section id="tab-calendario" class="tab-content hidden">
-            <h2>📅 Calendario de Actividades</h2>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
-                <button class="btn" id="btnPrevMonth" style="padding:0.4rem 0.8rem;">◀</button>
-                <h3 id="calMonthTitle" style="font-size:1.1rem;
+            <button class="tab-btn active" onclick="switchTab('inicio')">🏠 Inicio</button>
+            <button class="tab-btn" onclick="switchTab('tareas')">📋 Tareas</button>
+            <button class="tab-btn" onclick="switchTab('agregar')">➕ Nueva Tarea</button
