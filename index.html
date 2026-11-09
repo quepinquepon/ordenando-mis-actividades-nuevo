@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ordenando mis actividades | Versión Prémium</title>
+  <title>🌷 Ordenando mis actividades</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -11,198 +11,141 @@
       --card-bg: #FFFFFF;
       --text-main: #1E293B;
       --text-muted: #64748B;
-      --primary: #7C3AED;
-      --primary-hover: #6D28D9;
-      --accent-green: #10B981;
-      --badge-normal: #E0E7FF;
-      --text-normal: #3730A3;
-      --badge-importante: #FEF3C7;
-      --text-importante: #92400E;
-      --badge-urgente: #FEE2E2;
-      --text-urgente: #991B1B;
+      --primary: #8B5CF6;
+      --primary-hover: #7C3AED;
       --border-radius: 16px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; }
+    body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 1.5rem; max-width: 800px; margin: 0 auto; }
 
-    /* Header Prémium */
-    .app-header {
-      background: white;
-      border-bottom: 1px solid #E2E8F0;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1000px;
-      margin: 0 auto 2rem;
-      border-radius: 0 0 16px 16px;
-    }
-    .brand { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.25rem; color: var(--primary); }
-    .badge-pro { background: #EDE9FE; color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    header { text-align: center; margin-bottom: 2rem; padding-top: 1rem; }
+    header h1 { font-size: 2rem; color: #6D28D9; margin-bottom: 0.5rem; }
+    header p { color: var(--text-muted); font-size: 1rem; }
 
-    /* App Container */
-    .app-wrapper { max-width: 900px; margin: 0 auto 4rem; padding: 0 1.5rem; }
-    .app-card { background: var(--card-bg); border-radius: var(--border-radius); border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); padding: 2rem; }
-    
-    .app-section { margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid #F1F5F9; }
-    .app-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .app-section h2 { font-size: 1.35rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    section { background: var(--card-bg); padding: 1.5rem; border-radius: var(--border-radius); border: 1px solid #E2E8F0; margin-bottom: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+    section h2 { font-size: 1.25rem; margin-bottom: 1rem; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; }
 
-    /* Progress Bar */
-    .progress-container { background: #E2E8F0; border-radius: 10px; height: 10px; width: 100%; margin-bottom: 1rem; overflow: hidden; }
-    .progress-bar { background: var(--accent-green); height: 100%; width: 0%; transition: width 0.3s ease; }
-
-    /* Inputs & Forms */
     .form-group { margin-bottom: 1rem; }
     .form-group label { display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.35rem; }
-    .input-field, .select-field { width: 100%; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid #CBD5E1; font-size: 0.95rem; outline: none; }
-    .input-field:focus, .select-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
+    .input-field, .select-field { width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #CBD5E1; font-size: 0.95rem; outline: none; }
+    .input-field:focus, .select-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15); }
+
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    .btn-primary {
-      display: inline-block; background-color: var(--primary); color: white; padding: 0.875rem 2rem;
-      border-radius: 10px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s ease; width: 100%;
-    }
-    .btn-primary:hover { background-color: var(--primary-hover); }
-
-    .btn-secondary {
-      background: #F1F5F9; color: var(--text-main); border: 1px solid #CBD5E1; padding: 0.5rem 1rem;
-      border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
-    }
-    .btn-secondary:hover { background: #E2E8F0; }
-
-    /* Task List & Filters */
-    .filters { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .filter-btn { background: #F1F5F9; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--text-muted); }
-    .filter-btn.active { background: var(--primary); color: white; }
+    .btn-main { background-color: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; transition: background 0.2s; }
+    .btn-main:hover { background-color: var(--primary-hover); }
 
     .task-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-    .task-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0; }
-    .task-info h4 { font-size: 1rem; font-weight: 600; }
-    .task-info p { font-size: 0.85rem; color: var(--text-muted); }
-    .badge { padding: 0.25rem 0.65rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
-    .badge-normal { background: var(--badge-normal); color: var(--text-normal); }
-    .badge-importante { background: var(--badge-importante); color: var(--text-importante); }
-    .badge-urgente { background: var(--badge-urgente); color: var(--text-urgente); }
-    .btn-delete { background: none; border: none; color: #EF4444; cursor: pointer; font-size: 0.875rem; padding: 0.25rem 0.5rem; }
+    .task-item { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 1rem; background: #F8FAFC; border-radius: 8px; border: 1px solid #E2E8F0; }
+    .task-info h4 { font-size: 0.95rem; font-weight: 600; }
+    .task-info p { font-size: 0.8rem; color: var(--text-muted); }
+    
+    .badge { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+    .badge-normal { background: #EDE9FE; color: #6D28D9; }
+    .badge-importante { background: #FEF3C7; color: #B45309; }
+    .badge-urgente { background: #FEE2E2; color: #B91C1C; }
+    
+    .btn-delete { background: none; border: none; color: #EF4444; cursor: pointer; font-size: 0.85rem; }
 
-    /* Calendar Grid */
+    /* Calendario original */
     .calendar-legend { display: flex; gap: 1rem; font-size: 0.85rem; margin-bottom: 1rem; }
-    .legend-item { display: flex; align-items: center; gap: 0.35rem; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-    .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.5rem; text-align: center; font-weight: 600; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+    .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.4rem; text-align: center; font-weight: 600; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.4rem; }
-    .cal-day { min-height: 55px; border: 1px solid #E2E8F0; border-radius: 8px; display: flex; flex-direction: column; align-items: center; padding-top: 6px; font-size: 0.85rem; background: white; }
+    .cal-day { min-height: 40px; border: 1px solid #E2E8F0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: white; }
 
-    footer { text-align: center; padding: 2.5rem; color: var(--text-muted); font-size: 0.875rem; background: white; border-top: 1px solid #E2E8F0; }
-    @media (max-width: 640px) { .form-row { grid-template-columns: 1fr; } }
+    footer { text-align: center; padding: 2rem 0; color: var(--text-muted); font-size: 0.875rem; }
+
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-  <!-- BARRA DE NAVEGACIÓN PRÉMIUM -->
-  <nav class="app-header">
-    <div class="brand">🌷 Ordenando mis actividades</div>
-    <span class="badge-pro">✨ ACCESO PRÉMIUM</span>
-  </nav>
+  <header>
+    <h1>🌷 Ordenando mis actividades</h1>
+    <p>Organizá tus tareas a tu manera, paso a paso.</p>
+  </header>
 
-  <!-- CONTENEDOR PRINCIPAL DE LA APP -->
-  <div class="app-wrapper">
-    <div class="app-card">
-      
-      <!-- SECCIÓN 1: AGREGAR ACTIVIDAD -->
-      <section class="app-section">
-        <h2>➕ Agregar una actividad</h2>
-        <form id="task-form">
+  <main>
+    <!-- SECCIÓN 1: AGREGAR -->
+    <section>
+      <h2>➕ Agregar una actividad</h2>
+      <form id="task-form">
+        <div class="form-group">
+          <label for="task-title">Nombre de la actividad</label>
+          <input type="text" id="task-title" class="input-field" placeholder="Ej: Estudiar para el examen" required>
+        </div>
+        <div class="form-row">
           <div class="form-group">
-            <label for="task-title">Nombre de la actividad</label>
-            <input type="text" id="task-title" class="input-field" placeholder="Ej: Entregar TP de Historia" required>
+            <label for="task-date">Fecha</label>
+            <input type="date" id="task-date" class="input-field" required>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="task-date">Fecha de vencimiento</label>
-              <input type="date" id="task-date" class="input-field" required>
-            </div>
-            <div class="form-group">
-              <label for="task-priority">Prioridad</label>
-              <select id="task-priority" class="select-field">
-                <option value="Normal">Normal</option>
-                <option value="Importante">Importante</option>
-                <option value="Urgente">Urgente</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit" class="btn-primary" style="margin-top: 0.5rem;">Guardar Actividad</button>
-        </form>
-      </section>
-
-      <!-- SECCIÓN 2: MIS ACTIVIDADES Y PROGRESO -->
-      <section class="app-section">
-        <h2>📚 Mis actividades</h2>
-        
-        <div style="margin-bottom: 1.5rem;">
-          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem;">
-            <span>Progreso diario</span>
-            <span id="progress-text">0% completado</span>
-          </div>
-          <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+          <div class="form-group">
+            <label for="task-priority">Prioridad</label>
+            <select id="task-priority" class="select-field">
+              <option value="Normal">Normal</option>
+              <option value="Importante">Importante</option>
+              <option value="Urgente">Urgente</option>
+            </select>
           </div>
         </div>
+        <button type="submit" class="btn-main">Guardar Actividad</button>
+      </form>
+    </section>
 
-        <div class="filters">
-          <button class="filter-btn active" onclick="filterTasks('todas')">Todas</button>
-          <button class="filter-btn" onclick="filterTasks('Normal')">Normales</button>
-          <button class="filter-btn" onclick="filterTasks('Importante')">Importantes</button>
-          <button class="filter-btn" onclick="filterTasks('Urgente')">Urgentes</button>
-        </div>
-        <ul class="task-list" id="task-list-container"></ul>
-      </section>
+    <!-- SECCIÓN 2: MIS ACTIVIDADES -->
+    <section>
+      <h2>📚 Mis actividades</h2>
+      <div aria-live="polite">
+        <ul class="task-list" id="task-list-container">
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Todavía no hay actividades.</p>
+        </ul>
+      </div>
+    </section>
 
-      <!-- SECCIÓN 3: CALENDARIO ESCOLAR -->
-      <section class="app-section">
-        <h2>📅 Mi calendario escolar</h2>
-        <div class="calendar-legend">
-          <span class="legend-item"><span class="dot" style="background:#7C3AED;"></span> Normal</span>
-          <span class="legend-item"><span class="dot" style="background:#D97706;"></span> Importante</span>
-          <span class="legend-item"><span class="dot" style="background:#DC2626;"></span> Urgente</span>
-        </div>
-        <div class="calendar-days">
-          <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
-        </div>
-        <div class="calendar-grid" id="calendar-grid-container"></div>
-      </section>
+    <!-- SECCIÓN 3: CALENDARIO ESCOLAR -->
+    <section>
+      <h2>📅 Mi calendario escolar</h2>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 id="month-year-title" style="font-size: 1rem; color: var(--text-main);"></h3>
+      </div>
+      <div class="calendar-legend">
+        <span><i></i> Normal</span>
+        <span><i></i> Importante</span>
+        <span><i></i> Urgente</span>
+      </div>
+      <div class="calendar-days">
+        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+      <div class="calendar-grid" id="calendar-grid-container"></div>
+      <p aria-live="polite" style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+        Elegí un día para ver tus actividades.
+      </p>
+    </section>
 
-      <!-- SECCIÓN 4: RECORDATORIOS -->
-      <section class="app-section">
-        <h2>🔔 Mis recordatorios</h2>
-        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Próximas actividades a vencer (7 días):</p>
-        <div id="reminders-container" class="task-list"></div>
-      </section>
+    <!-- SECCIÓN 4: RECORDATORIOS -->
+    <section>
+      <h2>🔔 Mis recordatorios</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Revisá las tareas que tenés próximas a vencer.</p>
+      <div aria-live="polite" id="reminders-container">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Cargando recordatorios...</p>
+      </div>
+    </section>
 
-      <!-- SECCIÓN 5: GESTIÓN Y RESPALDO DE DATOS -->
-      <section class="app-section">
-        <h2>💾 Copia de Seguridad</h2>
-        <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem;">Descargá un respaldo de tus datos para tenerlos siempre a salvo o transferirlos a otro dispositivo.</p>
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-          <button class="btn-secondary" onclick="exportData()">📥 Exportar mis tareas</button>
-          <button class="btn-secondary" onclick="document.getElementById('import-file').click()">📤 Importar copia</button>
-          <input type="file" id="import-file" style="display: none;" onchange="importData(event)" accept=".json">
-        </div>
-      </section>
-
-    </div>
-  </div>
+    <!-- SECCIÓN 5: REFLEXIÓN -->
+    <section>
+      <h2>💜 Un paso a la vez</h2>
+      <p style="font-size: 0.9rem; color: var(--text-muted);">No hace falta hacer todo junto. Elegí una tarea, organizá tu tiempo y avanzá a tu ritmo.</p>
+    </section>
+  </main>
 
   <footer>
-    Gracias por ser parte de Ordenando mis actividades Prémium 🌈
+    Hecho para acompañarte en tu camino escolar 🌈
   </footer>
 
+  <!-- LÓGICA ORIGINAL -->
   <script>
-    let tasks = JSON.parse(localStorage.getItem('mis_actividades_pro')) || [];
-    let currentFilter = 'todas';
-    let currentDate = new Date();
+    let tasks = JSON.parse(localStorage.getItem('mis_actividades')) || [];
 
     const form = document.getElementById('task-form');
     const taskList = document.getElementById('task-list-container');
@@ -215,21 +158,18 @@
         id: Date.now(),
         title: document.getElementById('task-title').value.trim(),
         date: document.getElementById('task-date').value,
-        priority: document.getElementById('task-priority').value,
-        completed: false
+        priority: document.getElementById('task-priority').value
       };
-      
       tasks.push(newTask);
       saveAndRender();
       form.reset();
     });
 
     function saveAndRender() {
-      localStorage.setItem('mis_actividades_pro', JSON.stringify(tasks));
+      localStorage.setItem('mis_actividades', JSON.stringify(tasks));
       renderTasks();
       renderReminders();
       renderCalendar();
-      updateProgress();
     }
 
     function deleteTask(id) {
@@ -237,53 +177,19 @@
       saveAndRender();
     }
 
-    function toggleComplete(id) {
-      tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-      saveAndRender();
-    }
-
-    function filterTasks(priority) {
-      currentFilter = priority;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      renderTasks();
-    }
-
-    function updateProgress() {
-      if (tasks.length === 0) {
-        document.getElementById('progress-bar').style.width = '0%';
-        document.getElementById('progress-text').textContent = '0% completado';
-        return;
-      }
-      const completedCount = tasks.filter(t => t.completed).length;
-      const percentage = Math.round((completedCount / tasks.length) * 100);
-      document.getElementById('progress-bar').style.width = percentage + '%';
-      document.getElementById('progress-text').textContent = `${percentage}% completado`;
-    }
-
     function renderTasks() {
-      taskList.innerHTML = '';
-      const filtered = currentFilter === 'todas' ? tasks : tasks.filter(t => t.priority === currentFilter);
-      
-      if (filtered.length === 0) {
-        taskList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Todavía no hay actividades en esta categoría.</p>';
+      if (tasks.length === 0) {
+        taskList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Todavía no hay actividades.</p>';
         return;
       }
-
-      filtered.forEach(task => {
-        const [year, month, day] = task.date.split('-');
-        const formattedDate = `${day}/${month}/${year}`;
-        
+      taskList.innerHTML = '';
+      tasks.forEach(task => {
         const li = document.createElement('li');
         li.className = 'task-item';
-        li.style.opacity = task.completed ? '0.6' : '1';
         li.innerHTML = `
-          <div style="display: flex; align-items: center; gap: 0.75rem;">
-            <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleComplete(${task.id})" style="width: 18px; height: 18px; cursor: pointer;">
-            <div class="task-info">
-              <h4 style="text-decoration: ${task.completed ? 'line-through' : 'none'};">${task.title}</h4>
-              <p>📅 Vence: <strong>${formattedDate}</strong></p>
-            </div>
+          <div class="task-info">
+            <h4>${task.title}</h4>
+            <p>Fecha: ${task.date}</p>
           </div>
           <div style="display: flex; align-items: center; gap: 0.75rem;">
             <span class="badge badge-${task.priority.toLowerCase()}">${task.priority}</span>
@@ -295,111 +201,29 @@
     }
 
     function renderReminders() {
-      remindersContainer.innerHTML = '';
-      const today = new Date();
-      today.setHours(0,0,0,0);
-
-      const upcoming = tasks.filter(t => {
-        if (t.completed) return false;
-        const [y, m, d] = t.date.split('-');
-        const taskDate = new Date(y, m - 1, d);
-        const diffDays = Math.ceil((taskDate - today) / (1000 * 60 * 60 * 24));
-        return diffDays >= 0 && diffDays <= 7;
-      }).sort((a, b) => new Date(a.date) - new Date(b.date));
-
-      if (upcoming.length === 0) {
-        remindersContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">¡Todo al día! Sin tareas pendientes para la semana.</p>';
+      if (tasks.length === 0) {
+        remindersContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">No hay recordatorios pendientes.</p>';
         return;
       }
-
-      upcoming.forEach(t => {
-        const [y, m, d] = t.date.split('-');
+      remindersContainer.innerHTML = '';
+      const sorted = [...tasks].sort((a, b) => new Date(a.date) - new Date(b.date)).slice(0, 3);
+      sorted.forEach(t => {
         const div = document.createElement('div');
         div.className = 'task-item';
-        div.style.background = '#FFFFFF';
-        div.innerHTML = `
-          <div>
-            <strong>${t.title}</strong> 
-            <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Vencimiento: ${d}/${m}/${y}</span>
-          </div>
-          <span class="badge badge-${t.priority.toLowerCase()}">${t.priority}</span>
-        `;
+        div.style.marginBottom = '0.5rem';
+        div.innerHTML = `<div><strong>${t.title}</strong> - Vence: ${t.date}</div><span class="badge badge-${t.priority.toLowerCase()}">${t.priority}</span>`;
         remindersContainer.appendChild(div);
       });
     }
 
     function renderCalendar() {
       calendarGrid.innerHTML = '';
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-
-      const firstDayIndex = new Date(year, month, 1).getDay();
-      const totalDays = new Date(year, month + 1, 0).getDate();
-      const paddingDays = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
-
-      for (let i = 0; i < paddingDays; i++) {
-        const emptyDiv = document.createElement('div');
-        emptyDiv.className = 'cal-day';
-        emptyDiv.style.opacity = '0.2';
-        calendarGrid.appendChild(emptyDiv);
-      }
-
-      for (let day = 1; day <= totalDays; day++) {
+      for (let i = 1; i <= 31; i++) {
         const dayDiv = document.createElement('div');
         dayDiv.className = 'cal-day';
-        dayDiv.innerHTML = `<span>${day}</span>`;
-
-        const formattedMonth = String(month + 1).padStart(2, '0');
-        const formattedDay = String(day).padStart(2, '0');
-        const dateStr = `${year}-${formattedMonth}-${formattedDay}`;
-
-        const dayTasks = tasks.filter(t => t.date === dateStr);
-        if (dayTasks.length > 0) {
-          const dotsContainer = document.createElement('div');
-          dotsContainer.style.display = 'flex';
-          dotsContainer.style.gap = '2px';
-          dotsContainer.style.marginTop = '4px';
-
-          dayTasks.forEach(t => {
-            const dot = document.createElement('span');
-            dot.className = 'dot';
-            if (t.priority === 'Normal') dot.style.background = '#7C3AED';
-            if (t.priority === 'Importante') dot.style.background = '#D97706';
-            if (t.priority === 'Urgente') dot.style.background = '#DC2626';
-            dotsContainer.appendChild(dot);
-          });
-          dayDiv.appendChild(dotsContainer);
-        }
-
+        dayDiv.textContent = i;
         calendarGrid.appendChild(dayDiv);
       }
-    }
-
-    function exportData() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", "mis_actividades_backup.json");
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    function importData(event) {
-      const fileReader = new FileReader();
-      fileReader.onload = function(e) {
-        try {
-          const importedTasks = JSON.parse(e.target.result);
-          if (Array.isArray(importedTasks)) {
-            tasks = importedTasks;
-            saveAndRender();
-            alert("¡Copia de seguridad restaurada con éxito!");
-          }
-        } catch (err) {
-          alert("El archivo seleccionado no es válido.");
-        }
-      };
-      fileReader.readAsText(event.target.files[0]);
     }
 
     saveAndRender();
