@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 Ordenando mis Actividades | Edición Premium Pro</title>
-    <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
+    <title>📚 Ordenando mis Actividades | Versión Definitiva</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -23,12 +22,7 @@
             --radius: 16px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Outfit', sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
 
         body {
             background: var(--bg-gradient);
@@ -47,48 +41,10 @@
             box-shadow: var(--shadow);
             margin-bottom: 1.5rem;
             position: relative;
-            overflow: hidden;
         }
 
-        header::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--normal));
-        }
-
-        header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
-        }
-
-        header p {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .hero-banner {
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 1.5rem;
-            align-items: center;
-            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
-            border-radius: var(--radius);
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-banner img {
-            width: 100%;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
+        header h1 { font-size: 2rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.25rem; }
+        header p { color: var(--text-muted); font-size: 1rem; }
 
         .tabs-nav {
             display: flex;
@@ -110,22 +66,14 @@
             transition: all 0.2s ease;
         }
 
-        .tab-btn.active, .tab-btn:hover {
+        .tab-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
         }
 
-        main {
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            flex: 1;
-        }
+        main { max-width: 900px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem; flex: 1; }
 
         section {
             background: var(--card-bg);
@@ -135,33 +83,10 @@
         }
 
         .hidden { display: none !important; }
-
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 0.95rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-        }
+        h2 { font-size: 1.3rem; margin-bottom: 1rem; color: var(--text-main); }
+        .form-group { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+        input, select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95rem; outline: none; }
+        input:focus, select:focus { border-color: var(--primary); }
 
         .btn {
             background: var(--primary);
@@ -172,12 +97,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
         }
-
         .btn:hover { background: var(--primary-hover); }
 
         .task-card {
@@ -190,14 +110,13 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .task-card.urgente { border-left-color: var(--urgent); }
         .task-card.importante { border-left-color: var(--important); }
         .task-card.completed { opacity: 0.6; text-decoration: line-through; }
 
         @keyframes pulseAlert {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { transform: scale(1.01); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            70% { transform: scale(1.01); box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
         }
 
@@ -209,28 +128,11 @@
             margin-bottom: 1rem;
             animation: pulseAlert 2s infinite;
         }
+        .alert-box.success { background: #f0fdf4; border-color: var(--normal); animation: none; }
 
-        .alert-box.success {
-            background: #f0fdf4;
-            border-color: var(--normal);
-            animation: none;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
-            margin-top: 1rem;
-        }
-
-        .cal-header {
-            text-align: center;
-            font-weight: 700;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            padding-bottom: 0.5rem;
-        }
-
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-top: 1rem; }
+        .cal-header { text-align: center; font-weight: 700; color: var(--text-muted); font-size: 0.9rem; padding-bottom: 0.5rem; }
+        
         .cal-day {
             min-height: 55px;
             background: #f8fafc;
@@ -243,69 +145,277 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            position: relative;
             transition: all 0.2s ease;
         }
+        .cal-day:hover { background: #e0e7ff; border-color: var(--primary); }
+        .cal-day.today { border: 2px dashed var(--primary) !important; background: #eef2ff; }
+        .cal-day.selected { background: var(--primary) !important; color: #fff !important; border-color: var(--primary-hover) !important; }
 
-        .cal-day:hover {
-            background: #e0e7ff;
-            border-color: var(--primary);
-        }
-
-        .cal-badge {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-top: 4px;
-        }
-
+        .cal-badge { width: 10px; height: 10px; border-radius: 50%; margin-top: 4px; }
         .cal-badge.urgente { background-color: var(--urgent); box-shadow: 0 0 6px var(--urgent); }
         .cal-badge.importante { background-color: var(--important); box-shadow: 0 0 6px var(--important); }
         .cal-badge.normal { background-color: var(--normal); box-shadow: 0 0 6px var(--normal); }
 
-        .cal-day.today {
-            border: 2px dashed var(--primary) !important;
-            background: #eef2ff;
-        }
-
-        .cal-day.selected {
-            background: var(--primary) !important;
-            color: #ffffff !important;
-            border-color: var(--primary-hover) !important;
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-            transform: scale(1.05);
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        @media(max-width: 600px) {
-            .hero-banner { grid-template-columns: 1fr; }
-            .hero-banner img { height: 140px; }
-        }
+        footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-        <p>Tu espacio de estudio potenciado &bull; Versión Premium Pro</p>
+        <p>Versión Estable y Funcional</p>
     </header>
 
     <main>
-        <div class="hero-banner">
-            <img src="https://images.unsplash.com/photo-1654356709115-3f68998bead4?auto=format&fit=crop&fm=jpg&q=80&w=600" alt="Estudio">
-            <div>
-                <p style="font-weight: 600;">“Cada pequeño paso te acerca a tu meta.”</p>
-                <span style="color: var(--text-muted); font-size: 0.9rem;">Organizá tu tiempo, sé constante y alcanzá tus objetivos.</span>
-            </div>
-        </div>
+        <!-- Navegación por pestañas -->
+        <nav class="tabs-nav" id="navTabs">
+            <button class="tab-btn active" data-target="inicio">🏠 Inicio</button>
+            <button class="tab-btn" data-target="tareas">📋 Tareas</button>
+            <button class="tab-btn" data-target="agregar">➕ Nueva Tarea</button>
+            <button class="tab-btn" data-target="calendario">📅 Calendario</button>
+            <button class="tab-btn" data-target="materias">📚 Materias</button>
+            <button class="tab-btn" data-target="backup">🛟 Copia de Seguridad</button>
+        </nav>
 
-        <nav class="tabs-nav" id="mainNav">
-            <button class="tab-btn active" onclick="switchTab('inicio')">🏠 Inicio</button>
-            <button class="tab-btn" onclick="switchTab('tareas')">📋 Tareas</button>
-            <button class="tab-btn" onclick="switchTab('agregar')">➕ Nueva Tarea</button
+        <!-- INICIO -->
+        <section id="sec-inicio" class="section-pane">
+            <h2>📢 Alertas y Vencimientos Pendientes</h2>
+            <div id="alertsContainer"></div>
+            <button class="btn" id="btnTestStorage">Validar Almacenamiento</button>
+            <div id="status-box" style="margin-top:1rem; font-weight:600;"></div>
+        </section>
+
+        <!-- TAREAS -->
+        <section id="sec-tareas" class="section-pane hidden">
+            <h2>📋 Mis Tareas Guardadas</h2>
+            <div id="taskList"></div>
+        </section>
+
+        <!-- NUEVA TAREA -->
+        <section id="sec-agregar" class="section-pane hidden">
+            <h2>➕ Agregar Nueva Tarea</h2>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label>Título de la Tarea</label>
+                    <input type="text" id="taskTitle" required placeholder="Ej: TP de Física">
+                </div>
+                <div class="form-group">
+                    <label>Materia</label>
+                    <select id="taskSubject"></select>
+                </div>
+                <div class="form-group">
+                    <label>Prioridad</label>
+                    <select id="taskPriority">
+                        <option value="normal">🟢 Normal</option>
+                        <option value="importante">🟡 Importante</option>
+                        <option value="urgente">🔴 Urgente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Vencimiento</label>
+                    <input type="date" id="taskDueDate" required>
+                </div>
+                <button type="submit" class="btn">Guardar Tarea</button>
+            </form>
+        </section>
+
+        <!-- CALENDARIO -->
+        <section id="sec-calendario" class="section-pane hidden">
+            <h2>📅 Calendario de Actividades</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+                <button class="btn" id="prevMonth" style="padding:0.4rem 0.8rem;">◀</button>
+                <h3 id="calMonthTitle" style="font-size:1.1rem; text-transform:capitalize;"></h3>
+                <button class="btn" id="nextMonth" style="padding:0.4rem 0.8rem;">▶</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
+                <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div><div class="cal-header">Dom</div>
+            </div>
+            <div id="calendarDays" class="calendar-grid"></div>
+            <div id="dayTasks" style="margin-top: 1.5rem;"></div>
+        </section>
+
+        <!-- MATERIAS -->
+        <section id="sec-materias" class="section-pane hidden">
+            <h2>📚 Administrar Materias</h2>
+            <div class="form-group">
+                <input type="text" id="newSubjectInput" placeholder="Nueva Materia (Ej: Historia)">
+                <button class="btn" id="btnAddSubject">Agregar Materia</button>
+            </div>
+            <ul id="subjectsList" style="margin-top: 1rem; list-style: none; display: flex; flex-direction: column; gap: 0.5rem;"></ul>
+        </section>
+
+        <!-- BACKUP -->
+        <section id="sec-backup" class="section-pane hidden">
+            <h2>🛟 Copia de Seguridad</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Exportá o importá tus datos en un archivo JSON.</p>
+            <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn" id="btnExport">⬇️ Exportar Copia</button>
+                <input type="file" id="importFile" style="display:none">
+                <button class="btn" style="background:#64748b;" id="btnImportTrigger">📂 Importar Copia</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>Tus datos se guardan de forma segura en este dispositivo.</footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Estado y Datos Iniciales
+            let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
+            let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+            let selectedDateStr = null;
+
+            // 1. SISTEMA DE PESTAÑAS (Tabs)
+            const navTabs = document.getElementById('navTabs');
+            navTabs.addEventListener('click', (e) => {
+                const btn = e.target.closest('.tab-btn');
+                if (!btn) return;
+                
+                const targetId = btn.getAttribute('data-target');
+                
+                document.querySelectorAll('.section-pane').forEach(pane => pane.classList.add('hidden'));
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+
+                document.getElementById(`sec-${targetId}`).classList.remove('hidden');
+                btn.classList.add('active');
+
+                if (targetId === 'inicio') renderAlerts();
+                if (targetId === 'tareas') renderTasks();
+                if (targetId === 'materias') renderSubjects();
+                if (targetId === 'agregar') populateSubjectsSelect();
+                if (targetId === 'calendario') renderCalendar();
+            });
+
+            // 2. ALERTAS DE INICIO
+            function renderAlerts() {
+                const container = document.getElementById('alertsContainer');
+                const todayStr = new Date().toISOString().split('T')[0];
+                const urgentOrToday = tasks.filter(t => !t.completed && t.dueDate <= todayStr);
+
+                if (urgentOrToday.length === 0) {
+                    container.innerHTML = `<div class="alert-box success">🟢 <strong>¡Todo al día!</strong> No tenés tareas vencidas ni pendientes para hoy.</div>`;
+                    return;
+                }
+
+                container.innerHTML = urgentOrToday.map(t => `
+                    <div class="alert-box">
+                        <div style="font-size:1.1rem; font-weight:700; color:var(--urgent);">🚨 ATENCIÓN REQUERIDA</div>
+                        <div style="font-size:1rem; font-weight:600; margin-top:0.25rem;">"${t.title}"</div>
+                        <p style="font-size:0.9rem; margin-top:0.25rem;">Materia: <strong>${t.subject}</strong> &bull; Vence: <strong>${t.dueDate}</strong></p>
+                    </div>
+                `).join('');
+            }
+
+            // 3. GESTIÓN DE TAREAS
+            function renderTasks() {
+                const list = document.getElementById('taskList');
+                if (tasks.length === 0) {
+                    list.innerHTML = '<p style="color:var(--text-muted)">No hay tareas registradas aún.</p>';
+                    return;
+                }
+                list.innerHTML = tasks.map((t, idx) => `
+                    <div class="task-card ${t.priority}${t.completed ? 'completed' : ''}">
+                        <div>
+                            <strong>${t.title}</strong>
+                            <div style="font-size:0.85rem; color:var(--text-muted);">${t.subject} &bull; Vence:${t.dueDate || 'Sin fecha'}</div>
+                        </div>
+                        <div style="display:flex; gap:0.5rem;">
+                            <button class="btn btn-toggle" data-idx="${idx}" style="padding:0.4rem 0.8rem; font-size:0.8rem;">${t.completed ? '↩️' : '✅'}</button>
+                            <button class="btn btn-delete" data-idx="${idx}" style="background:var(--urgent); padding:0.4rem 0.8rem; font-size:0.8rem;">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('taskList').addEventListener('click', (e) => {
+                const toggle = e.target.closest('.btn-toggle');
+                const del = e.target.closest('.btn-delete');
+                if (toggle) {
+                    const idx = toggle.getAttribute('data-idx');
+                    tasks[idx].completed = !tasks[idx].completed;
+                    localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                    renderTasks();
+                }
+                if (del) {
+                    const idx = del.getAttribute('data-idx');
+                    tasks.splice(idx, 1);
+                    localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                    renderTasks();
+                }
+            });
+
+            document.getElementById('taskForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const title = document.getElementById('taskTitle').value;
+                const subject = document.getElementById('taskSubject').value;
+                const priority = document.getElementById('taskPriority').value;
+                const dueDate = document.getElementById('taskDueDate').value;
+
+                tasks.push({ title, subject, priority, dueDate, completed: false });
+                localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                e.target.reset();
+                alert('✨ Tarea guardada con éxito.');
+                
+                // Cambiar a pestaña tareas
+                document.querySelector('[data-target="tareas"]').click();
+            });
+
+            function populateSubjectsSelect() {
+                const select = document.getElementById('taskSubject');
+                select.innerHTML = subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+            }
+
+            // 4. MATERIAS
+            function renderSubjects() {
+                const list = document.getElementById('subjectsList');
+                list.innerHTML = subjects.map((s, i) => `
+                    <li style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:0.5rem 1rem; border-radius:8px;">
+                        <span>${s}</span> 
+                        <button class="btn btn-del-sub" data-idx="${i}" style="background:var(--urgent); padding:0.25rem 0.5rem; font-size:0.75rem;">Eliminar</button>
+                    </li>
+                `).join('');
+            }
+
+            document.getElementById('btnAddSubject').addEventListener('click', () => {
+                const input = document.getElementById('newSubjectInput');
+                if (input.value.trim()) {
+                    subjects.push(input.value.trim());
+                    localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                    input.value = '';
+                    renderSubjects();
+                }
+            });
+
+            document.getElementById('subjectsList').addEventListener('click', (e) => {
+                const btn = e.target.closest('.btn-del-sub');
+                if (btn) {
+                    subjects.splice(btn.getAttribute('data-idx'), 1);
+                    localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                    renderSubjects();
+                }
+            });
+
+            // 5. CALENDARIO
+            function renderCalendar() {
+                const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+                document.getElementById('calMonthTitle').innerText = `${monthNames[currentMonth]} ${currentYear}`;  const daysContainer = document.getElementById('calendarDays'); daysContainer.innerHTML = '';  const firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) \% 7; const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate(); const todayStr = new Date().toISOString().split('T')[0];  for (let i = 0; i < firstDayIndex; i++) { daysContainer.innerHTML += `<div></div>`; }  for (let day = 1; day <= totalDays; day++) { const formattedMonth = String(currentMonth + 1).padStart(2, '0'); const formattedDay = String(day).padStart(2, '0'); const dateStr = `${currentYear}-${formattedMonth}-${formattedDay}`;
+                    
+                    const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
+                    let badgeHtml = '';
+                    if (dayTasks.length > 0) {
+                        const hasUrgent = dayTasks.some(t => t.priority === 'urgente');
+                        const hasImportant = dayTasks.some(t => t.priority === 'importante');
+                        const pClass = hasUrgent ? 'urgente' : (hasImportant ? 'importante' : 'normal');
+                        badgeHtml = `<div class="cal-badge ${pClass}"></div>`;
+                    }
+
+                    const isToday = (dateStr === todayStr) ? 'today' : '';
+                    const isSelected = (dateStr === selectedDateStr) ? 'selected' : '';
+
+                    daysContainer.innerHTML += `
+                        <div class="cal-day ${isToday} ${isSelected}" data-date="${dateStr}">
+                            <span>${
+                            
