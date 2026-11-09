@@ -19,7 +19,7 @@
             --normal: #10b981;
             --important: #f59e0b;
             --urgent: #ef4444;
-            --border: #e2e8f0;
+            --border: #cbd5e1;
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
             --radius: 16px;
         }
@@ -196,59 +196,89 @@
         .task-card.importante { border-left-color: var(--important); }
         .task-card.completed { opacity: 0.6; text-decoration: line-through; }
 
+        /* --- ALERTAS LLAMATIVAS --- */
+        @keyframes pulseAlert {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { transform: scale(1.01); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .alert-box {
+            background: #fff8f6;
+            border: 2px solid var(--urgent);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            animation: pulseAlert 2s infinite;
+        }
+
+        .alert-box.success {
+            background: #f0fdf4;
+            border-color: var(--normal);
+            animation: none;
+        }
+
+        /* --- MEJORAS DEL CALENDARIO --- */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
+            gap: 8px;
             margin-top: 1rem;
         }
 
         .cal-header {
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             padding-bottom: 0.5rem;
         }
 
         .cal-day {
-            aspect-ratio: 1;
+            min-height: 55px;
             background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 600;
             cursor: pointer;
             position: relative;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .cal-day:hover { background: #e0e7ff; }
-        .cal-day.has-tasks::after {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
+        .cal-day:hover {
+            background: #e0e7ff;
+            border-color: var(--primary);
+        }
+
+        /* Puntos de actividad destacados */
+        .cal-badge {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             margin-top: 4px;
         }
 
-        .alert-box {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-left: 5px solid var(--important);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
+        .cal-badge.urgente { background-color: var(--urgent); box-shadow: 0 0 6px var(--urgent); }
+        .cal-badge.importante { background-color: var(--important); box-shadow: 0 0 6px var(--important); }
+        .cal-badge.normal { background-color: var(--normal); box-shadow: 0 0 6px var(--normal); }
+
+        /* Día Actual y Seleccionado */
+        .cal-day.today {
+            border: 2px dashed var(--primary) !important;
+            background: #eef2ff;
         }
 
-        .alert-box.danger {
-            background: #fef2f2;
-            border-color: #fecaca;
-            border-left-color: var(--urgent);
+        .cal-day.selected {
+            background: var(--primary) !important;
+            color: #ffffff !important;
+            border-color: var(--primary-hover) !important;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+            transform: scale(1.05);
         }
 
         footer {
@@ -291,7 +321,7 @@
 
         <!-- SECCIÓN: INICIO Y ALERTAS -->
         <section id="tab-inicio" class="tab-content">
-            <h2>✨ Panel de Alertas y Vencimientos</h2>
+            <h2>📢 Alertas y Vencimientos Pendientes</h2>
             <div id="alertsContainer"></div>
             <p style="color: var(--text-muted); margin-bottom: 1rem;">Estado del almacenamiento de datos:</p>
             <button class="btn" id="btnTestStorage">Validar Almacenamiento</button>
@@ -337,323 +367,4 @@
             <h2>📅 Calendario de Actividades</h2>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
                 <button class="btn" id="btnPrevMonth" style="padding:0.4rem 0.8rem;">◀</button>
-                <h3 id="calMonthTitle" style="font-size:1.1rem; text-transform:capitalize;"></h3>
-                <button class="btn" id="btnNextMonth" style="padding:0.4rem 0.8rem;">▶</button>
-            </div>
-            <div class="calendar-grid">
-                <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mié</div>
-                <div class="cal-header">Jue</div><div class="cal-header">Vie</div><div class="cal-header">Sáb</div><div class="cal-header">Dom</div>
-            </div>
-            <div id="calendarDays" class="calendar-grid"></div>
-            <div id="dayTasks" style="margin-top: 1.5rem;"></div>
-        </section>
-
-        <!-- SECCIÓN: MATERIAS -->
-        <section id="tab-materias" class="tab-content hidden">
-            <h2>📚 Administrar Materias</h2>
-            <div class="form-group">
-                <input type="text" id="newSubject" placeholder="Nueva Materia (Ej: Historia)">
-                <button class="btn" id="btnAddSubject">Agregar Materia</button>
-            </div>
-            <ul id="subjectsList" style="margin-top: 1rem; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 0.5rem;"></ul>
-        </section>
-
-        <!-- SECCIÓN: BACKUP -->
-        <section id="tab-backup" class="tab-content hidden">
-            <h2>🛟 Copia de Seguridad</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">Guardá o recuperá tus tareas en un archivo `.json` de respaldo.</p>
-            <div style="display:flex; gap: 1rem; flex-wrap: wrap;">
-                <button class="btn" id="btnExport">⬇️ Exportar Copia</button>
-                <input type="file" id="importFile" style="display:none">
-                <button class="btn" style="background:#64748b;" id="btnImportTrigger">📂 Importar Copia</button>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        Versión Premium Optimizada &bull; Tus datos se guardan de forma segura en este dispositivo.
-    </footer>
-
-    <script>
-        (function App() {
-            // Memory Safe Storage Handler
-            let inMemoryTasks = [];
-            let inMemorySubjects = ["Matemática", "Lengua", "Ciencias"];
-
-            function getData(key, fallback) {
-                try {
-                    const data = localStorage.getItem(key);
-                    return data ? JSON.parse(data) : fallback;
-                } catch(e) {
-                    return fallback;
-                }
-            }
-
-            function setData(key, value) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                } catch(e) {
-                    console.warn("Storage no disponible, usando memoria volatil.");
-                }
-            }
-
-            let tasks = getData('app_tasks', inMemoryTasks);
-            let subjects = getData('app_subjects', inMemorySubjects);
-            let currentMonth = new Date().getMonth();
-            let currentYear = new Date().getFullYear();
-
-            // Navigation Router
-            function navigateTo(tabId) {
-                document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-                const targetContent = document.getElementById(`tab-${tabId}`);
-                const targetBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
-
-                if (targetContent) targetContent.classList.remove('hidden');
-                if (targetBtn) targetBtn.classList.add('active');
-
-                if (tabId === 'inicio') renderAlerts();
-                if (tabId === 'tareas') renderTasks();
-                if (tabId === 'materias') renderSubjects();
-                if (tabId === 'agregar') populateSubjectsSelect();
-                if (tabId === 'calendario') renderCalendar();
-            }
-
-            // Event Delegation for Navigation
-            document.getElementById('mainNav').addEventListener('click', function(e) {
-                const btn = e.target.closest('.tab-btn');
-                if (btn) {
-                    const tabId = btn.getAttribute('data-tab');
-                    navigateTo(tabId);
-                }
-            });
-
-            // Alerts System
-            function renderAlerts() {
-                const container = document.getElementById('alertsContainer');
-                const todayStr = new Date().toISOString().split('T')[0];
-                const pendingTasks = tasks.filter(t => !t.completed);
-                const urgentOrToday = pendingTasks.filter(t => t.dueDate <= todayStr);
-
-                if (urgentOrToday.length === 0) {
-                    container.innerHTML = `<div class="alert-box" style="border-left-color: var(--normal);">🟢 ¡Todo al día! No tenés tareas vencidas ni pendientes para hoy.</div>`;
-                    return;
-                }
-
-                container.innerHTML = urgentOrToday.map(t => `
-                    <div class="alert-box ${t.priority === 'urgente' ? 'danger' : ''}">
-                        <strong>⚠️ Atención: "${t.title}"</strong>
-                        <p style="font-size:0.9rem; margin-top:0.25rem;">Materia: ${t.subject} &bull; Vence el: ${t.dueDate}</p>
-                    </div>
-                `).join('');
-            }
-
-            // Tasks Rendering & Management
-            function renderTasks() {
-                const list = document.getElementById('taskList');
-                if (tasks.length === 0) {
-                    list.innerHTML = '<p style="color:var(--text-muted)">No hay tareas registradas aún.</p>';
-                    return;
-                }
-                list.innerHTML = tasks.map((t, idx) => `
-                    <div class="task-card ${t.priority} ${t.completed ? 'completed' : ''}">
-                        <div>
-                            <strong>${t.title}</strong>
-                            <div style="font-size:0.85rem; color:var(--text-muted);">${t.subject} &bull; Vence: ${t.dueDate || 'Sin fecha'}</div>
-                        </div>
-                        <div style="display:flex; gap:0.5rem;">
-                            <button class="btn btn-toggle" data-index="${idx}" style="padding:0.4rem 0.8rem; font-size:0.8rem;">${t.completed ? '↩️' : '✅'}</button>
-                            <button class="btn btn-delete" data-index="${idx}" style="background:var(--urgent); padding:0.4rem 0.8rem; font-size:0.8rem;">🗑️</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            document.getElementById('taskList').addEventListener('click', function(e) {
-                const toggleBtn = e.target.closest('.btn-toggle');
-                const deleteBtn = e.target.closest('.btn-delete');
-
-                if (toggleBtn) {
-                    const idx = toggleBtn.getAttribute('data-index');
-                    tasks[idx].completed = !tasks[idx].completed;
-                    setData('app_tasks', tasks);
-                    renderTasks();
-                }
-
-                if (deleteBtn) {
-                    const idx = deleteBtn.getAttribute('data-index');
-                    tasks.splice(idx, 1);
-                    setData('app_tasks', tasks);
-                    renderTasks();
-                }
-            });
-
-            // Form Handling
-            document.getElementById('taskForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const title = document.getElementById('taskTitle').value;
-                const subject = document.getElementById('taskSubject').value;
-                const priority = document.getElementById('taskPriority').value;
-                const dueDate = document.getElementById('taskDueDate').value;
-
-                tasks.push({ title, subject, priority, dueDate, completed: false });
-                setData('app_tasks', tasks);
-                this.reset();
-                alert('✨ Tarea guardada con éxito.');
-                navigateTo('tareas');
-            });
-
-            function populateSubjectsSelect() {
-                const select = document.getElementById('taskSubject');
-                select.innerHTML = subjects.map(s => `<option value="${s}">${s}</option>`).join('');
-            }
-
-            // Subjects Management
-            function renderSubjects() {
-                const list = document.getElementById('subjectsList');
-                list.innerHTML = subjects.map((s, i) => `
-                    <li style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:0.5rem 1rem; border-radius:8px;">
-                        <span>${s}</span> 
-                        <button class="btn btn-del-subject" data-index="${i}" style="background:var(--urgent); padding:0.25rem 0.5rem; font-size:0.75rem;">Eliminar</button>
-                    </li>
-                `).join('');
-            }
-
-            document.getElementById('btnAddSubject').addEventListener('click', function() {
-                const input = document.getElementById('newSubject');
-                if (input.value.trim()) {
-                    subjects.push(input.value.trim());
-                    setData('app_subjects', subjects);
-                    input.value = '';
-                    renderSubjects();
-                }
-            });
-
-            document.getElementById('subjectsList').addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-del-subject');
-                if (btn) {
-                    const idx = btn.getAttribute('data-index');
-                    subjects.splice(idx, 1);
-                    setData('app_subjects', subjects);
-                    renderSubjects();
-                }
-            });
-
-            // Calendar
-            function renderCalendar() {
-                const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                document.getElementById('calMonthTitle').innerText = `${monthNames[currentMonth]} ${currentYear}`;
-                
-                const daysContainer = document.getElementById('calendarDays');
-                daysContainer.innerHTML = '';
-
-                const firstDayIndex = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
-                const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-
-                for (let i = 0; i < firstDayIndex; i++) {
-                    daysContainer.innerHTML += `<div></div>`;
-                }
-
-                for (let day = 1; day <= totalDays; day++) {
-                    const formattedMonth = String(currentMonth + 1).padStart(2, '0');
-                    const formattedDay = String(day).padStart(2, '0');
-                    const dateStr = `${currentYear}-${formattedMonth}-${formattedDay}`;
-                    
-                    const dayTasks = tasks.filter(t => t.dueDate === dateStr);
-                    const hasClass = dayTasks.length > 0 ? 'has-tasks' : '';
-
-                    daysContainer.innerHTML += `
-                        <div class="cal-day ${hasClass}" data-date="${dateStr}">
-                            <span>${day}</span>
-                        </div>
-                    `;
-                }
-            }
-
-            document.getElementById('btnPrevMonth').addEventListener('click', () => {
-                currentMonth--;
-                if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-                renderCalendar();
-            });
-
-            document.getElementById('btnNextMonth').addEventListener('click', () => {
-                currentMonth++;
-                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-                renderCalendar();
-            });
-
-            document.getElementById('calendarDays').addEventListener('click', function(e) {
-                const dayEl = e.target.closest('.cal-day');
-                if (dayEl) {
-                    const dateStr = dayEl.getAttribute('data-date');
-                    if (dateStr) showDayTasks(dateStr);
-                }
-            });
-
-            function showDayTasks(dateStr) {
-                const dayTasks = tasks.filter(t => t.dueDate === dateStr);
-                const container = document.getElementById('dayTasks');
-                if (dayTasks.length === 0) {
-                    container.innerHTML = `<p style="color:var(--text-muted); font-size:0.9rem;">No hay tareas para el ${dateStr}.</p>`;
-                    return;
-                }
-                container.innerHTML = `<strong>Tareas para el ${dateStr}:</strong>` + dayTasks.map(t => `
-                    <div style="background:#f8fafc; padding:0.5rem; border-radius:6px; margin-top:0.4rem; font-size:0.9rem;">
-                        📌 ${t.title} (${t.subject}) - <span style="text-transform:uppercase; font-size:0.8rem; font-weight:600;">${t.priority}</span>
-                    </div>
-                `).join('');
-            }
-
-            // Backup Controls
-            document.getElementById('btnExport').addEventListener('click', function() {
-                const data = JSON.stringify({ tasks, subjects }, null, 2);
-                const blob = new Blob([data], { type: 'application/json' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = 'backup-ordenando-mis-actividades.json';
-                a.click();
-            });
-
-            document.getElementById('btnImportTrigger').addEventListener('click', () => {
-                document.getElementById('importFile').click();
-            });
-
-            document.getElementById('importFile').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function(evt) {
-                    try {
-                        const parsed = JSON.parse(evt.target.result);
-                        if (parsed.tasks && parsed.subjects) {
-                            tasks = parsed.tasks;
-                            subjects = parsed.subjects;
-                            setData('app_tasks', tasks);
-                            setData('app_subjects', subjects);
-                            alert('🟢 Datos restaurados con éxito.');
-                            navigateTo('inicio');
-                        }
-                    } catch(err) {
-                        alert('🔴 Archivo JSON inválido.');
-                    }
-                };
-                reader.readAsText(file);
-            });
-
-            document.getElementById('btnTestStorage').addEventListener('click', function() {
-                try {
-                    localStorage.setItem('test', 'ok');
-                    localStorage.removeItem('test');
-                    document.getElementById('status-box').innerHTML = '<span style="color:var(--normal)">🟢 El almacenamiento local está operando al 100%.</span>';
-                } catch (e) {
-                    document.getElementById('status-box').innerHTML = '<span style="color:var(--urgent)">🔴 Almacenamiento local restringido (Modo Volátil Activo).</span>';
-                }
-            });
-
-            // Initial Execution
-            renderAlerts();
-        })();
-    </script>
-</body>
-</html>
+                <h3 id="calMonthTitle" style="font-size:1.1rem;
