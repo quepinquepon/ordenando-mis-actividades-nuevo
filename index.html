@@ -6,7 +6,6 @@
     <title>📚 Ordenando mis Actividades | Premium Edition</title>
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
-    <!-- Google Fonts: Outfit para un look moderno y limpio -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
@@ -20,6 +19,7 @@
             --normal: #10b981;
             --important: #f59e0b;
             --urgent: #ef4444;
+            --border: #e2e8f0;
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
             --radius: 16px;
         }
@@ -37,16 +37,16 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 20px;
+            padding: 1.5rem;
         }
 
         header {
             text-align: center;
-            padding: 2.5rem 1rem;
+            padding: 2rem;
             background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             position: relative;
             overflow: hidden;
         }
@@ -62,44 +62,106 @@
         }
 
         header h1 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--text-main);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
         }
 
         header p {
             color: var(--text-muted);
-            font-size: 1.1rem;
+            font-size: 1rem;
+        }
+
+        .hero-banner {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1.5rem;
+            align-items: center;
+            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-banner img {
+            width: 100%;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .tabs-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
         }
 
         main {
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
-            display: grid;
-            gap: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
             flex: 1;
         }
 
         section {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 2rem;
+            padding: 1.75rem;
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
         }
 
-        section:hover {
-            transform: translateY(-2px);
-        }
+        .hidden { display: none !important; }
 
         h2 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .form-group {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
         }
 
         .btn {
@@ -110,47 +172,35 @@
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
-        }
-
-        .btn:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Banner de Inspiración */
-        .hero-banner {
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 1.5rem;
+            transition: background 0.2s;
+            display: inline-flex;
             align-items: center;
-            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        .hero-banner img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 10px;
+        .btn:hover { background: var(--primary-hover); }
+
+        .task-card {
+            background: #f8fafc;
+            border-left: 5px solid var(--normal);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
+        .task-card.urgente { border-left-color: var(--urgent); }
+        .task-card.importante { border-left-color: var(--important); }
+        .task-card.completed { opacity: 0.6; text-decoration: line-through; }
 
         footer {
             text-align: center;
             padding: 2rem;
             color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        @media(max-width: 768px) {
-            .hero-banner {
-                grid-template-columns: 1fr;
-            }
+            font-size: 0.85rem;
         }
     </style>
 </head>
@@ -158,41 +208,77 @@
 
     <header>
         <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-        <p>Tu espacio de estudio potenciado. Diseñado para rendir al máximo.</p>
+        <p>Tu espacio de estudio potenciado &bull; Versión Premium</p>
     </header>
 
     <main>
-        <!-- Banner Motivacional -->
         <div class="hero-banner">
-            <img src="https://images.unsplash.com/photo-1654356709115-3f68998bead4?auto=format&fit=crop&fm=jpg&q=80&w=1800" alt="Rincón de estudio">
+            <img src="https://images.unsplash.com/photo-1654356709115-3f68998bead4?auto=format&fit=crop&fm=jpg&q=80&w=600" alt="Estudio">
             <div>
-                <p style="font-style: italic; font-weight: 600; margin-bottom: 0.5rem;">“Cada pequeño paso te acerca a tu meta.”</p>
-                <span style="color: var(--text-muted); font-size: 0.95rem;">Organizá tu tiempo, sé constante y alcanzá tus objetivos.</span>
+                <p style="font-weight: 600;">“Cada pequeño paso te acerca a tu meta.”</p>
+                <span style="color: var(--text-muted); font-size: 0.9rem;">Organizá tu tiempo, sé constante y alcanzá tus objetivos.</span>
             </div>
         </div>
 
-        <!-- Sección de Control Principal -->
-        <section>
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('inicio')">🏠 Inicio</button>
+            <button class="tab-btn" onclick="switchTab('tareas')">📋 Tareas</button>
+            <button class="tab-btn" onclick="switchTab('agregar')">➕ Nueva Tarea</button>
+            <button class="tab-btn" onclick="switchTab('materias')">📚 Materias</button>
+            <button class="tab-btn" onclick="switchTab('backup')">🛟 Copia de Seguridad</button>
+        </nav>
+
+        <!-- SECCIÓN: INICIO -->
+        <section id="tab-inicio">
             <h2>✨ Estado del Sistema Premium</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Todas las rutinas y respaldos de tareas operan de forma segura en tu navegador.</p>
-            <button class="btn" onclick="verificarEstado()">Validar Almacenamiento Local</button>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Todas las funciones locales están activas y sincronizadas en tu navegador.</p>
+            <button class="btn" onclick="testStorage()">Validar Almacenamiento Local</button>
+            <div id="status-box" style="margin-top:1rem; font-weight:600;"></div>
         </section>
-    </main>
 
-    <footer>
-        Versión Premium Optimizada &bull; Tus datos se guardan de forma segura en este dispositivo.
-    </footer>
+        <!-- SECCIÓN: LISTA DE TAREAS -->
+        <section id="tab-tareas" class="hidden">
+            <h2>📋 Mis Tareas Guardadas</h2>
+            <div id="taskList">Cargando tareas...</div>
+        </section>
 
-    <script>
-        function verificarEstado() {
-            try {
-                localStorage.setItem('test_storage', 'ok');
-                localStorage.removeItem('test_storage');
-                alert('🟢 ¡El sistema de almacenamiento local (LocalStorage) funciona perfectamente!');
-            } catch (e) {
-                alert('🔴 Error: El almacenamiento local está bloqueado o deshabilitado.');
-            }
-        }
-    </script>
-</body>
-</html>
+        <!-- SECCIÓN: AGREGAR TAREA -->
+        <section id="tab-agregar" class="hidden">
+            <h2>➕ Agregar Nueva Tarea</h2>
+            <form id="taskForm" onsubmit="saveTask(event)">
+                <div class="form-group">
+                    <label>Título de la Tarea</label>
+                    <input type="text" id="taskTitle" required placeholder="Ej: TP N° 2 de Matemática">
+                </div>
+                <div class="form-group">
+                    <label>Materia</label>
+                    <select id="taskSubject"></select>
+                </div>
+                <div class="form-group">
+                    <label>Prioridad</label>
+                    <select id="taskPriority">
+                        <option value="normal">🟢 Normal</option>
+                        <option value="importante">🟡 Importante</option>
+                        <option value="urgente">🔴 Urgente</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Guardar Tarea</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN: MATERIAS -->
+        <section id="tab-materias" class="hidden">
+            <h2>📚 Administrar Materias</h2>
+            <div class="form-group">
+                <input type="text" id="newSubject" placeholder="Nueva Materia (Ej: Historia)">
+                <button class="btn" onclick="addSubject()">Agregar Materia</button>
+            </div>
+            <ul id="subjectsList" style="margin-top: 1rem; padding-left: 1.2rem;"></ul>
+        </section>
+
+        <!-- SECCIÓN: BACKUP -->
+        <section id="tab-backup" class="hidden">
+            <h2>🛟 Copia de Seguridad</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Guardá o recuperá tus tareas en un archivo `.json` de respaldo.</p>
+            <div style="display:flex; gap: 1rem;">
+                <button class="btn" onclick="exportData()">⬇️
