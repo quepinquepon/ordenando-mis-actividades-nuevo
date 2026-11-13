@@ -27,6 +27,7 @@
             --border: #cbd5e1;
             --radius: 12px;
             --whatsapp: #25d366;
+            --mp: #009ee3;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
@@ -121,8 +122,7 @@
         .btn:hover { background: var(--primary-hover); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .btn-wa {
-            background: var(--whatsapp);
+        .btn-wa, .btn-mp {
             color: white;
             text-decoration: none;
             display: inline-flex;
@@ -139,7 +139,33 @@
             cursor: pointer;
             font-size: 0.95rem;
         }
+        .btn-wa { background: var(--whatsapp); }
         .btn-wa:hover { background: #1ebc57; }
+        .btn-mp { background: var(--mp); }
+        .btn-mp:hover { background: #0087c4; }
+
+        .alias-box {
+            background: #ffffff;
+            border: 1px dashed #059669;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 0.6rem 0;
+            font-size: 0.9rem;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            margin-bottom: 0.3rem;
+        }
 
         .task-card {
             background: #f8fafc;
@@ -175,6 +201,15 @@
         }
         .upgrade-banner h3 { color: var(--primary); margin-bottom: 0.25rem; font-size: 1.1rem; }
         .upgrade-banner p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+        .payment-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            text-align: left;
+        }
 
         /* Calendario */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 0.5rem; }
@@ -309,12 +344,41 @@
             <h2>⭐ Pasate a la Versión Pro</h2>
             <div id="proPromoBox" class="upgrade-banner" style="background:#f0fdf4; border-color:var(--whatsapp); margin-bottom:1.5rem;">
                 <h3 style="color:#065f46;">🚀 Licencia Personalizada de por Vida</h3>
-                <p>1. Escribí tu Email o Nombre abajo.<br>2. Tocá el botón de WhatsApp para pedir tu clave única.</p>
+                <p>Pago único. Sin abonos mensuales. Tareas ilimitadas para siempre.</p>
                 
-                <input type="text" id="buyerIdInput" placeholder="Tu Email o Nombre completo" style="margin: 0.5rem 0;">
-                <button type="button" class="btn-wa" id="btnRequestWa">
-                    💬 Pedir mi Clave por WhatsApp
-                </button>
+                <div style="text-align:left; margin-top:0.75rem;">
+                    <label style="font-size:0.85rem; font-weight:700;">Paso 1: Ingresá tu Email o Nombre completo</label>
+                    <input type="text" id="buyerIdInput" placeholder="Ej: maria.gomez@gmail.com" style="margin-top:0.3rem;">
+                </div>
+
+                <!-- OPCIÓN A: TRANSFERENCIA CON 5% OFF -->
+                <div class="payment-card" style="border-color: #10b981; background: #ecfdf5;">
+                    <span class="price-tag">🔥 5% OFF PAGANDO POR TRANSFERENCIA</span>
+                    <div style="font-size:1.1rem; font-weight:800; color:#065f46;">$3.800 ARS <span style="text-decoration:line-through; color:var(--text-muted); font-size:0.85rem; font-weight:400;">$4.000</span></div>
+                    <div class="alias-box">
+                        <span>Alias: <strong id="aliasText">quepin.quepon</strong></span>
+                        <button type="button" class="btn" id="btnCopyAlias" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:#059669;">📋 Copiar</button>
+                    </div>
+                    <button type="button" class="btn-wa" id="btnRequestWaTransfer">
+                        💬 Enviar Comprobante por WhatsApp
+                    </button>
+                </div>
+
+                <!-- OPCIÓN B: MERCADO PAGO -->
+                <div class="payment-card">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--mp);">💳 Tarjeta o Dinero en Cuenta</div>
+                    <div style="font-size:1.05rem; font-weight:800; color:var(--text); margin:0.2rem 0;">$4.000 ARS</div>
+                    <a href="https://mpago.la/2AicaUy" target="_blank" class="btn-mp" id="btnPayMp">
+                        💳 Pagar con Mercado Pago
+                    </a>
+                    <button type="button" class="btn" id="btnRequestWaMp" style="width:100%; margin-top:0.4rem; background:var(--text-muted); font-size:0.8rem;">
+                        ✅ Ya pagué por Mercado Pago (Pedir Clave)
+                    </button>
+                </div>
+
+                <p style="font-size:0.78rem; color:var(--text-muted); margin-top:0.75rem;">
+                    ⏳ <em>Nota: Una vez enviado tu comprobante por WhatsApp, verificamos el pago y te enviamos tu clave personal a la brevedad.</em>
+                </p>
             </div>
 
             <div id="proActivateBox" class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
@@ -339,7 +403,7 @@
     <script>
         // CONFIGURACIÓN DE LICENCIAS Y WHATSAPP
         const SECRET_SALT = "ACTIVIDADES_PRO_2026_CORDOBA";
-        const WA_NUMBER = "5493584831449"; // <-- REEMPLAZÁ CON TU NÚMERO DE WHATSAPP
+        const WA_NUMBER = "549XXXXXXXXX"; // <-- REEMPLAZÁ CON TU NÚMERO DE WHATSAPP
 
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
@@ -520,16 +584,50 @@
             renderSubjects();
         };
 
-        // Pedir clave personalizada por WhatsApp
-        document.getElementById('btnRequestWa').addEventListener('click', () => {
+        // Copiar Alias al portapapeles
+        document.getElementById('btnCopyAlias').addEventListener('click', () => {
+            navigator.clipboard.writeText('quepin.quepon').then(() => {
+                const btn = document.getElementById('btnCopyAlias');
+                btn.innerText = '✅ ¡Copiado!';
+                setTimeout(() => btn.innerText = '📋 Copiar', 2000);
+            });
+        });
+
+        // Enviar comprobante por Transferencia (5% OFF)
+        document.getElementById('btnRequestWaTransfer').addEventListener('click', () => {
             const buyerId = document.getElementById('buyerIdInput').value.trim();
             if (!buyerId) {
-                alert('Por favor, escribí primero tu Email o Nombre para generar tu licencia personal.');
+                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1.');
                 return;
             }
             savedBuyerId = buyerId;
             localStorage.setItem('app_buyer_id', buyerId);
-            const msg = encodeURIComponent(`Hola! Quiero comprar la licencia Pro de Ordenando mis Actividades.\nMi identificador es: ${buyerId}`);
+            const msg = encodeURIComponent(`Hola! Hice una transferencia de $3.800 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
+            window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+        });
+
+        // Guardar identificador antes de ir a Mercado Pago
+        document.getElementById('btnPayMp').addEventListener('click', (e) => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim();
+            if (!buyerId) {
+                e.preventDefault();
+                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1 antes de ir a pagar.');
+                return;
+            }
+            savedBuyerId = buyerId;
+            localStorage.setItem('app_buyer_id', buyerId);
+        });
+
+        // Avisar pago por Mercado Pago
+        document.getElementById('btnRequestWaMp').addEventListener('click', () => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim() || savedBuyerId;
+            if (!buyerId) {
+                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1.');
+                return;
+            }
+            savedBuyerId = buyerId;
+            localStorage.setItem('app_buyer_id', buyerId);
+            const msg = encodeURIComponent(`Hola! Ya pagué los $4.000 por Mercado Pago para la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}`);
             window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
         });
 
@@ -539,7 +637,7 @@
             const code = document.getElementById('licenseInput').value.trim().toUpperCase();
 
             if (!buyerId) {
-                alert('⚠️ Ingresá primero tu Email o Nombre en el campo de arriba.');
+                alert('⚠️ Ingresá primero tu Email o Nombre en el Paso 1.');
                 return;
             }
 
