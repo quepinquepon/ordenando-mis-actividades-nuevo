@@ -116,23 +116,38 @@
         }
         .alert-box.success { background: #f0fdf4; border-color: var(--normal); }
 
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 0.5rem; }
+        /* Estilos del Calendario Mejorados */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 0.5rem; }
         .cal-header { text-align: center; font-weight: 700; color: var(--text-muted); font-size: 0.8rem; }
         .cal-day {
-            min-height: 45px;
+            min-height: 55px;
             background: #f8fafc;
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 6px;
             font-size: 0.9rem;
             cursor: pointer;
+            position: relative;
         }
+        .cal-day:hover { background: #e0e7ff; border-color: var(--primary); }
         .cal-day.today { border: 2px dashed var(--primary); }
         .cal-day.selected { background: var(--primary); color: #fff; }
-        .cal-badge { width: 8px; height: 8px; border-radius: 50%; margin-top: 2px; }
+        .cal-day.selected span { color: #fff; }
+
+        /* Contenedor de múltiples puntos de prioridad en el día */
+        .cal-badges-container {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 4px;
+            max-width: 90%;
+        }
+        .cal-badge { width: 7px; height: 7px; border-radius: 50%; }
         .cal-badge.urgente { background: var(--urgent); }
         .cal-badge.importante { background: var(--important); }
         .cal-badge.normal { background: var(--normal); }
@@ -144,7 +159,7 @@
 
     <header>
         <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-        <p>Versión Ultra Liviana y Directa</p>
+        <p>Versión Pro Sincronizada</p>
     </header>
 
     <main>
@@ -227,7 +242,6 @@
     <footer>Tus datos se guardan en este dispositivo.</footer>
 
     <script>
-        // Sistema Base Confiable Sin Bloqueos
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
         let currentMonth = new Date().getMonth();
@@ -351,7 +365,7 @@
             renderSubjects();
         };
 
-        // Calendario
+        // Calendario con indicador de múltiples tareas por día
         function renderCalendar() {
             const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             document.getElementById('calMonthTitle').innerText = `${months[currentMonth]} ${currentYear}`;
@@ -370,18 +384,21 @@
                 const dStr = String(d).padStart(2, '0');
                 const dateStr = `${currentYear}-${mStr}-${dStr}`;
 
+                // Obtenemos todas las tareas pendientes para este día exacto
                 const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
-                let badge = '';
+                let badgesHtml = '';
+                
                 if (dayTasks.length > 0) {
-                    const urgent = dayTasks.some(t => t.priority === 'urgente');
-                    const imp = dayTasks.some(t => t.priority === 'importante');
-                    badge = `<div class="cal-badge ${urgent ? 'urgent' : (imp ? 'importante' : 'normal')}"></div>`;
+                    // Genera un punto indicador por cada tarea que tenga ese día
+                    badgesHtml = `<div class="cal-badges-container">` + dayTasks.map(t => `
+                        <div class="cal-badge ${t.priority}" title="${t.title} (${t.priority})"></div>
+                    `).join('') + `</div>`;
                 }
 
                 grid.innerHTML += `
                     <div class="cal-day ${dateStr === today ? 'today' : ''} ${dateStr === selectedDateStr ? 'selected' : ''}" onclick="selectDate('${dateStr}')">
                         <span>${d}</span>
-                        ${badge}
+                        ${badgesHtml}
                     </div>
                 `;
             }
@@ -408,7 +425,7 @@
             }
             box.innerHTML = `<strong>Tareas para el ${dateStr}:</strong>` + dayTasks.map(t => `
                 <div style="background:#f8fafc; padding:0.4rem; margin-top:0.3rem; border-radius:4px; border-left:3px solid var(--${t.priority})">
-                    📌 ${t.title} (${t.subject})
+                    📌 ${t.title} (${t.subject}) - <span style="text-transform:uppercase; font-size:0.75rem;">${t.priority}</span>
                 </div>
             `).join('');
         };
