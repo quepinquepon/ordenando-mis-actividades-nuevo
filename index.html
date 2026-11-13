@@ -224,4 +224,450 @@
 
     <main>
         <!-- Navegación -->
-        <nav class
+        <nav class="tabs-nav" id="navTabs">
+            <button class="tab-btn active" data-target="inicio">🏠 Inicio</button>
+            <button class="tab-btn" data-target="tareas">📋 Tareas</button>
+            <button class="tab-btn" data-target="agregar">➕ Nueva</button>
+            <button class="tab-btn" data-target="calendario">📅 Calendario</button>
+            <button class="tab-btn" data-target="materias">📚 Materias</button>
+            <button class="tab-btn" data-target="pro">⭐ Versión Pro</button>
+        </nav>
+
+        <!-- SECCIÓN INICIO -->
+        <section id="sec-inicio" class="pane">
+            <h2>📢 Alertas y Vencimientos</h2>
+            <div id="alertsContainer"></div>
+        </section>
+
+        <!-- SECCIÓN TAREAS -->
+        <section id="sec-tareas" class="pane hidden">
+            <h2>📋 Mis Tareas</h2>
+            <div id="taskList"></div>
+        </section>
+
+        <!-- SECCIÓN AGREGAR TAREA -->
+        <section id="sec-agregar" class="pane hidden">
+            <h2>➕ Agregar Tarea</h2>
+            <div id="demoWarning" class="upgrade-banner hidden">
+                <h3>⚠️ Límite de la Versión Demo</h3>
+                <p>Alcanzaste el límite de 5 tareas gratuitas. ¡Desbloqueá la Versión Pro ilimitada!</p>
+                <button type="button" class="btn-wa" onclick="document.querySelector('[data-target=\'pro\']').click()">⭐ Ir a Desbloquear Versión Pro</button>
+            </div>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="taskTitle" required placeholder="Ej: Estudiar Matemática">
+                </div>
+                <div class="form-group">
+                    <label>Materia</label>
+                    <select id="taskSubject"></select>
+                </div>
+                <div class="form-group">
+                    <label>Prioridad</label>
+                    <select id="taskPriority">
+                        <option value="normal">🟢 Normal</option>
+                        <option value="importante">🟡 Importante</option>
+                        <option value="urgente">🔴 Urgente</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Vencimiento</label>
+                    <input type="date" id="taskDueDate" required>
+                </div>
+                <button type="submit" class="btn" id="btnSubmitTask">Guardar Tarea</button>
+            </form>
+        </section>
+
+        <!-- SECCIÓN CALENDARIO -->
+        <section id="sec-calendario" class="pane hidden">
+            <h2>📅 Calendario</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.5rem;">
+                <button class="btn" id="prevMonth">◀</button>
+                <h3 id="calMonthTitle" style="font-size:1rem; text-transform:capitalize;"></h3>
+                <button class="btn" id="nextMonth">▶</button>
+            </div>
+            <div class="calendar-grid">
+                <div class="cal-header">L</div><div class="cal-header">M</div><div class="cal-header">X</div>
+                <div class="cal-header">J</div><div class="cal-header">V</div><div class="cal-header">S</div><div class="cal-header">D</div>
+            </div>
+            <div id="calendarDays" class="calendar-grid"></div>
+            <div id="dayTasks" style="margin-top: 1rem; font-size: 0.9rem;"></div>
+        </section>
+
+        <!-- SECCIÓN MATERIAS -->
+        <section id="sec-materias" class="pane hidden">
+            <h2>📚 Materias</h2>
+            <div class="form-group">
+                <input type="text" id="newSubjectInput" placeholder="Nombre de la materia">
+                <button class="btn" id="btnAddSubject">Agregar</button>
+            </div>
+            <ul id="subjectsList" style="list-style:none; display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;"></ul>
+        </section>
+
+        <!-- SECCIÓN VERSIÓN PRO / ACTIVACIÓN Y BACKUP -->
+        <section id="sec-pro" class="pane hidden">
+            <h2>⭐ Pasate a la Versión Pro</h2>
+            <div id="proPromoBox" class="upgrade-banner" style="background:#f0fdf4; border-color:var(--whatsapp); margin-bottom:1.5rem;">
+                <h3 style="color:#065f46;">🚀 Licencia Personalizada de por Vida</h3>
+                <p>1. Escribí tu Email o Nombre abajo.<br>2. Tocá el botón de WhatsApp para pedir tu clave única.</p>
+                
+                <input type="text" id="buyerIdInput" placeholder="Tu Email o Nombre completo" style="margin: 0.5rem 0;">
+                <button type="button" class="btn-wa" id="btnRequestWa">
+                    💬 Pedir mi Clave por WhatsApp
+                </button>
+            </div>
+
+            <div id="proActivateBox" class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <label><strong>¿Ya recibiste tu código único?</strong></label>
+                <input type="text" id="licenseInput" placeholder="Ej: PRO-8A4F-12">
+                <button type="button" class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Licencia</button>
+            </div>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <h2>🛟 Copia de Seguridad (Backup)</h2>
+                <div style="display:flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                    <button type="button" class="btn" id="btnExport">⬇️ Exportar JSON</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none">
+                    <button type="button" class="btn" id="btnImportTrigger" style="background: var(--text-muted);">📂 Importar JSON</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>Tus datos se guardan en este dispositivo.</footer>
+
+    <script>
+        // CONFIGURACIÓN DE LICENCIAS Y WHATSAPP
+        const SECRET_SALT = "ACTIVIDADES_PRO_2026_CORDOBA";
+        const WA_NUMBER = "5493584831449"; // <-- REEMPLAZÁ CON TU NÚMERO DE WHATSAPP
+
+        let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
+        let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
+        let isPro = localStorage.getItem('app_is_pro') === 'true';
+        let savedBuyerId = localStorage.getItem('app_buyer_id') || '';
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let selectedDateStr = null;
+
+        // Fórmula matemática idéntica al generador privado
+        function calcularCodigo(identificador) {
+            const clean = identificador.trim().toLowerCase();
+            const raw = clean + SECRET_SALT;
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                const char = raw.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            const codeNum = Math.abs(hash).toString(16).toUpperCase().padStart(6, '0');
+            return `PRO-${codeNum.slice(0, 4)}-${codeNum.slice(4, 8)}`;
+        }
+
+        // Actualizar interfaz según estado de licencia
+        function updateLicenseUI() {
+            const badge = document.getElementById('licenseBadge');
+            const demoWarning = document.getElementById('demoWarning');
+            const submitBtn = document.getElementById('btnSubmitTask');
+            const buyerInput = document.getElementById('buyerIdInput');
+
+            if (savedBuyerId && buyerInput) {
+                buyerInput.value = savedBuyerId;
+            }
+
+            if (isPro) {
+                badge.innerText = `⭐ Versión Pro (${savedBuyerId})`;
+                badge.classList.add('active-pro');
+                if (demoWarning) demoWarning.classList.add('hidden');
+                if (submitBtn) submitBtn.disabled = false;
+                document.getElementById('proPromoBox').innerHTML = `
+                    <h3 style="color:#065f46;">✅ ¡Tu Licencia Pro está Activa!</h3>
+                    <p>Registrada a nombre de: <strong>${savedBuyerId}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
+                `;
+                document.getElementById('proActivateBox').classList.add('hidden');
+            } else {
+                badge.innerText = "Versión Demo (Gratis)";
+                badge.classList.remove('active-pro');
+                if (tasks.length >= 5) {
+                    if (demoWarning) demoWarning.classList.remove('hidden');
+                    if (submitBtn) submitBtn.disabled = true;
+                } else {
+                    if (demoWarning) demoWarning.classList.add('hidden');
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            }
+        }
+
+        // Navegación por pestañas
+        document.getElementById('navTabs').addEventListener('click', e => {
+            const btn = e.target.closest('.tab-btn');
+            if (!btn) return;
+            const target = btn.getAttribute('data-target');
+            
+            document.querySelectorAll('.pane').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`sec-${target}`).classList.remove('hidden');
+            btn.classList.add('active');
+
+            if (target === 'inicio') renderAlerts();
+            if (target === 'tareas') renderTasks();
+            if (target === 'agregar') { populateSubjects(); updateLicenseUI(); }
+            if (target === 'calendario') renderCalendar();
+            if (target === 'materias') renderSubjects();
+            if (target === 'pro') updateLicenseUI();
+        });
+
+        // Alertas
+        function renderAlerts() {
+            const box = document.getElementById('alertsContainer');
+            const today = new Date().toISOString().split('T')[0];
+            const pending = tasks.filter(t => !t.completed && t.dueDate <= today);
+
+            if (pending.length === 0) {
+                box.innerHTML = `<div class="alert-box success">🟢 ¡Todo al día! No tenés pendientes urgentes para hoy.</div>`;
+                return;
+            }
+            box.innerHTML = pending.map(t => `
+                <div class="alert-box">
+                    <strong>🚨 VENCE HOY/ATRASADA: "${t.title}"</strong>
+                    <p style="margin-top:0.25rem;">Materia: ${t.subject} | Vencimiento: ${t.dueDate}</p>
+                </div>
+            `).join('');
+        }
+
+        // Tareas
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            if (tasks.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-muted)">No hay tareas guardadas.</p>';
+                return;
+            }
+            list.innerHTML = tasks.map((t, i) => `
+                <div class="task-card ${t.priority} ${t.completed ? 'completed' : ''}">
+                    <div>
+                        <strong>${t.title}</strong>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">${t.subject} — Vence: ${t.dueDate}</div>
+                    </div>
+                    <div style="display:flex; gap:0.3rem;">
+                        <button class="btn" onclick="toggleTask(${i})" style="padding:0.3rem 0.6rem; font-size:0.75rem;">${t.completed ? '↩️' : '✅'}</button>
+                        <button class="btn" onclick="deleteTask(${i})" style="background:var(--urgent); padding:0.3rem 0.6rem; font-size:0.75rem;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.toggleTask = function(i) {
+            tasks[i].completed = !tasks[i].completed;
+            localStorage.setItem('app_tasks', JSON.stringify(tasks));
+            renderTasks();
+        };
+
+        window.deleteTask = function(i) {
+            tasks.splice(i, 1);
+            localStorage.setItem('app_tasks', JSON.stringify(tasks));
+            renderTasks();
+            updateLicenseUI();
+        };
+
+        document.getElementById('taskForm').addEventListener('submit', e => {
+            e.preventDefault();
+            if (!isPro && tasks.length >= 5) {
+                alert('Llegaste al límite de la versión demo. ¡Pasate a Pro para guardar tareas ilimitadas!');
+                return;
+            }
+            tasks.push({
+                title: document.getElementById('taskTitle').value,
+                subject: document.getElementById('taskSubject').value,
+                priority: document.getElementById('taskPriority').value,
+                dueDate: document.getElementById('taskDueDate').value,
+                completed: false
+            });
+            localStorage.setItem('app_tasks', JSON.stringify(tasks));
+            e.target.reset();
+            alert('¡Tarea guardada!');
+            document.querySelector('[data-target="tareas"]').click();
+        });
+
+        function populateSubjects() {
+            const sel = document.getElementById('taskSubject');
+            sel.innerHTML = subjects.map(s => `<option value="${s}">${s}</option>`).join('');
+        }
+
+        // Materias
+        function renderSubjects() {
+            const list = document.getElementById('subjectsList');
+            list.innerHTML = subjects.map((s, i) => `
+                <li style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:0.4rem 0.8rem; border-radius:6px; font-size:0.9rem;">
+                    <span>${s}</span>
+                    <button class="btn" onclick="deleteSub(${i})" style="background:var(--urgent); padding:0.2rem 0.4rem; font-size:0.7rem;">X</button>
+                </li>
+            `).join('');
+        }
+
+        document.getElementById('btnAddSubject').addEventListener('click', () => {
+            const inp = document.getElementById('newSubjectInput');
+            if (inp.value.trim()) {
+                subjects.push(inp.value.trim());
+                localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                inp.value = '';
+                renderSubjects();
+            }
+        });
+
+        window.deleteSub = function(i) {
+            subjects.splice(i, 1);
+            localStorage.setItem('app_subjects', JSON.stringify(subjects));
+            renderSubjects();
+        };
+
+        // Pedir clave personalizada por WhatsApp
+        document.getElementById('btnRequestWa').addEventListener('click', () => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim();
+            if (!buyerId) {
+                alert('Por favor, escribí primero tu Email o Nombre para generar tu licencia personal.');
+                return;
+            }
+            savedBuyerId = buyerId;
+            localStorage.setItem('app_buyer_id', buyerId);
+            const msg = encodeURIComponent(`Hola! Quiero comprar la licencia Pro de Ordenando mis Actividades.\nMi identificador es: ${buyerId}`);
+            window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+        });
+
+        // Activación validando el identificador único
+        document.getElementById('btnActivate').addEventListener('click', () => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim() || savedBuyerId;
+            const code = document.getElementById('licenseInput').value.trim().toUpperCase();
+
+            if (!buyerId) {
+                alert('⚠️ Ingresá primero tu Email o Nombre en el campo de arriba.');
+                return;
+            }
+
+            if (code === calcularCodigo(buyerId)) {
+                localStorage.setItem('app_is_pro', 'true');
+                localStorage.setItem('app_buyer_id', buyerId);
+                isPro = true;
+                savedBuyerId = buyerId;
+                updateLicenseUI();
+                alert(`🎉 ¡Licencia activada a nombre de ${buyerId}!`);
+            } else {
+                alert('❌ El código no coincide con tu Email/Nombre. Verificá que estén escritos exactamente igual.');
+            }
+        });
+
+        // Calendario
+        function renderCalendar() {
+            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            document.getElementById('calMonthTitle').innerText = `${months[currentMonth]} ${currentYear}`;
+            
+            const grid = document.getElementById('calendarDays');
+            grid.innerHTML = '';
+
+            const firstDay = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
+            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const today = new Date().toISOString().split('T')[0];
+
+            for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
+
+            for (let d = 1; d <= totalDays; d++) {
+                const mStr = String(currentMonth + 1).padStart(2, '0');
+                const dStr = String(d).padStart(2, '0');
+                const dateStr = `${currentYear}-${mStr}-${dStr}`;
+
+                const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
+                let badgesHtml = '';
+                
+                if (dayTasks.length > 0) {
+                    badgesHtml = `<div class="cal-badges-container">` + dayTasks.map(t => `
+                        <div class="cal-badge ${t.priority}" title="${t.title} (${t.priority})"></div>
+                    `).join('') + `</div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="cal-day ${dateStr === today ? 'today' : ''} ${dateStr === selectedDateStr ? 'selected' : ''}" onclick="selectDate('${dateStr}')">
+                        <span>${d}</span>
+                        ${badgesHtml}
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        });
+
+        window.selectDate = function(dateStr) {
+            selectedDateStr = dateStr;
+            renderCalendar();
+            const dayTasks = tasks.filter(t => t.dueDate === dateStr);
+            const box = document.getElementById('dayTasks');
+            if (dayTasks.length === 0) {
+                box.innerHTML = `<strong>Día ${dateStr}:</strong> Sin tareas asignadas.`;
+                return;
+            }
+            box.innerHTML = `<strong>Tareas para el ${dateStr}:</strong>` + dayTasks.map(t => `
+                <div style="background:#f8fafc; padding:0.4rem; margin-top:0.3rem; border-radius:4px; border-left:3px solid var(--${t.priority})">
+                    📌 ${t.title} (${t.subject}) - <span style="text-transform:uppercase; font-size:0.75rem;">${t.priority}</span>
+                </div>
+            `).join('');
+        };
+
+        // Copia de Seguridad
+        document.getElementById('btnExport').addEventListener('click', () => {
+            const data = JSON.stringify({ tasks, subjects }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `respaldo-actividades-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        });
+
+        document.getElementById('btnImportTrigger').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        document.getElementById('importFile').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (Array.isArray(parsed.tasks) && Array.isArray(parsed.subjects)) {
+                        if (confirm('Esto reemplazará tus tareas y materias actuales. ¿Continuar?')) {
+                            tasks = parsed.tasks;
+                            subjects = parsed.subjects;
+                            localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                            localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                            alert('🟢 Copia restaurada con éxito.');
+                            location.reload();
+                        }
+                    } else {
+                        alert('🔴 El archivo no tiene el formato correcto.');
+                    }
+                } catch (err) {
+                    alert('🔴 Error al leer el archivo JSON.');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Carga inicial
+        renderAlerts();
+        updateLicenseUI();
+
+        // Registro de Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => {});
+            });
+        }
+    </script>
+</body>
+</html>
