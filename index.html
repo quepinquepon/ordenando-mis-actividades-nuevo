@@ -301,21 +301,22 @@
         </section>
 
         <!-- SECCIÓN VERSIÓN PRO / ACTIVACIÓN Y BACKUP -->
-        <section id="sec-pro" class="pane hidden">
+       <section id="sec-pro" class="pane hidden">
             <h2>⭐ Pasate a la Versión Pro</h2>
             <div class="upgrade-banner" style="background:#f0fdf4; border-color:var(--whatsapp); margin-bottom:1.5rem;">
-                <h3 style="color:#065f46;">🚀 Desbloqueá Todo el Poder de la App</h3>
-                <p>Tareas ilimitadas, calendario inteligente, respaldo de datos y soporte offline completo por un pago único.</p>
-                <!-- CAMBIÁ AQUÍ TU NÚMERO DE WHATSAPP (código de país + área + número sin espacios ni símbolos) -->
-                <a href="https://wa.me/549XXXXXXXXX?text=Hola!%20Quiero%20comprar%20la%20clave%20de%20activación%20para%20la%20App%20Ordenando%20mis%20Actividades." class="btn-wa" target="_blank">
-                    💬 Comprar Licencia por WhatsApp
-                </a>
+                <h3 style="color:#065f46;">🚀 Licencia Personalizada de por Vida</h3>
+                <p>1. Escribí tu Email o Nombre abajo.<br>2. Tocá el botón de WhatsApp para pedir tu clave única.</p>
+                
+                <input type="text" id="buyerIdInput" placeholder="Tu Email o Nombre completo" style="margin: 0.5rem 0;">
+                <button class="btn-wa" id="btnRequestWa" style="border:none; cursor:pointer; font-size:0.95rem;">
+                    💬 Pedir mi Clave por WhatsApp
+                </button>
             </div>
 
             <div class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <label><strong>¿Ya tenés tu código de activación?</strong></label>
-                <input type="text" id="licenseInput" placeholder="Ingresá tu código PRO aquí">
-                <button class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Versión Pro</button>
+                <label><strong>¿Ya recibiste tu código único?</strong></label>
+                <input type="text" id="licenseInput" placeholder="Ej: PRO-8A4F-12">
+                <button class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Licencia</button>
             </div>
 
             <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
@@ -327,50 +328,57 @@
                 </div>
             </div>
         </section>
-    </main>
-
-    <footer>Tus datos se guardan en este dispositivo.</footer>
 
     <script>
         // CÓDIGO SECRETO MAESTRO (Podés cambiarlo por el texto que quieras para darle a tus clientes)
-        const MASTER_LICENSE_KEY = "PRO-ACTIVO-2026";
+        const SECRET_SALT = "ACTIVIDADES_PRO_2026_CORDOBA";
+        const WA_NUMBER = "549XXXXXXXXX"; // <-- Poné tu número acá
 
-        let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
-        let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
-        let isPro = localStorage.getItem('app_is_pro') === 'true';
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
-        let selectedDateStr = null;
-
-        // Actualizar UI según licencia
-        function updateLicenseUI() {
-            const badge = document.getElementById('licenseBadge');
-            const demoWarning = document.getElementById('demoWarning');
-            const submitBtn = document.getElementById('btnSubmitTask');
-
-            // Enlace de WhatsApp dinámico para el aviso de límite
-            const waNumber = "549XXXXXXXXX"; // Reemplazá con tu número
-            const waUrl = `https://wa.me/${waNumber}?text=Hola!%20Llegué%20al%20límite%20demo%20y%20quiero%20comprar%20la%20versión%20Pro.`;
-            document.getElementById('waLinkLimit').href = waUrl;
-
-            if (isPro) {
-                badge.innerText = "⭐ Versión Pro Activada";
-                badge.classList.add('active-pro');
-                if (demoWarning) demoWarning.classList.add('hidden');
-                if (submitBtn) submitBtn.disabled = false;
-            } else {
-                badge.innerText = "Versión Demo (Gratis)";
-                badge.classList.remove('active-pro');
-                // Límite de 5 tareas en modo demo
-                if (tasks.length >= 5) {
-                    if (demoWarning) demoWarning.classList.remove('hidden');
-                    if (submitBtn) submitBtn.disabled = true;
-                } else {
-                    if (demoWarning) demoWarning.classList.add('hidden');
-                    if (submitBtn) submitBtn.disabled = false;
-                }
+        function calcularCodigo(identificador) {
+            const clean = identificador.trim().toLowerCase();
+            const raw = clean + SECRET_SALT;
+            let hash = 0;
+            for (let i = 0; i < raw.length; i++) {
+                const char = raw.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
             }
+            const codeNum = Math.abs(hash).toString(16).toUpperCase().padStart(6, '0');
+            return `PRO-${codeNum.slice(0, 4)}-${codeNum.slice(4, 8)}`;
         }
+
+        // Botón para pedir clave personalizada por WhatsApp
+        document.getElementById('btnRequestWa').addEventListener('click', () => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim();
+            if (!buyerId) {
+                alert('Por favor, escribí primero tu Email o Nombre para generar tu licencia personal.');
+                return;
+            }
+            localStorage.setItem('app_buyer_id', buyerId);
+            const msg = encodeURIComponent(`Hola! Quiero comprar la licencia Pro de Ordenando mis Actividades.\nMi identificador es: ${buyerId}`);
+            window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
+        });
+
+        // Activación validando el identificador del comprador
+        document.getElementById('btnActivate').addEventListener('click', () => {
+            const buyerId = document.getElementById('buyerIdInput').value.trim() || localStorage.getItem('app_buyer_id') || '';
+            const code = document.getElementById('licenseInput').value.trim().toUpperCase();
+
+            if (!buyerId) {
+                alert('⚠️ Ingresá primero tu Email o Nombre en el campo de arriba.');
+                return;
+            }
+
+            if (code === calcularCodigo(buyerId)) {
+                localStorage.setItem('app_is_pro', 'true');
+                localStorage.setItem('app_buyer_id', buyerId);
+                isPro = true;
+                updateLicenseUI();
+                alert(`🎉 ¡Licencia activada a nombre de ${buyerId}!`);
+            } else {
+                alert('❌ El código no coincide con tu Email/Nombre. Verificá que estén escritos exactamente igual.');
+            }
+        });
 
         // Pestañas
         document.getElementById('navTabs').addEventListener('click', e => {
