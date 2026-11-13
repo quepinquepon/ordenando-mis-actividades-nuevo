@@ -26,6 +26,7 @@
             --urgent: #ef4444;
             --border: #cbd5e1;
             --radius: 12px;
+            --whatsapp: #25d366;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
@@ -46,10 +47,27 @@
             border-radius: var(--radius);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 1rem;
+            position: relative;
         }
 
         header h1 { font-size: 1.5rem; color: var(--text); margin-bottom: 0.25rem; }
         header p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .badge-pro {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-top: 0.4rem;
+            text-transform: uppercase;
+        }
+        .badge-pro.active-pro {
+            background: #d1fae5;
+            color: #065f46;
+        }
 
         .tabs-nav {
             display: flex;
@@ -102,6 +120,23 @@
         }
         .btn:hover { background: var(--primary-hover); }
 
+        .btn-wa {
+            background: var(--whatsapp);
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            width: 100%;
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+        .btn-wa:hover { background: #1ebc57; }
+
         .task-card {
             background: #f8fafc;
             border-left: 4px solid var(--normal);
@@ -116,21 +151,26 @@
         .task-card.importante { border-left-color: var(--important); }
         .task-card.completed { opacity: 0.5; text-decoration: line-through; }
 
-        @keyframes pulseAlert {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.01); }
-            100% { transform: scale(1); }
-        }
-
         .alert-box {
             background: #fef2f2;
             border: 2px solid var(--urgent);
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 0.75rem;
-            animation: pulseAlert 2s infinite;
         }
-        .alert-box.success { background: #f0fdf4; border-color: var(--normal); animation: none; }
+        .alert-box.success { background: #f0fdf4; border-color: var(--normal); }
+
+        /* Banner de Venta / Upgrade */
+        .upgrade-banner {
+            background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+            border: 2px dashed var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .upgrade-banner h3 { color: var(--primary); margin-bottom: 0.25rem; font-size: 1.1rem; }
+        .upgrade-banner p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; }
 
         /* Calendario */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 0.5rem; }
@@ -174,7 +214,8 @@
 
     <header>
         <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-        <p>Versión Pro PWA</p>
+        <p>Tu organizador inteligente</p>
+        <div id="licenseBadge" class="badge-pro">Versión Demo (Gratis)</div>
     </header>
 
     <main>
@@ -185,7 +226,7 @@
             <button class="tab-btn" data-target="agregar">➕ Nueva</button>
             <button class="tab-btn" data-target="calendario">📅 Calendario</button>
             <button class="tab-btn" data-target="materias">📚 Materias</button>
-            <button class="tab-btn" data-target="backup">🛟 Respaldo</button>
+            <button class="tab-btn" data-target="pro">⭐ Versión Pro</button>
         </nav>
 
         <!-- SECCIÓN INICIO -->
@@ -203,6 +244,11 @@
         <!-- SECCIÓN AGREGAR TAREA -->
         <section id="sec-agregar" class="pane hidden">
             <h2>➕ Agregar Tarea</h2>
+            <div id="demoWarning" class="upgrade-banner hidden">
+                <h3>⚠️ Límite de la Versión Demo</h3>
+                <p>Alcanzaste el límite de 5 tareas gratuitas. ¡Desbloqueá la Versión Pro ilimitada!</p>
+                <a href="#" id="waLinkLimit" class="btn-wa" target="_blank">💬 Desbloquear por WhatsApp</a>
+            </div>
             <form id="taskForm">
                 <div class="form-group">
                     <label>Título</label>
@@ -224,7 +270,7 @@
                     <label>Vencimiento</label>
                     <input type="date" id="taskDueDate" required>
                 </div>
-                <button type="submit" class="btn">Guardar Tarea</button>
+                <button type="submit" class="btn" id="btnSubmitTask">Guardar Tarea</button>
             </form>
         </section>
 
@@ -254,16 +300,31 @@
             <ul id="subjectsList" style="list-style:none; display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;"></ul>
         </section>
 
-        <!-- SECCIÓN COPIA DE SEGURIDAD -->
-        <section id="sec-backup" class="pane hidden">
-            <h2>🛟 Copia de Seguridad</h2>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
-                Descargá un respaldo de tus tareas y materias o restaurá un archivo guardado previamente.
-            </p>
-            <div style="display:flex; gap: 0.5rem; flex-wrap: wrap;">
-                <button class="btn" id="btnExport">⬇️ Exportar Copia (.json)</button>
-                <input type="file" id="importFile" accept=".json" style="display:none">
-                <button class="btn" id="btnImportTrigger" style="background: var(--text-muted);">📂 Importar Copia</button>
+        <!-- SECCIÓN VERSIÓN PRO / ACTIVACIÓN Y BACKUP -->
+        <section id="sec-pro" class="pane hidden">
+            <h2>⭐ Pasate a la Versión Pro</h2>
+            <div class="upgrade-banner" style="background:#f0fdf4; border-color:var(--whatsapp); margin-bottom:1.5rem;">
+                <h3 style="color:#065f46;">🚀 Desbloqueá Todo el Poder de la App</h3>
+                <p>Tareas ilimitadas, calendario inteligente, respaldo de datos y soporte offline completo por un pago único.</p>
+                <!-- CAMBIÁ AQUÍ TU NÚMERO DE WHATSAPP (código de país + área + número sin espacios ni símbolos) -->
+                <a href="https://wa.me/549XXXXXXXXX?text=Hola!%20Quiero%20comprar%20la%20clave%20de%20activación%20para%20la%20App%20Ordenando%20mis%20Actividades." class="btn-wa" target="_blank">
+                    💬 Comprar Licencia por WhatsApp
+                </a>
+            </div>
+
+            <div class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <label><strong>¿Ya tenés tu código de activación?</strong></label>
+                <input type="text" id="licenseInput" placeholder="Ingresá tu código PRO aquí">
+                <button class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Versión Pro</button>
+            </div>
+
+            <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+                <h2>🛟 Copia de Seguridad (Backup)</h2>
+                <div style="display:flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                    <button class="btn" id="btnExport">⬇️ Exportar JSON</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none">
+                    <button class="btn" id="btnImportTrigger" style="background: var(--text-muted);">📂 Importar JSON</button>
+                </div>
             </div>
         </section>
     </main>
@@ -271,11 +332,45 @@
     <footer>Tus datos se guardan en este dispositivo.</footer>
 
     <script>
+        // CÓDIGO SECRETO MAESTRO (Podés cambiarlo por el texto que quieras para darle a tus clientes)
+        const MASTER_LICENSE_KEY = "PRO-ACTIVO-2026";
+
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
+        let isPro = localStorage.getItem('app_is_pro') === 'true';
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDateStr = null;
+
+        // Actualizar UI según licencia
+        function updateLicenseUI() {
+            const badge = document.getElementById('licenseBadge');
+            const demoWarning = document.getElementById('demoWarning');
+            const submitBtn = document.getElementById('btnSubmitTask');
+
+            // Enlace de WhatsApp dinámico para el aviso de límite
+            const waNumber = "549XXXXXXXXX"; // Reemplazá con tu número
+            const waUrl = `https://wa.me/${waNumber}?text=Hola!%20Llegué%20al%20límite%20demo%20y%20quiero%20comprar%20la%20versión%20Pro.`;
+            document.getElementById('waLinkLimit').href = waUrl;
+
+            if (isPro) {
+                badge.innerText = "⭐ Versión Pro Activada";
+                badge.classList.add('active-pro');
+                if (demoWarning) demoWarning.classList.add('hidden');
+                if (submitBtn) submitBtn.disabled = false;
+            } else {
+                badge.innerText = "Versión Demo (Gratis)";
+                badge.classList.remove('active-pro');
+                // Límite de 5 tareas en modo demo
+                if (tasks.length >= 5) {
+                    if (demoWarning) demoWarning.classList.remove('hidden');
+                    if (submitBtn) submitBtn.disabled = true;
+                } else {
+                    if (demoWarning) demoWarning.classList.add('hidden');
+                    if (submitBtn) submitBtn.disabled = false;
+                }
+            }
+        }
 
         // Pestañas
         document.getElementById('navTabs').addEventListener('click', e => {
@@ -291,7 +386,7 @@
 
             if (target === 'inicio') renderAlerts();
             if (target === 'tareas') renderTasks();
-            if (target === 'agregar') populateSubjects();
+            if (target === 'agregar') { populateSubjects(); updateLicenseUI(); }
             if (target === 'calendario') renderCalendar();
             if (target === 'materias') renderSubjects();
         });
@@ -345,10 +440,15 @@
             tasks.splice(i, 1);
             localStorage.setItem('app_tasks', JSON.stringify(tasks));
             renderTasks();
+            updateLicenseUI();
         };
 
         document.getElementById('taskForm').addEventListener('submit', e => {
             e.preventDefault();
+            if (!isPro && tasks.length >= 5) {
+                alert('Llegaste al límite de la versión demo. ¡Pasate a Pro para guardar tareas ilimitadas!');
+                return;
+            }
             tasks.push({
                 title: document.getElementById('taskTitle').value,
                 subject: document.getElementById('taskSubject').value,
@@ -393,6 +493,19 @@
             localStorage.setItem('app_subjects', JSON.stringify(subjects));
             renderSubjects();
         };
+
+        // Activación de Licencia Pro
+        document.getElementById('btnActivate').addEventListener('click', () => {
+            const code = document.getElementById('licenseInput').value.trim();
+            if (code === MASTER_LICENSE_KEY) {
+                localStorage.setItem('app_is_pro', 'true');
+                isPro = true;
+                updateLicenseUI();
+                alert('🎉 ¡Licencia Pro activada con éxito! Disfrutá de todas las funciones ilimitadas.');
+            } else {
+                alert('❌ Código incorrecto. Verificá el código que te enviamos por WhatsApp.');
+            }
+        });
 
         // Calendario
         function renderCalendar() {
@@ -457,7 +570,7 @@
             `).join('');
         };
 
-        // Copia de Seguridad (Exportar / Importar)
+        // Copia de Seguridad
         document.getElementById('btnExport').addEventListener('click', () => {
             const data = JSON.stringify({ tasks, subjects }, null, 2);
             const blob = new Blob([data], { type: 'application/json' });
@@ -479,7 +592,7 @@
                 try {
                     const parsed = JSON.parse(evt.target.result);
                     if (Array.isArray(parsed.tasks) && Array.isArray(parsed.subjects)) {
-                        if (confirm('Esto reemplazará tus tareas y materias actuales por las del archivo. ¿Continuar?')) {
+                        if (confirm('Esto reemplazará tus tareas y materias actuales. ¿Continuar?')) {
                             tasks = parsed.tasks;
                             subjects = parsed.subjects;
                             localStorage.setItem('app_tasks', JSON.stringify(tasks));
@@ -499,12 +612,12 @@
 
         // Carga inicial
         renderAlerts();
+        updateLicenseUI();
 
         // Registro de Service Worker para PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .catch(err => console.error('Error SW:', err));
+                navigator.serviceWorker.register('./sw.js').catch(err => {});
             });
         }
     </script>
