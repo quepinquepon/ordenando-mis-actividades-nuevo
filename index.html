@@ -354,7 +354,7 @@
                 <!-- OPCIÓN A: TRANSFERENCIA CON 5% OFF -->
                 <div class="payment-card" style="border-color: #10b981; background: #ecfdf5;">
                     <span class="price-tag">🔥 5% OFF PAGANDO POR TRANSFERENCIA</span>
-                    <div style="font-size:1.1rem; font-weight:800; color:#065f46;">$3.800 ARS <span style="text-decoration:line-through; color:var(--text-muted); font-size:0.85rem; font-weight:400;">$4.000</span></div>
+                    <div style="font-size:1.1rem; font-weight:800; color:#065f46;">$9.499 ARS <span style="text-decoration:line-through; color:var(--text-muted); font-size:0.85rem; font-weight:400;">$9.999</span></div>
                     <div class="alias-box">
                         <span>Alias: <strong id="aliasText">quepin.quepon</strong></span>
                         <button type="button" class="btn" id="btnCopyAlias" style="padding:0.3rem 0.6rem; font-size:0.75rem; background:#059669;">📋 Copiar</button>
@@ -366,23 +366,20 @@
 
                 <!-- OPCIÓN B: MERCADO PAGO -->
                 <div class="payment-card">
-                    <div style="font-size:0.85rem; font-weight:700; color:var(--mp);">💳 Tarjeta o Dinero en Cuenta</div>
-                    <div style="font-size:1.05rem; font-weight:800; color:var(--text); margin:0.2rem 0;">$4.000 ARS</div>
-                    <a href="https://mpago.la/2AicaUy" target="_blank" class="btn-mp" id="btnPayMp">
+                    <div style="font-size:0.85rem; font-weight:700; color:var(--mp);">💳 Tarjeta o Dinero en Cuenta (Activación Automática)</div>
+                    <div style="font-size:1.05rem; font-weight:800; color:var(--text); margin:0.2rem 0;">$9.999 ARS</div>
+                    <a href="https://mpago.la/1kjxFDd" target="_blank" class="btn-mp" id="btnPayMp">
                         💳 Pagar con Mercado Pago
                     </a>
-                    <button type="button" class="btn" id="btnRequestWaMp" style="width:100%; margin-top:0.4rem; background:var(--text-muted); font-size:0.8rem;">
-                        ✅ Ya pagué por Mercado Pago (Pedir Clave)
-                    </button>
                 </div>
 
                 <p style="font-size: 0.9rem; color: var(--text); background: #fef3c7; padding: 0.6rem; border-radius: 6px; margin-top: 0.75rem; border: 1px solid #f59e0b;">
-                    ⏳ <strong>Nota importante:</strong> Una vez enviado tu comprobante por WhatsApp, verificamos el pago y te enviamos tu clave personal a la brevedad.
+                    ⏳ <strong>Nota importante:</strong> Si pagás por transferencia, enviás tu comprobante y te enviamos tu clave a la brevedad. Si pagás por Mercado Pago, al volver a la app se activa automáticamente.
                 </p>
             </div>
 
             <div id="proActivateBox" class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <label><strong>¿Ya recibiste tu código único?</strong></label>
+                <label><strong>¿Ya tenés tu código único?</strong></label>
                 <input type="text" id="licenseInput" placeholder="Ej: PRO-8A4F-12">
                 <button type="button" class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Licencia</button>
             </div>
@@ -426,6 +423,21 @@
             const codeNum = Math.abs(hash).toString(16).toUpperCase().padStart(6, '0');
             return `PRO-${codeNum.slice(0, 4)}-${codeNum.slice(4, 8)}`;
         }
+
+        // Detectar retorno automático de Mercado Pago (ej: ?status=approved o ?collection_status=approved)
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mpStatus = urlParams.get('status') || urlParams.get('collection_status');
+            
+            if (mpStatus === 'approved' && savedBuyerId && !isPro) {
+                const autoCode = calcularCodigo(savedBuyerId);
+                localStorage.setItem('app_is_pro', 'true');
+                localStorage.setItem('app_buyer_id', savedBuyerId);
+                isPro = true;
+                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia activada automáticamente a nombre de ${savedBuyerId}.`);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
 
         // Actualizar interfaz según estado de licencia
         function updateLicenseUI() {
@@ -602,7 +614,7 @@
             }
             savedBuyerId = buyerId;
             localStorage.setItem('app_buyer_id', buyerId);
-            const msg = encodeURIComponent(`Hola! Hice una transferencia de $3.800 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
+            const msg = encodeURIComponent(`Hola! Hice una transferencia de $9.499 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
             window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
         });
 
@@ -616,19 +628,6 @@
             }
             savedBuyerId = buyerId;
             localStorage.setItem('app_buyer_id', buyerId);
-        });
-
-        // Avisar pago por Mercado Pago
-        document.getElementById('btnRequestWaMp').addEventListener('click', () => {
-            const buyerId = document.getElementById('buyerIdInput').value.trim() || savedBuyerId;
-            if (!buyerId) {
-                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1.');
-                return;
-            }
-            savedBuyerId = buyerId;
-            localStorage.setItem('app_buyer_id', buyerId);
-            const msg = encodeURIComponent(`Hola! Ya pagué los $4.000 por Mercado Pago para la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}`);
-            window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
         });
 
         // Activación validando el identificador único
