@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📚 Ordenando mis Actividades</title>
+    
+    <!-- Configuración PWA -->
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/svg+xml" href="./icon-192.svg">
     <link rel="apple-touch-icon" href="./icon-192.svg">
     <meta name="theme-color" content="#4f46e5">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <style>
         :root {
             --primary: #4f46e5;
@@ -113,16 +116,23 @@
         .task-card.importante { border-left-color: var(--important); }
         .task-card.completed { opacity: 0.5; text-decoration: line-through; }
 
+        @keyframes pulseAlert {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+
         .alert-box {
             background: #fef2f2;
             border: 2px solid var(--urgent);
             padding: 1rem;
             border-radius: 8px;
             margin-bottom: 0.75rem;
+            animation: pulseAlert 2s infinite;
         }
-        .alert-box.success { background: #f0fdf4; border-color: var(--normal); }
+        .alert-box.success { background: #f0fdf4; border-color: var(--normal); animation: none; }
 
-        /* Estilos del Calendario Mejorados */
+        /* Calendario */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 0.5rem; }
         .cal-header { text-align: center; font-weight: 700; color: var(--text-muted); font-size: 0.8rem; }
         .cal-day {
@@ -144,7 +154,6 @@
         .cal-day.selected { background: var(--primary); color: #fff; }
         .cal-day.selected span { color: #fff; }
 
-        /* Contenedor de múltiples puntos de prioridad en el día */
         .cal-badges-container {
             display: flex;
             gap: 3px;
@@ -165,7 +174,7 @@
 
     <header>
         <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-        <p>Versión Pro Sincronizada</p>
+        <p>Versión Pro PWA</p>
     </header>
 
     <main>
@@ -176,6 +185,7 @@
             <button class="tab-btn" data-target="agregar">➕ Nueva</button>
             <button class="tab-btn" data-target="calendario">📅 Calendario</button>
             <button class="tab-btn" data-target="materias">📚 Materias</button>
+            <button class="tab-btn" data-target="backup">🛟 Respaldo</button>
         </nav>
 
         <!-- SECCIÓN INICIO -->
@@ -243,6 +253,19 @@
             </div>
             <ul id="subjectsList" style="list-style:none; display:flex; flex-direction:column; gap:0.4rem; margin-top:0.5rem;"></ul>
         </section>
+
+        <!-- SECCIÓN COPIA DE SEGURIDAD -->
+        <section id="sec-backup" class="pane hidden">
+            <h2>🛟 Copia de Seguridad</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                Descargá un respaldo de tus tareas y materias o restaurá un archivo guardado previamente.
+            </p>
+            <div style="display:flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="btn" id="btnExport">⬇️ Exportar Copia (.json)</button>
+                <input type="file" id="importFile" accept=".json" style="display:none">
+                <button class="btn" id="btnImportTrigger" style="background: var(--text-muted);">📂 Importar Copia</button>
+            </div>
+        </section>
     </main>
 
     <footer>Tus datos se guardan en este dispositivo.</footer>
@@ -286,7 +309,7 @@
             box.innerHTML = pending.map(t => `
                 <div class="alert-box">
                     <strong>🚨 VENCE HOY/ATRASADA: "${t.title}"</strong>
-                    <p>Materia: ${t.subject} | Vencimiento: ${t.dueDate}</p>
+                    <p style="margin-top:0.25rem;">Materia: ${t.subject} | Vencimiento: ${t.dueDate}</p>
                 </div>
             `).join('');
         }
@@ -371,7 +394,7 @@
             renderSubjects();
         };
 
-        // Calendario con indicador de múltiples tareas por día
+        // Calendario
         function renderCalendar() {
             const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             document.getElementById('calMonthTitle').innerText = `${months[currentMonth]} ${currentYear}`;
@@ -390,12 +413,10 @@
                 const dStr = String(d).padStart(2, '0');
                 const dateStr = `${currentYear}-${mStr}-${dStr}`;
 
-                // Obtenemos todas las tareas pendientes para este día exacto
                 const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
                 let badgesHtml = '';
                 
                 if (dayTasks.length > 0) {
-                    // Genera un punto indicador por cada tarea que tenga ese día
                     badgesHtml = `<div class="cal-badges-container">` + dayTasks.map(t => `
                         <div class="cal-badge ${t.priority}" title="${t.title} (${t.priority})"></div>
                     `).join('') + `</div>`;
@@ -436,8 +457,56 @@
             `).join('');
         };
 
+        // Copia de Seguridad (Exportar / Importar)
+        document.getElementById('btnExport').addEventListener('click', () => {
+            const data = JSON.stringify({ tasks, subjects }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `respaldo-actividades-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+        });
+
+        document.getElementById('btnImportTrigger').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        document.getElementById('importFile').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (Array.isArray(parsed.tasks) && Array.isArray(parsed.subjects)) {
+                        if (confirm('Esto reemplazará tus tareas y materias actuales por las del archivo. ¿Continuar?')) {
+                            tasks = parsed.tasks;
+                            subjects = parsed.subjects;
+                            localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                            localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                            alert('🟢 Copia restaurada con éxito.');
+                            location.reload();
+                        }
+                    } else {
+                        alert('🔴 El archivo no tiene el formato correcto.');
+                    }
+                } catch (err) {
+                    alert('🔴 Error al leer el archivo JSON.');
+                }
+            };
+            reader.readAsText(file);
+        });
+
         // Carga inicial
         renderAlerts();
+
+        // Registro de Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .catch(err => console.error('Error SW:', err));
+            });
+        }
     </script>
 </body>
 </html>
