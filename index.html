@@ -399,7 +399,34 @@
     </main>
 
     <footer>Tus datos se guardan en este dispositivo.</footer>
+// Registro y actualización automática del Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    // Busca actualizaciones cada vez que el usuario abre la app
+                    reg.update();
 
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Recarga automáticamente la app para aplicar el nuevo diseño
+                                window.location.reload();
+                            }
+                        });
+                    });
+                });
+            });
+
+            // Asegura que al cambiar el controlador se refresque la vista
+            let refreshing = false;
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                if (!refreshing) {
+                    refreshing = true;
+                    window.location.reload();
+                }
+            });
+        }
     <script>
         // CONFIGURACIÓN DE LICENCIAS Y WHATSAPP
         const SECRET_SALT = "ACTIVIDADES_PRO_2026_CORDOBA";
