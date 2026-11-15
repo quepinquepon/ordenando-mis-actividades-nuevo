@@ -22,7 +22,7 @@ header{background:#5546d8;color:white;padding:22px 18px;text-align:center}
 header h1{margin:0;font-size:24px}
 header p{margin:8px 0 0}
 
-/* MENÚ CENTRADO Y CÓMODO PARA CELULAR Y COMPUTADORA */
+/* MENÚ CENTRADO Y CÓMODO */
 nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:12px;background:white;text-align:center}
 nav button{border:0;border-radius:10px;padding:10px 14px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:14px;cursor:pointer}
 nav button.active{background:#5546d8;color:white}
@@ -241,7 +241,14 @@ function borrarMateria(nombre){
   actualizarMateriasFiltro();
 }
 let tareaEditando=null;
-function guardar(){localStorage.setItem(clave,JSON.stringify(tareas));actualizar()}
+function guardar(){
+  try {
+    localStorage.setItem(clave,JSON.stringify(tareas));
+  } catch(e) {
+    alert("No se pudo guardar en la memoria del celular.");
+  }
+  actualizar();
+}
 function exportarCopia(){
   const copia={formato:"ordenando-mis-actividades",version:1,tareas:tareas,materiasPersonalizadas:materiasPersonalizadas};
   const archivo=new Blob([JSON.stringify(copia,null,2)],{type:"application/json"});
@@ -275,9 +282,9 @@ return `<div class="task ${t.prioridad}">
 <small>${escapar(t.materia||"General")} · ${fechaTexto(t.fecha)}</small>
 ${t.detalle?`<p>${escapar(t.detalle)}</p>`:""}
 <small>${vencida?"⚠️ Vencida":t.prioridad==="urgente"?"🔴 Urgente":t.prioridad==="importante"?"🟡 Importante":"🟢 Normal"}</small>
-<button onclick="cambiarEstado('${t.id}')">${t.hecha?'↩️ Pendiente':'✓ Completar'}</button>
-<button onclick="editarTarea('${t.id}')">✏️ Editar</button>
-<button onclick="eliminar('${t.id}')">🗑 Eliminar</button>
+<button type="button" onclick="cambiarEstado('${t.id}')">${t.hecha?'↩️ Pendiente':'✓ Completar'}</button>
+<button type="button" onclick="editarTarea('${t.id}')">✏️ Editar</button>
+<button type="button" onclick="eliminar('${t.id}')">🗑 Eliminar</button>
 </div>`;
 }
 function escapar(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
@@ -332,26 +339,27 @@ function mostrar(tab){
 }
 
 $("formulario").addEventListener("submit",e=>{
-e.preventDefault();
-const materiaElegida=$("materia").value.trim();
-guardarMateriaNueva(materiaElegida);
-const datos={titulo:$("titulo").value.trim(),materia:materiaElegida,fecha:$("fecha").value,prioridad:$("prioridad").value,detalle:$("detalle").value.trim()};
-if(tareaEditando){
-  const existente=tareas.find(t=>t.id===tareaEditando);
-  if(existente)Object.assign(existente,datos);
-  cancelarEdicionTarea();
-}else{
-  tareas.push({id:Date.now().toString(),...datos,hecha:false});
-  e.target.reset();
-  $("fecha").value=new Date().toLocaleDateString("sv-SE");
-}
-guardar();
-mostrar("guardadas");
+  e.preventDefault(); // Frena la recarga de la página para que se guarde bien
+  const materiaElegida=$("materia").value.trim();
+  guardarMateriaNueva(materiaElegida);
+  const datos={titulo:$("titulo").value.trim(),materia:materiaElegida,fecha:$("fecha").value,prioridad:$("prioridad").value,detalle:$("detalle").value.trim()};
+  if(tareaEditando){
+    const existente=tareas.find(t=>t.id===tareaEditando);
+    if(existente)Object.assign(existente,datos);
+    cancelarEdicionTarea();
+  }else{
+    tareas.push({id:Date.now().toString(),...datos,hecha:false});
+    e.target.reset();
+    $("fecha").value=new Date().toLocaleDateString("sv-SE");
+  }
+  guardar();
+  mostrar("guardadas");
 });
+
 function editarTarea(id){
-const t=tareas.find(t=>t.id===id);if(!t)return;
-tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia||"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad||"normal";$("detalle").value=t.detalle||"";
-$("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrar("tareas");
+  const t=tareas.find(t=>t.id===id);if(!t)return;
+  tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia||"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad||"normal";$("detalle").value=t.detalle||"";
+  $("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrar("tareas");
 }
 function cancelarEdicionTarea(){tareaEditando=null;$("formulario").reset();$("tituloFormulario").textContent="➕ Agregar una tarea";$("guardarTarea").textContent="Guardar tarea";$("cancelarEdicion").classList.add("hidden");}
 function cambiarEstado(id){const t=tareas.find(t=>t.id===id);if(t){t.hecha=!t.hecha;guardar();}}
