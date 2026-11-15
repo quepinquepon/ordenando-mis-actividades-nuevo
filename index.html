@@ -17,35 +17,43 @@
 html{scroll-behavior:auto}
 .skip-link{position:absolute;top:-100px;left:12px;z-index:1000;padding:12px 16px;background:#fff;color:#252744;border:3px solid #5546d8;border-radius:8px;font-weight:bold}
 .skip-link:focus{top:12px}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f5fb;color:#252744}
+
+/* MODO CLARO (Por defecto) */
+:root{--bg:#f4f5fb;--panel:#fff;--text:#252744;--nav-bg:#fff;--nav-btn:#ecebff;--nav-text:#4034aa;--input-bg:#fff;--input-border:#ccc}
+/* MODO OSCURO */
+body.dark{--bg:#121218;--panel:#1e1e2d;--text:#e4e4eef0;--nav-bg:#181824;--nav-btn:#2a2a3c;--nav-text:#b8b8ff;--input-bg:#252538;--input-border:#444}
+
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);transition:background .2s,color .2s}
 header{background:#5546d8;color:white;padding:22px 18px;text-align:center}
 header h1{margin:0;font-size:24px}
 header p{margin:8px 0 0}
 
 /* MENÚ CENTRADO Y CÓMODO */
-nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:12px;background:white;text-align:center}
-nav button{border:0;border-radius:10px;padding:10px 12px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:13px;cursor:pointer}
+nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:12px;background:var(--nav-bg);text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+nav button{border:0;border-radius:10px;padding:10px 12px;background:var(--nav-btn);color:var(--nav-text);font-weight:bold;font-size:13px;cursor:pointer}
 nav button.active{background:#5546d8;color:white}
 
 main{max-width:850px;margin:auto;padding:16px}
-.panel{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #2221}
+.panel{background:var(--panel);border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #2221}
 h2{margin-top:0}
-input,select,textarea{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccc;border-radius:9px;font-size:16px}
+input,select,textarea{width:100%;padding:12px;margin:6px 0 12px;border:1px solid var(--input-border);border-radius:9px;font-size:16px;background:var(--input-bg);color:var(--text)}
 button.primary{background:#5546d8;color:white;border:0;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #174ea6;outline-offset:3px}
 button:disabled{cursor:not-allowed;opacity:.7}
+
 .notice{background:#fff0c9;border:4px solid #e53935;border-left:14px solid #e53935;padding:24px 22px;border-radius:16px;margin:0 0 20px;box-shadow:0 7px 22px #b71c1c35}
 .notice strong{display:block;font-size:24px;color:#a51d1d;margin-bottom:12px}
 .notice p{font-size:17px;font-weight:700;color:#29213a}
 .notice button{font-size:16px;padding:12px 18px;border:0;border-radius:10px;background:#b71c1c;color:#fff;font-weight:700;cursor:pointer}
-.task{padding:13px;margin:10px 0;border-radius:10px;background:#f5f5fa;border-left:7px solid #28a36a}
-.task.importante{border-color:#e7a000}
-.task.urgente{border-color:#e53935;background:#fff0f0}
-.task small{display:block;margin-top:7px;color:#555}
+
+.task{padding:13px;margin:10px 0;border-radius:10px;background:var(--panel);border:1px solid var(--input-border);border-left:7px solid #28a36a}
+.task.importante{border-left-color:#e7a000}
+.task.urgente{border-left-color:#e53935}
+.task small{display:block;margin-top:7px;color:#777}
 .task button{margin-top:10px;margin-right:6px;padding:8px;border:0;border-radius:7px;cursor:pointer}
 
 /* ESTILOS DEL CALENDARIO CON PUNTOS DE COLORES */
-.dia-calendario{position:relative;width:100%;min-height:58px;padding:6px 2px;border:2px solid #ddd;border-radius:9px;background:#f5f5fa;color:#252744;font-size:15px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.dia-calendario{position:relative;width:100%;min-height:58px;padding:6px 2px;border:2px solid var(--input-border);border-radius:9px;background:var(--panel);color:var(--text);font-size:15px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .dia-calendario:hover{border-color:#5546d8}
 .dia-calendario.seleccionado{background:#315fe8!important;color:#fff;border:3px solid #1d3ea8}
 .dia-calendario.hoy{box-shadow:inset 0 0 0 2px #5546d8}
@@ -55,12 +63,13 @@ button:disabled{cursor:not-allowed;opacity:.7}
 .punto.importante{background:#e7a000}
 .punto.urgente{background:#e53935}
 
-.detalle-dia{margin-top:18px;padding:16px;background:#f4f5fb;border-radius:12px;border:1px solid #dedff2}
-.semana-dia{padding:13px;margin:12px 0;border:1px solid #dedff2;border-radius:12px;background:#f8f8ff}
+.detalle-dia{margin-top:18px;padding:16px;background:var(--panel);border-radius:12px;border:1px solid var(--input-border)}
+.semana-dia{padding:13px;margin:12px 0;border:1px solid var(--input-border);border-radius:12px;background:var(--panel)}
 .semana-dia h3{margin:0 0 8px}
-.semana-dia.hoy{border:2px solid #5546d8;background:#f0efff}
-.semana-dia-vacio{font-size:14px;color:#666;margin:8px 0}
+.semana-dia.hoy{border:2px solid #5546d8}
+.semana-dia-vacio{font-size:14px;color:#777;margin:8px 0}
 .hidden{display:none}
+
 .estadisticas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:5px 2px 10px}
 .estadistica{min-height:130px;padding:16px;border-radius:14px;background:#315fe8;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:8px}
 .estadistica strong{font-size:34px;line-height:1}
@@ -69,14 +78,19 @@ button:disabled{cursor:not-allowed;opacity:.7}
 .estadistica.atrasadas{background:#cf303b}
 .estadistica.urgentes{background:#14804a}
 @media(min-width:650px){.estadisticas{grid-template-columns:repeat(4,minmax(0,1fr))}}
-footer{text-align:center;color:#666;padding:20px;font-size:13px}
+footer{text-align:center;color:#777;padding:20px;font-size:13px}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido principal</a>
 <header>
-<h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
-<p>Organizá tus tareas a tu manera. ¡Vos podés!</p>
+<div style="display:flex;justify-content:space-between;align-items:center;max-width:850px;margin:0 auto">
+  <div>
+    <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
+    <p>Organizá tus tareas a tu manera. ¡Vos podés!</p>
+  </div>
+  <button type="button" onclick="alternarModoOscuro()" id="btnModoOscuro" style="background:rgba(255,255,255,0.2);border:0;color:#fff;padding:8px 12px;border-radius:8px;font-weight:bold;cursor:pointer">🌙 Modo Oscuro</button>
+</div>
 </header>
 
 <nav aria-label="Navegación principal">
@@ -136,6 +150,14 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 <h2 style="margin:0">📋 Lista de tareas</h2>
 <button type="button" class="primary" onclick="mostrar('tareas')">➕ Nueva tarea</button>
 </div>
+
+<!-- FILTROS RÁPIDOS CON UN TOQUE -->
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
+<button type="button" onclick="filtroRapido('todas')" style="padding:7px 12px;border-radius:8px;border:1px solid var(--input-border);background:var(--nav-btn);color:var(--text);cursor:pointer;font-weight:bold">🔍 Todas</button>
+<button type="button" onclick="filtroRapido('urgentes')" style="padding:7px 12px;border-radius:8px;border:1px solid #e53935;background:#ffebee;color:#c62828;cursor:pointer;font-weight:bold">🔴 Urgentes</button>
+<button type="button" onclick="filtroRapido('hoy')" style="padding:7px 12px;border-radius:8px;border:1px solid #c77b00;background:#fff8e1;color:#b26a00;cursor:pointer;font-weight:bold">⏳ Para hoy</button>
+</div>
+
 <div style="margin:12px 0"><input id="buscarTareas" type="search" placeholder="Buscar tarea o materia…" autocomplete="off"></div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
 <select id="filtroMateria"><option value="">Todas las materias</option></select>
@@ -166,7 +188,7 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 <input id="mes" type="month" style="max-width:200px;margin:0">
 <button type="button" class="primary" onclick="irAHoy()">📍 Ir a hoy</button>
 </div>
-<div style="font-size:12px;color:#666;margin-bottom:10px;text-align:center">
+<div style="font-size:12px;color:var(--text);opacity:0.8;margin-bottom:10px;text-align:center">
   <span style="display:inline-block;width:8px;height:8px;background:#28a36a;border-radius:50%;margin-right:2px"></span> Normal &nbsp;
   <span style="display:inline-block;width:8px;height:8px;background:#e7a000;border-radius:50%;margin-right:2px"></span> Importante &nbsp;
   <span style="display:inline-block;width:8px;height:8px;background:#e53935;border-radius:50%;margin-right:2px"></span> Urgente
@@ -209,6 +231,23 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 const clave="ordenando-actividades-v1";
 let tareas=[];
 try{tareas=JSON.parse(localStorage.getItem(clave)||"[]");if(!Array.isArray(tareas))tareas=[]}catch(e){tareas=[]}
+
+// GESTIÓN DE MODO OSCURO
+const claveOscuro="ordenando-modo-oscuro-v1";
+function alternarModoOscuro(){
+  document.body.classList.toggle("dark");
+  const esOscuro = document.body.classList.contains("dark");
+  localStorage.setItem(claveOscuro, esOscuro ? "1" : "0");
+  document.getElementById("btnModoOscuro").textContent = esOscuro ? "☀️ Modo Claro" : "🌙 Modo Oscuro";
+}
+if(localStorage.getItem(claveOscuro)==="1"){
+  document.body.classList.add("dark");
+  window.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btnModoOscuro");
+    if(btn) btn.textContent = "☀️ Modo Claro";
+  });
+}
+
 const $=id=>document.getElementById(id);
 const claveMaterias="ordenando-materias-v1";
 const claveMateriasOcultas="ordenando-materias-ocultas-v1";
@@ -225,7 +264,7 @@ function actualizarOpcionesMaterias(){
   $("opcionesMaterias").innerHTML=materias.map(m=>`<option value="${escapar(m)}"></option>`).join("");
   const zona=$("administrarMateriasPagina");
   if(zona){
-    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
+    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--input-border)"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
   }
 }
 function guardarMateriaNueva(nombre){
@@ -335,6 +374,27 @@ function renderizarLista(){
   });
   zona.innerHTML=coincidencias.map(tarjeta).join("")||'<p>No hay tareas.</p>';
 }
+
+// FUNCIÓN PARA LOS FILTROS RÁPIDOS
+function filtroRapido(tipo){
+  $("buscarTareas").value = "";
+  $("filtroMateria").value = "";
+  $("filtroPrioridad").value = "";
+  if(tipo === 'urgentes'){
+    $("filtroPrioridad").value = "urgente";
+    $("filtroEstado").value = "pendientes";
+  } else if(tipo === 'hoy'){
+    $("filtroEstado").value = "pendientes";
+  }
+  renderizarLista();
+  if(tipo === 'hoy'){
+    const hoy = new Date().toLocaleDateString("sv-SE");
+    const zona = $("lista");
+    const delDia = tareas.filter(t => !t.hecha && t.fecha === hoy);
+    zona.innerHTML = delDia.length ? delDia.map(tarjeta).join("") : '<p>No hay tareas para hoy.</p>';
+  }
+}
+
 function actualizarMateriasFiltro(){
   const selector=$("filtroMateria");if(!selector)return;
   const elegida=selector.value;
@@ -432,7 +492,6 @@ function consultarDia(){
     const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha&&!t.hecha);
     const clases="dia-calendario"+(fecha===fechaCalendarioSeleccionada?" seleccionado":"")+(fecha===hoy?" hoy":"");
     
-    // Generar los puntitos de colores según la prioridad de las tareas del día
     let puntosHtml='<div class="puntos-dia">';
     delDia.slice(0,3).forEach(t => {
       const prio = t.prioridad || "normal";
