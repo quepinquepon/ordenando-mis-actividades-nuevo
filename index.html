@@ -345,11 +345,11 @@
         <section id="sec-pro" class="pane hidden">
             <h2>⭐ Pasate a la Versión Pro</h2>
             <div id="proPromoBox" class="upgrade-banner" style="background:#f0fdf4; border-color:var(--whatsapp); margin-bottom:1.5rem;">
-                <h3 style="color:#065f46;">🚀 Licencia Personalizada de por Vida</h3>
+                <h3 style="color:#065f46;">🚀 Licencia Personalizada por Email o Nombre</h3>
                 <p>Pago único. Sin abonos mensuales. Tareas ilimitadas para siempre.</p>
                 
                 <div style="text-align:left; margin-top:0.75rem;">
-                    <label style="font-size:0.85rem; font-weight:700;">Opcional: Ingresá tu Email o Nombre</label>
+                    <label style="font-size:0.85rem; font-weight:700;">Paso 1: Ingresá tu Email o Nombre completo (Único e Intransferible)</label>
                     <input type="text" id="buyerIdInput" placeholder="Ej: maria.gomez@gmail.com" style="margin-top:0.3rem;">
                 </div>
 
@@ -381,8 +381,8 @@
             </div>
 
             <div id="proActivateBox" class="form-group" style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
-                <label><strong>¿Ya tenés tu código único?</strong></label>
-                <input type="text" id="licenseInput" placeholder="Ej: PRO-8A4F-12 o Código Maestro">
+                <label><strong>¿Ya tenés tu código único para tu Email/Nombre?</strong></label>
+                <input type="text" id="licenseInput" placeholder="Ej: PRO-8A4F-12">
                 <button type="button" class="btn" id="btnActivate" style="margin-top: 0.5rem;">Activar Licencia</button>
             </div>
 
@@ -400,44 +400,20 @@
     <footer>Tus datos se guardan en este dispositivo.</footer>
 
     <script>
-        // Limpieza y registro forzado del Service Worker para romper caché vieja
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
-                    for(let registration of registrations) {
-                        registration.unregister();
-                    }
-                }).then(() => {
-                    navigator.serviceWorker.register('./sw.js').then(reg => {
-                        reg.update();
-                    });
-                });
-            });
-
-            let refreshing = false;
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                if (!refreshing) {
-                    refreshing = true;
-                    window.location.reload();
-                }
-            });
-        }
-
         // CONFIGURACIÓN DE LICENCIAS Y WHATSAPP
         const SECRET_SALT = "ACTIVIDADES_PRO_2026_CORDOBA";
-        const MASTER_CODE = "ADMIN-PRO-2026"; // Código maestro universal para activar al instante
         const WA_NUMBER = "5493584831449";
 
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
         
-        // RECUPERACIÓN AUTOMÁTICA DE LICENCIA: Si ya era Pro antes, se mantiene Pro automáticamente sin pedir nada
-        let isPro = localStorage.getItem('app_is_pro') === 'true' || localStorage.getItem('is_pro') === 'true' || localStorage.getItem('pro') === 'true';
-        if (isPro) {
-            localStorage.setItem('app_is_pro', 'true'); // Lo unificamos para el futuro
-        }
+        // RECUPERACIÓN PRO BLINDADA: Mantiene el Pro activo permanentemente para ti y tus clientes al actualizar
+        let isPro = localStorage.getItem('app_is_pro') === 'true';
+        let savedBuyerId = localStorage.getItem('app_buyer_id'] || '';
 
-        let savedBuyerId = localStorage.getItem('app_buyer_id') || '';
+        // Si tú (el creador) necesitas tu Pro de inmediato en este navegador sin vueltas, descomenta la línea de abajo o pon tu email guardado:
+        // isPro = true; savedBuyerId = "Tu Cuenta Pro"; localStorage.setItem('app_is_pro', 'true');
+
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDateStr = null;
@@ -459,10 +435,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const mpStatus = urlParams.get('status') || urlParams.get('collection_status');
             
-            if (mpStatus === 'approved' && !isPro) {
+            if (mpStatus === 'approved' && savedBuyerId && !isPro) {
                 localStorage.setItem('app_is_pro', 'true');
+                localStorage.setItem('app_buyer_id', savedBuyerId);
                 isPro = true;
-                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia Pro activada automáticamente.`);
+                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia Pro activada a nombre de ${savedBuyerId}.`);
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             updateLicenseUI();
@@ -485,7 +462,7 @@
                 if (submitBtn) submitBtn.disabled = false;
                 document.getElementById('proPromoBox').innerHTML = `
                     <h3 style="color:#065f46;">✅ ¡Tu Licencia Pro está Activa!</h3>
-                    <p>Disfrutá de tareas ilimitadas de por vida. Sin pagos mensuales.</p>
+                    <p>Registrada a nombre de: <strong>${savedBuyerId || 'Pro'}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
                 `;
                 document.getElementById('proActivateBox').classList.add('hidden');
             } else {
@@ -629,37 +606,46 @@
         });
 
         document.getElementById('btnRequestWaTransfer').addEventListener('click', () => {
-            const buyerId = document.getElementById('buyerIdInput').value.trim() || 'Cliente';
+            const buyerId = document.getElementById('buyerIdInput').value.trim();
+            if (!buyerId) {
+                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1.');
+                return;
+            }
             savedBuyerId = buyerId;
             localStorage.setItem('app_buyer_id', buyerId);
-            const msg = encodeURIComponent(`Hola! Hice una transferencia de $9.499 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi nombre/email es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
+            const msg = encodeURIComponent(`Hola! Hice una transferencia de $9.499 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
             window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
         });
 
-        document.getElementById('btnPayMp').addEventListener('click', () => {
+        document.getElementById('btnPayMp').addEventListener('click', (e) => {
             const buyerId = document.getElementById('buyerIdInput').value.trim();
-            if (buyerId) {
-                savedBuyerId = buyerId;
-                localStorage.setItem('app_buyer_id', buyerId);
+            if (!buyerId) {
+                e.preventDefault();
+                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1 antes de ir a pagar.');
+                return;
             }
+            savedBuyerId = buyerId;
+            localStorage.setItem('app_buyer_id', buyerId);
         });
 
         document.getElementById('btnActivate').addEventListener('click', () => {
             const buyerId = document.getElementById('buyerIdInput').value.trim();
             const code = document.getElementById('licenseInput').value.trim().toUpperCase();
 
-            // Si pone el código maestro o el código generado por su mail/nombre
-            if (code === MASTER_CODE || (buyerId && code === calcularCodigo(buyerId)) || code.startsWith("PRO-")) {
+            if (!buyerId) {
+                alert('⚠️ Ingresá primero tu Email o Nombre en el Paso 1.');
+                return;
+            }
+
+            if (code === calcularCodigo(buyerId)) {
                 localStorage.setItem('app_is_pro', 'true');
-                if (buyerId) {
-                    localStorage.setItem('app_buyer_id', buyerId);
-                    savedBuyerId = buyerId;
-                }
+                localStorage.setItem('app_buyer_id', buyerId);
                 isPro = true;
+                savedBuyerId = buyerId;
                 updateLicenseUI();
-                alert(`🎉 ¡Licencia Pro activada con éxito!`);
+                alert(`🎉 ¡Licencia activada a nombre de ${buyerId}!`);
             } else {
-                alert('❌ Código incorrecto. Verificá los datos.');
+                alert('❌ El código no coincide con tu Email/Nombre. Verificá que estén escritos exactamente igual.');
             }
         });
 
@@ -673,3 +659,95 @@
             const firstDay = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
             const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
             const today = new Date().toISOString().split('T')[0];
+
+            for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
+
+            for (let d = 1; d <= totalDays; d++) {
+                const mStr = String(currentMonth + 1).padStart(2, '0');
+                const dStr = String(d).padStart(2, '0');
+                const dateStr = `${currentYear}-${mStr}-${dStr}`;
+
+                const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
+                let badgesHtml = '';
+                
+                if (dayTasks.length > 0) {
+                    badgesHtml = `<div class="cal-badges-container">` + dayTasks.map(t => `
+                        <div class="cal-badge ${t.priority}" title="${t.title} (${t.priority})"></div>
+                    `).join('') + `</div>`;
+                }
+
+                grid.innerHTML += `
+                    <div class="cal-day ${dateStr === today ? 'today' : ''} ${dateStr === selectedDateStr ? 'selected' : ''}" onclick="selectDate('${dateStr}')">
+                        <span>${d}</span>
+                        ${badgesHtml}
+                    </div>
+                `;
+            }
+        }
+
+        document.getElementById('prevMonth').addEventListener('click', () => {
+            currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar();
+        });
+
+        document.getElementById('nextMonth').addEventListener('click', () => {
+            currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            renderCalendar();
+        });
+
+        window.selectDate = function(dateStr) {
+            selectedDateStr = dateStr;
+            renderCalendar();
+            const dayTasks = tasks.filter(t => t.dueDate === dateStr);
+            const box = document.getElementById('dayTasks');
+            if (dayTasks.length === 0) {
+                box.innerHTML = `<strong>Día ${dateStr}:</strong> Sin tareas asignadas.`;
+                return;
+            }
+            box.innerHTML = `<strong>Tareas para el ${dateStr}:</strong>` + dayTasks.map(t => `
+                <div style="background:#f8fafc; padding:0.4rem; margin-top:0.3rem; border-radius:4px; border-left:3px solid var(--${t.priority})">
+                    📌 ${t.title} (${t.subject}) - <span style="text-transform:uppercase; font-size:0.75rem;">${t.priority}</span>
+                </div>
+            `).join('');
+        };
+
+        document.getElementById('btnExport').addEventListener('click', () => {
+            const data = JSON.stringify({ tasks, subjects }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'backup_ordenando_actividades.json';
+            a.click();
+        });
+
+        document.getElementById('btnImportTrigger').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        document.getElementById('importFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (data.tasks && data.subjects) {
+                        tasks = data.tasks;
+                        subjects = data.subjects;
+                        localStorage.setItem('app_tasks', JSON.stringify(tasks));
+                        localStorage.setItem('app_subjects', JSON.stringify(subjects));
+                        alert('✅ Copia de seguridad importada con éxito.');
+                        location.reload();
+                    } else {
+                        alert('❌ El archivo no tiene el formato correcto.');
+                    }
+                } catch (err) {
+                    alert('❌ Error al leer el archivo JSON.');
+                }
+            };
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
