@@ -22,10 +22,10 @@ header{background:#5546d8;color:white;padding:22px 18px}
 header h1{margin:0;font-size:24px}
 header p{margin:8px 0 0}
 
-/* MENÚ ADAPTABLE: Se acomoda en filas para celulares sin deslizar al costado */
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:10px 12px;background:white}
-nav button{flex:1 1 auto;min-width:105px;border:0;border-radius:10px;padding:10px 8px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:13px;cursor:pointer;text-align:center}
-nav button.active{background:#5546d8;color:white}
+/* MENÚ CENTRADO: Pestañas perfectamente centradas y ordenadas */
+nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;padding:12px 14px;background:white}
+nav button{flex:0 1 auto;border:1px solid #e1deef;border-radius:10px;padding:10px 14px;background:#faf9ff;color:#555d72;font-weight:bold;font-size:13px;cursor:pointer;text-align:center}
+nav button.active{background:#5546d8;color:white;border-color:#5546d8}
 
 main{max-width:850px;margin:auto;padding:16px}
 .panel{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #2221}
@@ -63,7 +63,6 @@ header{background:#fff;color:var(--tinta);padding:25px 20px 22px;border-bottom:1
 header h1{max-width:850px;margin:0 auto;font-size:clamp(22px,3vw,29px);font-weight:800;letter-spacing:-.5px;color:var(--morado-oscuro)}
 header p{max-width:850px;margin:7px auto 0;color:var(--suave);font-size:15px}
 
-/* Estilo visual mejorado para el menú adaptable */
 nav{background:#fff;border-bottom:1px solid var(--linea)}
 nav button{border:1px solid #e1deef;background:#faf9ff;color:#555d72}
 nav button.active{background:var(--lavanda);color:var(--morado-oscuro);border-color:#c8bfff;box-shadow:none}
@@ -96,8 +95,8 @@ footer{max-width:850px;margin:0 auto;color:#74798b;line-height:1.6;padding:20px 
 @media(hover:hover){nav button:not(.active):hover{background:#f7f5ff;color:var(--morado-oscuro)}.task button:hover{background:#f5f3ff;border-color:#cfc6f5}}
 @media(max-width:600px){
  header{padding:20px 15px 17px}
- nav{padding:8px 10px;gap:5px}
- nav button{min-width:47%;padding:9px 6px;font-size:12px}
+ nav{padding:10px;gap:6px}
+ nav button{flex:1 1 44%;padding:10px 8px;font-size:12px}
  main{padding:13px 10px 25px}
  .panel{border-radius:11px;padding:15px;margin-bottom:12px}
  .task button{font-size:12px;margin-right:3px;padding:7px}
@@ -383,75 +382,4 @@ mostrar("guardadas");
 });
 function editarTarea(id){
 const t=tareas.find(t=>t.id===id);if(!t)return;
-tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia||"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad||"normal";$("detalle").value=t.detalle||"";
-$("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrar("tareas");
-}
-function cancelarEdicionTarea(){tareaEditando=null;$("formulario").reset();$("tituloFormulario").textContent="➕ Agregar una tarea";$("guardarTarea").textContent="Guardar tarea";$("cancelarEdicion").classList.add("hidden");}
-function cambiarEstado(id){const t=tareas.find(t=>t.id===id);if(t){t.hecha=!t.hecha;guardar();}}
-function eliminar(id){if(confirm("¿Eliminar tarea?")){tareas=tareas.filter(t=>t.id!==id);guardar()}}
-
-function fechaLocal(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
-function lunesDeSemana(fecha){const d=new Date(fecha+"T12:00:00");const dia=(d.getDay()+6)%7;d.setDate(d.getDate()-dia);return d;}
-let inicioSemana=fechaLocal(lunesDeSemana(fechaLocal(new Date())));
-function cambiarSemana(cantidad){const d=new Date(inicioSemana+"T12:00:00");d.setDate(d.getDate()+cantidad*7);inicioSemana=fechaLocal(d);renderizarPlanSemanal();}
-function irASemanaActual(){inicioSemana=fechaLocal(lunesDeSemana(fechaLocal(new Date())));renderizarPlanSemanal();}
-function renderizarPlanSemanal(){
- const zona=$("planSemanal");if(!zona)return;
- const inicio=new Date(inicioSemana+"T12:00:00");const fin=new Date(inicio);fin.setDate(fin.getDate()+6);
- $("rangoSemana").textContent="Semana del "+fechaTexto(fechaLocal(inicio))+" al "+fechaTexto(fechaLocal(fin));
- const hoy=fechaLocal(new Date());let html="";
- for(let i=0;i<7;i++){
-  const d=new Date(inicio);d.setDate(inicio.getDate()+i);const fecha=fechaLocal(d);
-  const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha);
-  html+='<div class="semana-dia'+(fecha===hoy?' hoy':'')+'"><h3>'+d.toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long"})+'</h3>';
-  html+=delDia.length?delDia.map(tarjeta).join(""):'<p class="semana-dia-vacio">No hay tareas.</p>';
-  html+='</div>';
- }
- zona.innerHTML=html;
-}
-
-let fechaCalendarioSeleccionada=new Date().toLocaleDateString("sv-SE");
-function verTareasDelDia(fecha){
-  fechaCalendarioSeleccionada=fecha;
-  consultarDia();
-  const zona=$("dia");
-  const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha);
-  zona.innerHTML='<div class="detalle-dia"><h3>Tareas del '+fechaTexto(fecha)+'</h3>'+(delDia.length?delDia.map(tarjeta).join(""):''+'<p>No hay tareas.</p>')+'</div>';
-}
-function irAHoy(){
-  const hoy=new Date().toLocaleDateString("sv-SE");
-  $("mes").value=hoy.slice(0,7);
-  verTareasDelDia(hoy);
-}
-function consultarDia(){
-  const mes=$("mes");
-  const calendario=$("calendarioColores");
-  if(!mes||!calendario||!mes.value)return;
-  const partes=mes.value.split("-");
-  const anio=Number(partes[0]);
-  const numeroMes=Number(partes[1]);
-  const cantidad=new Date(anio,numeroMes,0).getDate();
-  let html='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">';
-  ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].forEach(d=>{html+='<div style="text-align:center;font-weight:bold;font-size:12px">'+d+'</div>';});
-  const inicio=(new Date(anio,numeroMes-1,1).getDay()+6)%7;
-  for(let i=0;i<inicio;i++)html+='<div></div>';
-  const hoy=new Date().toLocaleDateString("sv-SE");
-  for(let dia=1;dia<=cantidad;dia++){
-    const fecha=anio+"-"+String(numeroMes).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
-    const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha&&!t.hecha);
-    const clases="dia-calendario"+(fecha===fechaCalendarioSeleccionada?" seleccionado":"")+(fecha===hoy?" hoy":"");
-    html+='<button type="button" class="'+clases+'" onclick="verTareasDelDia(\''+fecha+'\')">'+dia+(delDia.length?'<span class="cantidad">'+delDia.length+' tarea(s)</span>':'')+'</button>';
-  }
-  html+='</div>';
-  calendario.innerHTML=html;
-}
-
-$("mes").value=new Date().toLocaleDateString("sv-SE").slice(0,7);
-consultarDia();
-verTareasDelDia(fechaCalendarioSeleccionada);
-$("fecha").value=new Date().toLocaleDateString("sv-SE");
-actualizarOpcionesMaterias();
-actualizar();
-</script>
-</body>
-</html>
+tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia\vert{}\vert{}"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad\vert{}\vert{}"normal";$("detalle").value=t.detalle
