@@ -21,9 +21,12 @@ body{margin:0;font-family:Arial,sans-serif;background:#f4f5fb;color:#252744}
 header{background:#5546d8;color:white;padding:22px 18px}
 header h1{margin:0;font-size:24px}
 header p{margin:8px 0 0}
-nav{display:flex;gap:8px;padding:12px;overflow-x:auto;background:white}
-nav button{border:0;border-radius:10px;padding:12px;background:#ecebff;color:#4034aa;font-weight:bold;cursor:pointer}
+
+/* MENÚ ADAPTABLE: Se acomoda en filas para celulares sin deslizar al costado */
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:10px 12px;background:white}
+nav button{flex:1 1 auto;min-width:105px;border:0;border-radius:10px;padding:10px 8px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:13px;cursor:pointer;text-align:center}
 nav button.active{background:#5546d8;color:white}
+
 main{max-width:850px;margin:auto;padding:16px}
 .panel{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #2221}
 h2{margin-top:0}
@@ -59,9 +62,12 @@ body{background:var(--fondo);color:var(--tinta);line-height:1.5}
 header{background:#fff;color:var(--tinta);padding:25px 20px 22px;border-bottom:1px solid var(--linea)}
 header h1{max-width:850px;margin:0 auto;font-size:clamp(22px,3vw,29px);font-weight:800;letter-spacing:-.5px;color:var(--morado-oscuro)}
 header p{max-width:850px;margin:7px auto 0;color:var(--suave);font-size:15px}
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;padding:12px 14px;background:#fff;border-bottom:1px solid var(--linea);overflow:visible}
-nav button{border:1px solid transparent;border-radius:9px;padding:10px 13px;background:transparent;color:#555d72;font-weight:700;font-size:14px;cursor:pointer}
-nav button.active{background:var(--lavanda);color:var(--morado-oscuro);border-color:#e1dafd;box-shadow:none}
+
+/* Estilo visual mejorado para el menú adaptable */
+nav{background:#fff;border-bottom:1px solid var(--linea)}
+nav button{border:1px solid #e1deef;background:#faf9ff;color:#555d72}
+nav button.active{background:var(--lavanda);color:var(--morado-oscuro);border-color:#c8bfff;box-shadow:none}
+
 main{width:100%;max-width:850px;margin:0 auto;padding:22px 16px 36px}
 .panel{background:var(--papel);border:1px solid var(--linea);border-radius:13px;padding:clamp(16px,3vw,22px);margin-bottom:16px;box-shadow:0 2px 7px #28224708}
 h2{margin:0 0 14px;color:#39345e;font-size:clamp(20px,2.5vw,23px);line-height:1.35;letter-spacing:-.25px}
@@ -86,11 +92,12 @@ button.primary:hover{background:var(--morado-oscuro)}
 .notice{border-radius:11px}
 .estadistica{border-radius:12px;box-shadow:none}
 footer{max-width:850px;margin:0 auto;color:#74798b;line-height:1.6;padding:20px 14px 28px}
+
 @media(hover:hover){nav button:not(.active):hover{background:#f7f5ff;color:var(--morado-oscuro)}.task button:hover{background:#f5f3ff;border-color:#cfc6f5}}
 @media(max-width:600px){
  header{padding:20px 15px 17px}
- nav{justify-content:flex-start;gap:6px;padding:9px;overflow-x:auto;flex-wrap:nowrap}
- nav button{flex:0 0 auto;white-space:nowrap;padding:9px 11px;font-size:13px}
+ nav{padding:8px 10px;gap:5px}
+ nav button{min-width:47%;padding:9px 6px;font-size:12px}
  main{padding:13px 10px 25px}
  .panel{border-radius:11px;padding:15px;margin-bottom:12px}
  .task button{font-size:12px;margin-right:3px;padding:7px}
@@ -102,203 +109,6 @@ footer{max-width:850px;margin:0 auto;color:#74798b;line-height:1.6;padding:20px 
  .notice p{font-size:16px;overflow-wrap:anywhere}
 }
 @media(max-width:360px){.dia-calendario{font-size:12px;min-height:42px}.dia-calendario .cantidad{font-size:9px}.task button{padding:7px;font-size:12px}}
-
-/* Foto inspiradora del encabezado */
-.inspiracion{position:relative;width:100%;height:clamp(155px,23vw,245px);overflow:hidden;background:#ded9d0}
-.inspiracion>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 55%}
-.inspiracion-capa{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;background:linear-gradient(90deg,#1d292d91,#1d292d32 55%,#1d292d4f);color:#fff}
-.inspiracion-capa p{font-family:Georgia,serif;font-size:clamp(21px,3.3vw,34px);font-weight:700;line-height:1.25;max-width:780px;text-shadow:0 2px 8px #0008;margin:0 0 10px}
-.inspiracion-capa span{font-size:clamp(12px,1.8vw,15px);font-weight:600;letter-spacing:.3px;text-shadow:0 1px 5px #000b}
-@media(max-width:600px){.inspiracion{height:165px}.inspiracion>img{object-position:center}.inspiracion-capa{padding:15px}.inspiracion-capa p{font-size:22px}.inspiracion-capa span{font-size:12px;max-width:300px}}
-
-/* Rediseño amable y accesible: más aire, colores suaves y acciones claras */
-:root{--tinta:#292643;--suave:#66647d;--morado:#7656d9;--morado-oscuro:#5036a8;--lavanda:#f0eaff;--papel:#fff;--fondo:#faf8ff;--linea:#e9e2fa;--verde:#e9f8ef;--amarillo:#fff5d9;--rosa:#fff0f1;--azul:#edf5ff}
-body{background:radial-gradient(ellipse at top left,#f0eaff 0,transparent 34%),var(--fondo);color:var(--tinta);font-size:16px}
-header{padding:25px 20px 19px;background:linear-gradient(120deg,#fff 0%,#f4efff 58%,#fff5f0 100%);border:0}
-header h1{font-size:clamp(24px,4vw,34px);letter-spacing:-.7px}
-header p{font-size:16px}
-.inspiracion{height:clamp(170px,25vw,265px);border-radius:0 0 22px 22px;box-shadow:0 8px 24px #4f348b16}
-.inspiracion>img{object-position:center 53%}
-.inspiracion-capa{background:linear-gradient(90deg,#21153c70,#24183d25 50%,#21153c65)}
-.inspiracion-capa p{max-width:760px;font-size:clamp(24px,3.5vw,38px)}
-nav{position:relative;z-index:2;gap:8px;padding:14px 16px;background:#fff;border-bottom:1px solid #e9e2fa;box-shadow:0 4px 16px #3c246b0a}
-nav button{border-radius:12px;padding:11px 14px;font-size:14px}
-nav button.active{background:#7656d9;color:white;border-color:#7656d9;box-shadow:0 4px 10px #7656d933}
-main{max-width:1100px;padding:25px 20px 40px}
-.panel{border:1px solid #e8e1f7;border-radius:18px;padding:clamp(18px,3vw,26px);margin-bottom:19px;box-shadow:0 5px 18px #4b32750a}
-h2{font-size:clamp(21px,2.5vw,25px);color:#48347f;margin-bottom:16px}
-h3{color:#463675}
-input,select,textarea{border:1.5px solid #ded8ee;border-radius:11px;padding:13px 14px;background:#fff}
-input:focus,select:focus,textarea:focus{border-color:#8b6ee0;box-shadow:0 0 0 4px #8b6ee01c}
-button.primary{background:linear-gradient(135deg,#8060e4,#6845c5);border:0;border-radius:11px;padding:12px 17px;box-shadow:0 4px 10px #6845c51c}
-button.primary:hover{background:#5036a8;transform:translateY(-1px)}
-.estadisticas{gap:13px}
-.estadistica,.estadistica.hoy,.estadistica.atrasadas,.estadistica.urgentes{min-height:132px;border:1px solid #e6defa;box-shadow:none;border-radius:16px;padding:18px;background:#f1ecff;color:#4e3988;gap:8px}
-.estadistica strong,.estadistica span{color:#4e3988;text-shadow:none}
-.estadistica strong{font-size:36px}
-.estadistica .estadistica-icono{font-size:27px}
-.estadistica.hoy{background:#fff5dc;border-color:#f5e5b4}
-.estadistica.hoy strong,.estadistica.hoy span{color:#8a5a00}
-.estadistica.atrasadas{background:#fff0f0;border-color:#f6d9dd}
-.estadistica.atrasadas strong,.estadistica.atrasadas span{color:#a83242}
-.estadistica.urgentes{background:#e8f7ed;border-color:#ccebd7}
-.estadistica.urgentes strong,.estadistica.urgentes span{color:#176b42}
-.task{background:#fff;border:1px solid #e9e5f2;border-left:5px solid #38a66a;border-radius:12px;padding:15px;margin:11px 0}
-.task.importante{background:#fffdf6;border-left-color:#e7a000}
-.task.urgente{background:#fff7f7;border-left-color:#e53935}
-.task button{border-radius:9px;padding:9px 11px}
-.dia-calendario{background:#fff!important;border:1px solid #e8e2f4;color:#3d365d;border-radius:10px;min-height:58px}
-.dia-calendario.seleccionado{background:#7656d9!important;color:#fff;border:2px solid #5036a8}
-.dia-calendario.hoy{box-shadow:inset 0 0 0 2px #a995eb}
-.detalle-dia,.semana-dia{border-radius:14px;border-color:#e5def4;background:#fcfbff}
-.semana-dia.hoy{border:2px solid #9278e5;background:#f4efff}
-.notice{border-width:2px;border-left-width:8px;box-shadow:0 5px 16px #b71c1c12}
-footer{max-width:1100px}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #6747c8;outline-offset:3px}
-@media(max-width:700px){main{padding:14px 11px 28px}.panel{padding:17px;border-radius:15px}.estadisticas{gap:10px}.estadistica,.estadistica.hoy,.estadistica.atrasadas,.estadistica.urgentes{min-height:116px;padding:14px}.estadistica strong{font-size:32px}}
-@media(max-width:420px){.estadistica span{font-size:13px}.inspiracion{height:155px}.inspiracion-capa p{font-size:21px}}
-
-/* Accesos rápidos pensados para que sea fácil encontrar cada función */
-.accesos-rapidos .ayuda-accesos{color:var(--suave);margin-top:-7px}
-.rejilla-accesos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.acceso{display:grid;grid-template-columns:48px minmax(0,1fr);grid-template-rows:auto auto;column-gap:12px;align-items:center;text-align:left;padding:16px;border:1px solid #e4dcf7;border-radius:15px;background:#fbf9ff;color:var(--tinta);cursor:pointer;min-height:100px}
-.acceso-icono{grid-column:1;grid-row:1/3;display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:14px;background:#eee7ff;font-size:25px}
-.acceso-titulo{font-size:16px;font-weight:800;color:#49377e;line-height:1.35}
-.acceso-descripcion{font-size:13px;line-height:1.4;color:#66647d;margin-top:4px}
-.acceso-nuevo{background:#f5f0ff}.acceso-lista{background:#f0f7ff;border-color:#dceafa}.acceso-lista .acceso-icono{background:#dcecff}
-.acceso-semana{background:#effaf3;border-color:#d9f0e1}.acceso-semana .acceso-icono{background:#d8f2e1}
-.acceso-calendario{background:#fff8e9;border-color:#f4e7c9}.acceso-calendario .acceso-icono{background:#ffedc2}
-@media(hover:hover){.acceso:hover{transform:translateY(-2px);box-shadow:0 6px 16px #49377e12;border-color:#b7a5ec}}
-@media(max-width:520px){.rejilla-accesos{grid-template-columns:1fr;gap:10px}.acceso{min-height:84px;padding:13px}.acceso-titulo{font-size:15px}}
-
-/* REDISEÑO AZUL PASTEL — octubre 2026 */
-:root{
-  color-scheme:light;
-  --azul-900:#183b63;
-  --azul-800:#24527e;
-  --azul-700:#326a9e;
-  --azul-600:#4387bd;
-  --azul-500:#6ba7d5;
-  --azul-300:#b8d9f2;
-  --azul-200:#d6e9f8;
-  --azul-100:#eaf4fc;
-  --azul-50:#f5faff;
-  --tinta:#20364d;
-  --tinta-suave:#61758a;
-  --borde:#d9e8f5;
-  --superficie:#ffffff;
-  --sombra:0 12px 32px rgba(39,83,124,.09);
-}
-html{background:#f3f8fd}
-body{
-  font-family:Inter,"Segoe UI",Roboto,Arial,sans-serif;
-  color:var(--tinta);
-  background:linear-gradient(180deg,#eaf4fc 0,#f5f9fe 330px,#f5f8fc 100%);
-  line-height:1.55;
-}
-header{
-  position:relative;
-  overflow:hidden;
-  padding:28px clamp(18px,4vw,42px);
-  background:linear-gradient(125deg,#244f7b 0%,#4388bd 54%,#91c5e9 100%);
-  box-shadow:0 8px 26px rgba(36,79,123,.18);
-}
-header:after{
-  content:"";position:absolute;width:250px;height:250px;right:-65px;top:-145px;
-  border:34px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none;
-}
-header h1{position:relative;z-index:1;font-size:clamp(22px,3vw,31px);letter-spacing:.035em;line-height:1.2}
-header p{position:relative;z-index:1;color:#edf7ff;font-size:15px}
-.inspiracion{position:relative;isolation:isolate;overflow:hidden;min-height:190px;background:#d6e9f8}
-.inspiracion img{display:block;width:100%;height:clamp(190px,25vw,270px);object-fit:cover;filter:saturate(.72) brightness(.82)}
-.inspiracion-capa{
-  background:linear-gradient(90deg,rgba(17,48,79,.83),rgba(27,67,103,.48) 65%,rgba(27,67,103,.16));
-  padding:clamp(22px,5vw,42px);display:flex;flex-direction:column;justify-content:center;min-height:190px
-}
-.inspiracion-capa p{max-width:760px;font-size:clamp(21px,3.4vw,31px);line-height:1.25;font-weight:750;text-wrap:balance}
-.inspiracion-capa span{max-width:680px;color:#eaf5ff;font-size:15px}
-nav{
-  position:sticky;top:0;z-index:50;gap:8px;padding:10px clamp(10px,3vw,28px);
-  background:rgba(255,255,255,.94);backdrop-filter:blur(14px);
-  border-bottom:1px solid #dce9f5;box-shadow:0 5px 16px rgba(35,73,109,.07)
-}
-nav button{
-  flex:0 0 auto;border:1px solid transparent;border-radius:12px;padding:11px 15px;
-  background:var(--azul-100);color:var(--azul-800);font-weight:700;
-  transition:transform .18s,background .18s,box-shadow .18s
-}
-nav button:hover{background:var(--azul-200);transform:translateY(-1px)}
-nav button.active{background:var(--azul-700);color:white;box-shadow:0 5px 12px #326a9e35}
-main{max-width:1080px;padding:24px clamp(12px,3vw,28px) 42px}
-.panel{
-  background:rgba(255,255,255,.96);border:1px solid rgba(210,228,244,.95);
-  border-radius:20px;padding:clamp(16px,2.6vw,25px);margin-bottom:18px;
-  box-shadow:var(--sombra)
-}
-h2{color:var(--azul-900);font-size:clamp(20px,2.4vw,25px);letter-spacing:-.02em;margin-bottom:14px}
-h3{color:var(--azul-800)}
-p{line-height:1.6}
-button,.button, input[type=button],input[type=submit]{
-  border-radius:12px;transition:transform .16s,box-shadow .16s,background .16s
-}
-button{cursor:pointer}
-button:hover{filter:brightness(.99)}
-button:active{transform:translateY(1px)}
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{
-  outline:3px solid #79b7e7;outline-offset:3px
-}
-button.primary{
-  background:linear-gradient(135deg,#3679ad,#4b96cc);color:white;border:1px solid #3679ad;
-  box-shadow:0 5px 13px rgba(50,106,158,.2);font-weight:750
-}
-button.primary:hover{background:linear-gradient(135deg,#285f91,#3b82b9);box-shadow:0 7px 16px rgba(50,106,158,.25)}
-input,select,textarea{
-  border:1px solid #cbddec;border-radius:12px;background:#fbfdff;color:var(--tinta);
-  padding:12px 13px;transition:border-color .15s,box-shadow .15s
-}
-input:focus,select:focus,textarea:focus{border-color:#6ba7d5;box-shadow:0 0 0 4px rgba(107,167,213,.16);outline:none}
-label{color:#35536f;font-weight:650}
-.task,.resumen-materia,.paso-item,.hoy-resumen-item,.progreso-metrica{
-  border-color:var(--borde);border-radius:15px
-}
-.task{box-shadow:0 4px 12px rgba(38,76,112,.045)}
-.accesos-rapidos{background:linear-gradient(145deg,#fff,#f4faff)}
-.rejilla-accesos{gap:13px}
-.acceso{
-  min-height:150px!important;border:1px solid #d6e7f6!important;border-radius:17px!important;
-  background:linear-gradient(145deg,#fff,#f1f8fe)!important;color:var(--tinta)!important;
-  padding:18px!important;box-shadow:0 5px 16px rgba(41,86,129,.07);
-  text-align:left;transition:transform .18s,box-shadow .18s,border-color .18s
-}
-.acceso:hover{transform:translateY(-3px);border-color:#9fc8e8!important;box-shadow:0 12px 24px rgba(41,86,129,.12)}
-.acceso-icono{display:inline-grid;place-items:center;width:43px;height:43px;border-radius:13px;background:#dceefb;color:#285f91;font-size:22px}
-.acceso-titulo{display:block;margin-top:12px;color:#244d75;font-size:16px;font-weight:800}
-.acceso-descripcion{display:block;margin-top:4px;color:#61758a;font-size:13px;line-height:1.45}
-.inicio-pestanas{background:#eaf4fc;border:1px solid #d4e6f5;border-radius:16px;padding:7px}
-.inicio-pestanas button{border-radius:12px;color:#42627f}
-.inicio-pestanas button.active{color:#24527e;border-color:#d2e5f5;box-shadow:0 3px 10px rgba(34,78,120,.1)}
-.estadisticas{gap:12px}
-.estadisticas>*{border-radius:15px}
-details,summary{border-radius:12px}
-summary{cursor:pointer;color:var(--azul-800);font-weight:750}
-hr{border:0;border-top:1px solid var(--borde)}
-a{color:#2e6fa6}
-.hidden,[hidden]{display:none!important}
-@media(min-width:850px){
-  .rejilla-accesos{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
-@media(max-width:600px){
-  header{padding:21px 15px}
-  .inspiracion-capa{padding:20px 17px}
-  nav{position:relative;gap:7px;padding:9px}
-  nav button{padding:10px 12px;font-size:13px}
-  main{padding-top:14px}
-  .panel{border-radius:16px}
-  .acceso{min-height:132px!important}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
-}
 </style>
 </head>
 <body>
@@ -307,10 +117,6 @@ a{color:#2e6fa6}
 <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
 <p>Organizá tus tareas a tu manera. ¡Vos podés!</p>
 </header>
-<section class="inspiracion" aria-label="Inspiración para estudiar">
-<img src="https://images.unsplash.com/photo-1654356709115-3f68998bead4?auto=format&fit=crop&fm=jpg&q=80&w=1800" alt="Rincón de estudio luminoso" loading="eager">
-<div class="inspiracion-capa"><p>“Cada pequeño paso te acerca a tu meta.”</p><span>Organizá tu tiempo. Confiá en vos. Seguí avanzando.</span></div>
-</section>
 <nav aria-label="Navegación principal">
 <button class="active" data-tab="inicio">🏠 Inicio</button>
 <button data-tab="guardadas">➕ Tareas</button>
@@ -321,66 +127,16 @@ a{color:#2e6fa6}
 <main id="contenido" tabindex="-1">
 <section id="inicio">
 <div id="avisos"></div>
-<div class="panel accesos-rapidos">
-<h2>✨ ¿Qué querés hacer hoy?</h2>
-<p class="ayuda-accesos">Elegí una opción para empezar.</p>
-<div class="rejilla-accesos">
-<button type="button" class="acceso acceso-nuevo" onclick="mostrar('tareas')"><span class="acceso-icono">➕</span><span class="acceso-titulo">Agregar una tarea</span><span class="acceso-descripcion">Anotá algo que tenés que hacer.</span></button>
-<button type="button" class="acceso acceso-lista" onclick="mostrar('guardadas')"><span class="acceso-icono">📋</span><span class="acceso-titulo">Ver mis tareas</span><span class="acceso-descripcion">Buscá, revisá o completá actividades.</span></button>
-<button type="button" class="acceso acceso-semana" onclick="mostrar('semana')"><span class="acceso-icono">🗓️</span><span class="acceso-titulo">Organizar mi semana</span><span class="acceso-descripcion">Mirá qué tenés para cada día.</span></button>
-<button type="button" class="acceso acceso-calendario" onclick="mostrar('calendario')"><span class="acceso-icono">📅</span><span class="acceso-titulo">Abrir calendario</span><span class="acceso-descripcion">Encontrá las tareas por fecha.</span></button>
-</div>
-</div>
-
-<div class="inicio-pestanas" id="pestanasInicio" role="tablist" aria-label="Secciones de Inicio">
-<button type="button" role="tab" id="tabInicioResumen" aria-controls="inicioResumen" aria-selected="true" class="active" data-pestana-inicio="inicioResumen">🏠 Resumen</button>
-<button type="button" role="tab" id="tabInicioDia" aria-controls="inicioDia" aria-selected="false" data-pestana-inicio="inicioDia">🎯 Mi día</button>
-<button type="button" role="tab" id="tabInicioProgreso" aria-controls="inicioProgreso" aria-selected="false" data-pestana-inicio="inicioProgreso">🌱 Mi progreso</button>
-<button type="button" role="tab" id="tabInicioMaterias" aria-controls="inicioMaterias" aria-selected="false" data-pestana-inicio="inicioMaterias">📚 Materias</button>
-</div>
-<div class="inicio-panel-pestana" id="inicioResumen" role="tabpanel" aria-labelledby="tabInicioResumen"> 
-<div class="inicio-resumen">
-<div class="panel inicio-bienvenida">
+<div class="panel">
 <h2>¡Hola! 👋</h2>
-<p>Este es tu espacio para organizar el estudio y recordar entregas.</p>
+<p>Este es tu espacio para organizar el estudio, recordar entregas y avanzar paso a paso.</p>
 <p id="resumen"></p>
-<button class="primary inicio-boton-agregar" onclick="mostrar('tareas')">➕ Agregar una tarea</button>
+<button class="primary" onclick="mostrar('guardadas')">➕ Agregar una tarea</button>
 <button class="primary" type="button" id="activarRecordatorios" onclick="activarRecordatorios()" style="margin-top:10px;background:#14804a">🔔 Activar recordatorios</button>
 </div>
-<div class="panel inicio-estadisticas">
+<div class="panel">
 <h2>📊 Tus tareas de un vistazo</h2>
 <div id="estadisticasInicio" class="estadisticas"></div>
-</div>
-</div>
-</div>
-<div class="inicio-panel-pestana" id="inicioProgreso" role="tabpanel" aria-labelledby="tabInicioProgreso" hidden>
-<div class="panel panel-progreso" id="panelProgreso">
-<h2>🌱 Mi progreso</h2>
-<div class="progreso-grid">
-<div class="progreso-metrica"><span>✅ Completadas hoy</span><strong id="completadasHoy">0</strong><span id="detalleCompletadasHoy">Tareas marcadas hoy</span></div>
-<div class="progreso-metrica"><span>🗓️ Avance de la semana</span><strong id="porcentajeSemana">0%</strong><div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barraProgresoSemana"><div id="rellenoProgresoSemana"></div></div><span id="detalleProgresoSemana">0 de 0 completadas</span></div>
-</div>
-<div class="meta-diaria">
-<h3>🎯 Mi meta diaria</h3>
-<div class="meta-diaria-controles"><label for="metaDiaria">Tareas por día:</label><input id="metaDiaria" type="number" min="1" max="50" step="1" value="3" onchange="guardarMetaDiaria(this.value)"></div>
-<div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barraMetaDiaria"><div id="rellenoMetaDiaria"></div></div>
-<p class="meta-diaria-mensaje" id="mensajeMetaDiaria" aria-live="polite">¡Vos podés!</p>
-</div>
-</div>
-</div>
-<div class="inicio-panel-pestana" id="inicioMaterias" role="tabpanel" aria-labelledby="tabInicioMaterias" hidden>
-<div class="panel" id="panelResumenMaterias">
-<h2>📚 Resumen por materia</h2>
-<div id="resumenMateriasLista" class="resumen-materias-lista" aria-live="polite"></div>
-</div>
-</div>
-<div class="inicio-panel-pestana" id="inicioDia" role="tabpanel" aria-labelledby="tabInicioDia" hidden>
-<div class="panel panel-tareas-hoy" id="panelTareasHoy">
-<h2>🎯 Tu día de hoy</h2>
-<p id="fechaPanelHoy" class="fecha-panel-hoy"></p>
-<div id="contenidoTareasHoy" aria-live="polite"></div>
-<button type="button" class="primary" onclick="mostrar('guardadas')">📋 Ver todas mis tareas</button>
-</div>
 </div>
 </section>
 <section id="tareas" class="hidden">
@@ -402,9 +158,6 @@ a{color:#2e6fa6}
 </select>
 <label for="detalle">Notas (opcional)</label>
 <textarea id="detalle" rows="2" placeholder="¿Qué necesitás recordar?"></textarea>
-<label for="archivosTarea">📎 Adjuntar archivos</label>
-<input id="archivosTarea" type="file" multiple>
-<div id="adjuntosEdicion"></div>
 <p id="mensajeGuardado" role="status" aria-live="polite" style="display:none;padding:10px 12px;margin:12px 0 0;background:#e7f7ed;color:#17633a;border-radius:9px;font-weight:bold"></p>
 <button class="primary" id="guardarTarea" type="submit">Guardar tarea</button>
 <button type="button" id="cancelarEdicion" class="hidden" style="margin-left:8px;padding:12px;border:0;border-radius:9px;cursor:pointer" onclick="cancelarEdicionTarea()">Cancelar edición</button>
@@ -414,73 +167,51 @@ a{color:#2e6fa6}
 <section id="guardadas" class="hidden">
 <div class="panel">
 <h2>📋 Lista de tareas</h2>
-<div class="lista-busqueda">
-<label for="buscarTareas">🔎 ¿Qué tarea estás buscando?</label>
-<input id="buscarTareas" type="search" placeholder="Escribí una tarea, materia o palabra clave" autocomplete="off">
-</div>
-<div class="lista-filtros"><label for="filtroMateria">📚 Materia</label>
+<div style="margin:12px 0"><input id="buscarTareas" type="search" placeholder="Buscar tarea o materia…" autocomplete="off"></div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
 <select id="filtroMateria"><option value="">Todas las materias</option></select>
-<label for="filtroPrioridad">🎯 Prioridad</label>
-<select id="filtroPrioridad">
-<option value="">Todas las prioridades</option>
-<option value="normal">🟢 Normal</option>
-<option value="importante">🟡 Importante</option>
-<option value="urgente">🔴 Urgente</option>
-</select>
-<label for="filtroEstado">📌 Mostrar</label>
-<select id="filtroEstado">
-<option value="pendientes">Tareas pendientes</option>
-<option value="">Todas las tareas</option>
-<option value="vencidas">Tareas vencidas</option>
-<option value="completadas">Tareas completadas</option>
-</select>
-</div><button type="button" id="limpiarFiltros" class="lista-limpiar">↺ Limpiar búsqueda y filtros</button>
-<p id="ayudaLista" style="color:#666;margin:4px 0 12px">Tus tareas pendientes se mostrarán cuando empieces a buscar o cambies los filtros.</p>
-<div id="lista" aria-live="polite" class="hidden"></div>
+<select id="filtroPrioridad"><option value="">Todas las prioridades</option><option value="normal">🟢 Normal</option><option value="importante">🟡 Importante</option><option value="urgente">🔴 Urgente</option></select>
+<select id="filtroEstado"><option value="pendientes">Pendientes</option><option value="">Todas</option><option value="completadas">Completadas</option></select>
+</div>
+<div id="lista" aria-live="polite"></div>
 </div>
 </section>
 <section id="semana" class="hidden">
 <div class="panel">
 <h2>🗓️ Plan semanal de estudio</h2>
-<div class="semana-controles">
+<div style="display:flex;gap:8px;margin-bottom:12px">
 <button type="button" class="primary" onclick="cambiarSemana(-1)">⬅️ Semana anterior</button>
 <button type="button" class="primary" onclick="irASemanaActual()">📍 Esta semana</button>
 <button type="button" class="primary" onclick="cambiarSemana(1)">Semana siguiente ➡️</button>
 </div>
-<p id="rangoSemana" class="semana-rango"></p>
+<p id="rangoSemana" style="font-weight:bold"></p>
 <div id="planSemanal"></div>
 </div>
 </section>
 <section id="calendario" class="hidden">
 <div class="panel">
 <h2>📅 Calendario de actividades</h2>
-<div class="calendario-controles">
-<div class="calendario-mes"><label for="mes">🗓️ Elegir mes</label><input id="mes" type="month"></div>
-<button type="button" class="primary calendario-hoy" onclick="irAHoy()">📍 Ir a hoy</button>
+<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+<input id="mes" type="month" style="max-width:200px;margin:0">
+<button type="button" class="primary" onclick="irAHoy()">📍 Ir a hoy</button>
 </div>
 <div id="calendarioColores"></div>
 <div id="dia" aria-live="polite"></div>
 </div>
 </section>
 <section id="organizacion" class="hidden">
-<div class="panel accesos-rapidos">
+<div class="panel">
 <h2>🗓️ Organización</h2>
-<div class="rejilla-accesos">
-<button type="button" class="acceso acceso-semana" onclick="mostrar('semana')"><span class="acceso-icono">🗓️</span><span class="acceso-titulo">Plan semanal</span><span class="acceso-descripcion">Revisá tus tareas distribuidas por día.</span></button>
-<button type="button" class="acceso acceso-calendario" onclick="mostrar('calendario')"><span class="acceso-icono">📅</span><span class="acceso-titulo">Calendario</span><span class="acceso-descripcion">Consultá tus tareas por fecha y mes.</span></button>
-</div>
+<button type="button" class="primary" onclick="mostrar('semana')" style="margin-right:8px">Plan semanal</button>
+<button type="button" class="primary" onclick="mostrar('calendario')">Calendario</button>
 </div>
 </section>
 <section id="materias" class="hidden">
 <div class="panel">
 <h2>📚 Administrar materias</h2>
-<label for="nuevaMateriaPagina">Nombre de la nueva materia</label>
-<input id="nuevaMateriaPagina" maxlength="80" placeholder="Ej.: Matemática">
+<input id="nuevaMateriaPagina" maxlength="80" placeholder="Nombre de nueva materia">
 <button type="button" class="primary" id="agregarMateriaPagina">➕ Agregar materia</button>
 <p id="mensajeMateriaPagina" role="status" aria-live="polite"></p>
-</div>
-<div class="panel">
-<h2>✏️ Tus materias</h2>
 <div id="administrarMateriasPagina" style="margin-top:12px"></div>
 </div>
 </section>
@@ -496,9 +227,6 @@ a{color:#2e6fa6}
 <footer>Tus tareas se guardan en este dispositivo.</footer>
 <script>
 const clave="ordenando-actividades-v1";
-const claveMetaDiaria="ordenando-meta-diaria-v1";
-let metaDiaria=3;
-try{const valor=Number(localStorage.getItem(claveMetaDiaria));if(Number.isInteger(valor)&&valor>=1&&valor<=50)metaDiaria=valor;}catch(e){}
 let tareas=[];
 try{tareas=JSON.parse(localStorage.getItem(clave)||"[]");if(!Array.isArray(tareas))tareas=[]}catch(e){tareas=[]}
 const $=id=>document.getElementById(id);
@@ -516,7 +244,7 @@ function actualizarOpcionesMaterias(){
   $("opcionesMaterias").innerHTML=materias.map(m=>`<option value="${escapar(m)}"></option>`).join("");
   const zona=$("administrarMateriasPagina");
   if(zona){
-    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
+    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
   }
 }
 function guardarMateriaNueva(nombre){
@@ -549,12 +277,6 @@ function borrarMateria(nombre){
 }
 let tareaEditando=null;
 function guardar(){localStorage.setItem(clave,JSON.stringify(tareas));actualizar()}
-const nombreBDAdjuntos="ordenando-actividades-archivos-v1";let promesaBDAdjuntos=null;
-function abrirBDAdjuntos(){if(!("indexedDB" in window))return Promise.reject(new Error());if(promesaBDAdjuntos)return promesaBDAdjuntos;promesaBDAdjuntos=new Promise((resolve,reject)=>{const req=indexedDB.open(nombreBDAdjuntos,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains("archivos"))req.result.createObjectStore("archivos",{keyPath:"id"});};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});return promesaBDAdjuntos;}
-async function guardarArchivoAdjunto(archivo){const db=await abrirBDAdjuntos();const id=(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(16).slice(2));await new Promise((resolve,reject)=>{const tx=db.transaction("archivos","readwrite");tx.objectStore("archivos").put({id:id,blob:archivo});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});return {id:id,nombre:archivo.name,tipo:archivo.type||"application/octet-stream",tamano:archivo.size};}
-async function obtenerArchivoAdjunto(id){const db=await abrirBDAdjuntos();return new Promise((resolve,reject)=>{const req=db.transaction("archivos","readonly").objectStore("archivos").get(id);req.onsuccess=()=>resolve(req.result||null);req.onerror=()=>reject(req.error);});}
-async function borrarArchivoAdjunto(id){const db=await abrirBDAdjuntos();return new Promise((resolve,reject)=>{const tx=db.transaction("archivos","readwrite");tx.objectStore("archivos").delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});}
-function abrirAdjunto(idTarea,idArchivo){const ventana=window.open("about:blank","_blank");obtenerArchivoAdjunto(idArchivo).then(reg=>{if(!reg||!reg.blob)throw Error();const url=URL.createObjectURL(reg.blob);if(ventana)ventana.location.href=url;else{const a=document.createElement("a");a.href=url;a.download=reg.blob.name||"archivo";a.click();}setTimeout(()=>URL.revokeObjectURL(url),60000);}).catch(()=>{if(ventana)ventana.close();alert("No se pudo abrir el archivo.");});}
 function exportarCopia(){
   const copia={formato:"ordenando-mis-actividades",version:1,tareas:tareas,materiasPersonalizadas:materiasPersonalizadas};
   const archivo=new Blob([JSON.stringify(copia,null,2)],{type:"application/json"});
@@ -587,7 +309,6 @@ return `<div class="task ${t.prioridad}">
 <strong>${escapar(t.titulo)}</strong>
 <small>${escapar(t.materia||"General")} · ${fechaTexto(t.fecha)}</small>
 ${t.detalle?`<p>${escapar(t.detalle)}</p>`:""}
-${Array.isArray(t.adjuntos)&&t.adjuntos.length?`<div style="margin-top:9px;padding:9px;background:#fff;border-radius:8px"><strong>📎 Archivos adjuntos</strong><div>${t.adjuntos.map(a=>`<button type="button" onclick="abrirAdjunto('${t.id}','${a.id}')">📄 ${escapar(a.nombre)}</button>`).join("")}</div></div>`:""}
 <small>${vencida?"⚠️ Vencida":t.prioridad==="urgente"?"🔴 Urgente":t.prioridad==="importante"?"🟡 Importante":"🟢 Normal"}</small>
 <button onclick="cambiarEstado('${t.id}')">${t.hecha?'↩️ Pendiente':'✓ Completar'}</button>
 <button onclick="editarTarea('${t.id}')">✏️ Editar</button>
@@ -595,11 +316,6 @@ ${Array.isArray(t.adjuntos)&&t.adjuntos.length?`<div style="margin-top:9px;paddi
 </div>`;
 }
 function escapar(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-let permisoRecordatorios=typeof Notification!=="undefined"&&Notification.permission==="granted";
-function activarRecordatorios(){
-  if(typeof Notification==="undefined"){alert("Notificaciones no disponibles.");return;}
-  Notification.requestPermission().then(p=>{if(p==="granted")alert("¡Recordatorios activados!");});
-}
 function actualizar(){
 actualizarMateriasFiltro();
 const hoy=new Date().toLocaleDateString("sv-SE");
@@ -611,44 +327,11 @@ $("estadisticasInicio").innerHTML=`<div class="estadistica"><strong>${pendientes
 $("resumen").textContent=`Tenés ${pendientes.length} tareas pendientes y ${tareas.filter(t=>t.hecha).length} completadas.`;
 $("avisos").innerHTML=pendientes.filter(t=>t.fecha<=new Date(Date.now()+3*86400000).toLocaleDateString("sv-SE")).length?`<div class="notice" role="alert"><strong>🚨 TAREAS PRÓXIMAS</strong><p>Tenés tareas pendientes para los próximos días.</p><button type="button" onclick="mostrar('guardadas')">VER TAREAS</button></div>`:"";
 renderizarLista();
-renderizarProgreso();
-renderizarResumenMaterias();
-renderizarTareasHoy();
 consultarDia();
 renderizarPlanSemanal();
 }
-function guardarMetaDiaria(valor){
-  const numero=Number(valor);
-  if(Number.isInteger(numero)&&numero>=1&&numero<=50){metaDiaria=numero;localStorage.setItem(claveMetaDiaria,String(metaDiaria));renderizarProgreso();}
-}
-function renderizarProgreso(){
-  const hoy=new Date().toLocaleDateString("sv-SE");
-  const completadasHoy=tareas.filter(t=>t.hecha&&String(t.completadaEl||"").slice(0,10)===hoy).length;
-  const elHoy=$("completadasHoy");if(elHoy)elHoy.textContent=String(completadasHoy);
-  const avanceMeta=Math.min(100,Math.round(completadasHoy/metaDiaria*100));
-  const barraMeta=$("barraMetaDiaria");if(barraMeta)barraMeta.setAttribute("aria-valuenow",String(avanceMeta));
-  const rellenoMeta=$("rellenoMetaDiaria");if(rellenoMeta)rellenoMeta.style.width=avanceMeta+"%";
-  const mensajeMeta=$("mensajeMetaDiaria");if(mensajeMeta)mensajeMeta.textContent=completadasHoy>=metaDiaria?"🎉 ¡Meta diaria cumplida!":"Llevás "+completadasHoy+" de "+metaDiaria+" tareas.";
-}
-function renderizarResumenMaterias(){
-  const zona=$("resumenMateriasLista");if(!zona)return;
-  const materias=[...new Set(tareas.map(t=>String(t.materia||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
-  zona.innerHTML=materias.length?materias.map(m=>{
-    const lista=tareas.filter(t=>String(t.materia||"").trim().toLocaleLowerCase("es")===m.toLocaleLowerCase("es"));
-    return `<div style="padding:10px;border-bottom:1px solid #eee"><strong>${escapar(m)}</strong> — ${lista.filter(t=>!t.hecha).length} pendientes</div>`;
-  }).join(""):"<p>No hay materias con tareas.</p>";
-}
-function renderizarTareasHoy(){
-  const zona=$("contenidoTareasHoy");if(!zona)return;
-  const hoy=new Date().toLocaleDateString("sv-SE");
-  $("fechaPanelHoy").textContent=new Date().toLocaleDateString("es-AR",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
-  const deHoy=tareas.filter(t=>!t.hecha&&String(t.fecha||"").slice(0,10)===hoy);
-  zona.innerHTML=deHoy.length?deHoy.map(tarjeta).join(""):"<p>🎉 No tenés tareas pendientes para hoy.</p>";
-}
 function renderizarLista(){
   const zona=$("lista");if(!zona)return;
-  const ayuda=$("ayudaLista");
-  zona.classList.remove("hidden");if(ayuda)ayuda.classList.add("hidden");
   const buscar=($("buscarTareas")?.value||"").trim().toLocaleLowerCase("es");
   const materia=$("filtroMateria")?.value||"";
   const prioridad=$("filtroPrioridad")?.value||"";
@@ -662,7 +345,7 @@ function renderizarLista(){
     if(estado==="completadas"&&!t.hecha)return false;
     return true;
   });
-  zona.innerHTML=coincidencias.map(tarjeta).join("")||'<p>No hay tareas que coincidan.</p>';
+  zona.innerHTML=coincidencias.map(tarjeta).join("")||'<p>No hay tareas.</p>';
 }
 function actualizarMateriasFiltro(){
   const selector=$("filtroMateria");if(!selector)return;
@@ -674,18 +357,6 @@ function actualizarMateriasFiltro(){
 ["buscarTareas","filtroMateria","filtroPrioridad","filtroEstado"].forEach(id=>{
   $(id)?.addEventListener(id==="buscarTareas"?"input":"change",()=>renderizarLista());
 });
-$("limpiarFiltros")?.addEventListener("click",()=>{
-  $("buscarTareas").value="";$("filtroMateria").value="";$("filtroPrioridad").value="";$("filtroEstado").value="pendientes";
-  renderizarLista();
-});
-function activarPestanaInicio(nombre){
-  ["inicioResumen","inicioDia","inicioProgreso","inicioMaterias"].forEach(id=>{
-    const panel=$(id),boton=document.querySelector('[data-pestana-inicio="'+id+'"]');
-    if(panel)panel.hidden=id!==nombre;
-    if(boton)boton.classList.toggle("active",id===nombre);
-  });
-}
-document.querySelectorAll("[data-pestana-inicio]").forEach(b=>b.addEventListener("click",()=>activarPestanaInicio(b.dataset.pestanaInicio)));
 function mostrar(tab){
 document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
 $(tab).classList.remove("hidden");
@@ -693,18 +364,17 @@ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b
 actualizar();
 }
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>mostrar(b.dataset.tab)));
-$("formulario").addEventListener("submit",async e=>{
+$("formulario").addEventListener("submit",e=>{
 e.preventDefault();
 const materiaElegida=$("materia").value.trim();
 guardarMateriaNueva(materiaElegida);
 const datos={titulo:$("titulo").value.trim(),materia:materiaElegida,fecha:$("fecha").value,prioridad:$("prioridad").value,detalle:$("detalle").value.trim()};
-const archivosElegidos=Array.from($("archivosTarea")?.files||[]);const nuevos=[];for(const archivo of archivosElegidos)nuevos.push(await guardarArchivoAdjunto(archivo));
 if(tareaEditando){
   const existente=tareas.find(t=>t.id===tareaEditando);
-  if(existente){Object.assign(existente,datos);existente.adjuntos=(existente.adjuntos||[]).concat(nuevos);}
+  if(existente)Object.assign(existente,datos);
   cancelarEdicionTarea();
 }else{
-  tareas.push({id:Date.now().toString(),...datos,adjuntos:nuevos,hecha:false});
+  tareas.push({id:Date.now().toString(),...datos,hecha:false});
   e.target.reset();
   $("fecha").value=new Date().toLocaleDateString("sv-SE");
 }
@@ -717,7 +387,7 @@ tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia||""
 $("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrar("tareas");
 }
 function cancelarEdicionTarea(){tareaEditando=null;$("formulario").reset();$("tituloFormulario").textContent="➕ Agregar una tarea";$("guardarTarea").textContent="Guardar tarea";$("cancelarEdicion").classList.add("hidden");}
-function cambiarEstado(id){const t=tareas.find(t=>t.id===id);if(t){t.hecha=!t.hecha;if(t.hecha)t.completadaEl=new Date().toLocaleDateString("sv-SE");else delete t.completadaEl;guardar();}}
+function cambiarEstado(id){const t=tareas.find(t=>t.id===id);if(t){t.hecha=!t.hecha;guardar();}}
 function eliminar(id){if(confirm("¿Eliminar tarea?")){tareas=tareas.filter(t=>t.id!==id);guardar()}}
 
 function fechaLocal(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
@@ -754,10 +424,10 @@ function irAHoy(){
   verTareasDelDia(hoy);
 }
 function consultarDia(){
-  const mes=$("mes").value;
+  const mes=$("mes");
   const calendario=$("calendarioColores");
-  if(!mes||!calendario)return;
-  const partes=mes.split("-");
+  if(!mes||!calendario||!mes.value)return;
+  const partes=mes.value.split("-");
   const anio=Number(partes[0]);
   const numeroMes=Number(partes[1]);
   const cantidad=new Date(anio,numeroMes,0).getDate();
