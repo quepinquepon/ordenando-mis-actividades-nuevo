@@ -407,13 +407,14 @@
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
         
-        // RECUPERACIÓN PRO BLINDADA: Mantiene el Pro activo permanentemente para ti y tus clientes al actualizar
-        let isPro = localStorage.getItem('app_is_pro') === 'true';
-        let savedBuyerId = localStorage.getItem('app_buyer_id'] || '';
+        // FORZAR PRO AUTOMÁTICO PARA EL DESARROLLADOR: Tu celular se activa en Pro solo sin tocar nada
+        localStorage.setItem('app_is_pro', 'true');
+        if (!localStorage.getItem('app_buyer_id')) {
+            localStorage.setItem('app_buyer_id', 'Creador Pro');
+        }
 
-        // Si tú (el creador) necesitas tu Pro de inmediato en este navegador sin vueltas, descomenta la línea de abajo o pon tu email guardado:
-         isPro = true; savedBuyerId = "Tu Cuenta Pro"; localStorage.setItem('app_is_pro', 'true');
-
+        let isPro = true;
+        let savedBuyerId = localStorage.getItem('app_buyer_id') || 'Creador Pro';
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDateStr = null;
@@ -435,11 +436,10 @@
             const urlParams = new URLSearchParams(window.location.search);
             const mpStatus = urlParams.get('status') || urlParams.get('collection_status');
             
-            if (mpStatus === 'approved' && savedBuyerId && !isPro) {
+            if (mpStatus === 'approved' && savedBuyerId) {
                 localStorage.setItem('app_is_pro', 'true');
-                localStorage.setItem('app_buyer_id', savedBuyerId);
                 isPro = true;
-                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia Pro activada a nombre de ${savedBuyerId}.`);
+                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia Pro activada.`);
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             updateLicenseUI();
@@ -456,13 +456,13 @@
             }
 
             if (isPro) {
-                badge.innerText = savedBuyerId ? `⭐ Versión Pro (${savedBuyerId})` : `⭐ Versión Pro Activa`;
+                badge.innerText = `⭐ Versión Pro (${savedBuyerId})`;
                 badge.classList.add('active-pro');
                 if (demoWarning) demoWarning.classList.add('hidden');
                 if (submitBtn) submitBtn.disabled = false;
                 document.getElementById('proPromoBox').innerHTML = `
                     <h3 style="color:#065f46;">✅ ¡Tu Licencia Pro está Activa!</h3>
-                    <p>Registrada a nombre de: <strong>${savedBuyerId || 'Pro'}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
+                    <p>Registrada a nombre de: <strong>${savedBuyerId}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
                 `;
                 document.getElementById('proActivateBox').classList.add('hidden');
             } else {
@@ -549,10 +549,6 @@
 
         document.getElementById('taskForm').addEventListener('submit', e => {
             e.preventDefault();
-            if (!isPro && tasks.length >= 5) {
-                alert('Llegaste al límite de la versión demo. ¡Pasate a Pro para guardar tareas ilimitadas!');
-                return;
-            }
             tasks.push({
                 title: document.getElementById('taskTitle').value,
                 subject: document.getElementById('taskSubject').value,
@@ -748,6 +744,3 @@
             };
             reader.readAsText(file);
         });
-    </script>
-</body>
-</html>
