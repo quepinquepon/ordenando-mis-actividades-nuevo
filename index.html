@@ -24,7 +24,7 @@ header p{margin:8px 0 0}
 
 /* MENÚ CENTRADO Y CÓMODO */
 nav{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;padding:12px;background:white;text-align:center}
-nav button{border:0;border-radius:10px;padding:10px 14px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:14px;cursor:pointer}
+nav button{border:0;border-radius:10px;padding:10px 12px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:13px;cursor:pointer}
 nav button.active{background:#5546d8;color:white}
 
 main{max-width:850px;margin:auto;padding:16px}
@@ -74,7 +74,8 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 
 <nav aria-label="Navegación principal">
 <button type="button" class="active" data-tab="inicio" onclick="mostrar('inicio')">🏠 Inicio</button>
-<button type="button" data-tab="guardadas" onclick="mostrar('guardadas')">➕ Tareas</button>
+<button type="button" data-tab="tareas" onclick="mostrar('tareas')">➕ Nueva tarea</button>
+<button type="button" data-tab="guardadas" onclick="mostrar('guardadas')">📋 Mis tareas</button>
 <button type="button" data-tab="organizacion" onclick="mostrar('organizacion')">🗓️ Organización</button>
 <button type="button" data-tab="materias" onclick="mostrar('materias')">📚 Materias</button>
 <button type="button" data-tab="copias" onclick="mostrar('copias')">💾 Copia</button>
@@ -87,7 +88,7 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 <h2>¡Hola! 👋</h2>
 <p>Este es tu espacio para organizar el estudio, recordar entregas y avanzar paso a paso.</p>
 <p id="resumen"></p>
-<button class="primary" onclick="mostrar('guardadas')">➕ Agregar una tarea</button>
+<button type="button" class="primary" onclick="mostrar('tareas')">➕ Agregar una tarea</button>
 <button class="primary" type="button" id="activarRecordatorios" onclick="activarRecordatorios()" style="margin-top:10px;background:#14804a">🔔 Activar recordatorios</button>
 </div>
 <div class="panel">
@@ -124,7 +125,10 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 
 <section id="guardadas" class="hidden">
 <div class="panel">
-<h2>📋 Lista de tareas</h2>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+<h2 style="margin:0">📋 Lista de tareas</h2>
+<button type="button" class="primary" onclick="mostrar('tareas')">➕ Nueva tarea</button>
+</div>
 <div style="margin:12px 0"><input id="buscarTareas" type="search" placeholder="Buscar tarea o materia…" autocomplete="off"></div>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
 <select id="filtroMateria"><option value="">Todas las materias</option></select>
@@ -339,7 +343,7 @@ function mostrar(tab){
 }
 
 $("formulario").addEventListener("submit",e=>{
-  e.preventDefault(); // Frena la recarga de la página para que se guarde bien
+  e.preventDefault();
   const materiaElegida=$("materia").value.trim();
   guardarMateriaNueva(materiaElegida);
   const datos={titulo:$("titulo").value.trim(),materia:materiaElegida,fecha:$("fecha").value,prioridad:$("prioridad").value,detalle:$("detalle").value.trim()};
