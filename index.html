@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Publicación actualizada para forzar una nueva compilación de GitHub Pages -->
+<!-- Publicación para forzar actualización en GitHub Pages -->
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -15,73 +15,80 @@
 <style>
 *{box-sizing:border-box}
 html{scroll-behavior:auto}
+.skip-link{position:absolute;top:-100px;left:12px;z-index:1000;padding:12px 16px;background:#fff;color:#252744;border:3px solid #5546d8;border-radius:8px;font-weight:bold}
+.skip-link:focus{top:12px}
 body{margin:0;font-family:Arial,sans-serif;background:#f4f5fb;color:#252744}
-header{background:#5546d8;color:white;padding:20px;text-align:center}
-header h1{margin:0;font-size:20px}
-header p{margin:6px 0 0;font-size:13px}
-
-/* MENÚ TÁCTIL 100% FUNCIONAL */
-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:10px;background:white;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
-nav button{flex:1 1 auto;min-width:45%;border:2px solid #e1deef;border-radius:10px;padding:12px 8px;background:#faf9ff;color:#4034aa;font-weight:bold;font-size:14px;cursor:pointer;text-align:center}
-nav button.active{background:#5546d8;color:white;border-color:#5546d8}
-
-main{max-width:850px;margin:auto;padding:14px}
-.panel{background:white;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px rgba(0,0,0,0.06)}
-h2{margin-top:0;font-size:20px}
+header{background:#5546d8;color:white;padding:22px 18px}
+header h1{margin:0;font-size:24px}
+header p{margin:8px 0 0}
+nav{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:12px;background:white}
+nav button{border:0;border-radius:10px;padding:10px 14px;background:#ecebff;color:#4034aa;font-weight:bold;font-size:14px;cursor:pointer}
+nav button.active{background:#5546d8;color:white}
+main{max-width:850px;margin:auto;padding:16px}
+.panel{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #2221}
+h2{margin-top:0}
 input,select,textarea{width:100%;padding:12px;margin:6px 0 12px;border:1px solid #ccc;border-radius:9px;font-size:16px}
-button.primary{background:#5546d8;color:white;border:0;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer;width:100%}
-.task{padding:12px;margin:10px 0;border-radius:10px;background:#f5f5fa;border-left:6px solid #28a36a}
-.task.importante{border-left-color:#e7a000}
-.task.urgente{border-left-color:#e53935;background:#fff0f0}
-.task small{display:block;margin-top:6px;color:#555}
-.task button{margin-top:8px;margin-right:6px;padding:8px;border:0;border-radius:6px;cursor:pointer}
-.dia-calendario{width:100%;min-height:48px;padding:4px;border:2px solid #ddd;border-radius:8px;background:#f5f5fa;color:#252744;font-size:14px;font-weight:700;cursor:pointer}
-.dia-calendario.seleccionado{background:#315fe8!important;color:#fff;border-color:#1d3ea8}
+button.primary{background:#5546d8;color:white;border:0;padding:12px 16px;border-radius:9px;font-weight:bold;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #174ea6;outline-offset:3px}
+button:disabled{cursor:not-allowed;opacity:.7}
+.notice{background:#fff0c9;border:4px solid #e53935;border-left:14px solid #e53935;padding:24px 22px;border-radius:16px;margin:0 0 20px;box-shadow:0 7px 22px #b71c1c35}
+.notice strong{display:block;font-size:24px;color:#a51d1d;margin-bottom:12px}
+.notice p{font-size:17px;font-weight:700;color:#29213a}
+.notice button{font-size:16px;padding:12px 18px;border:0;border-radius:10px;background:#b71c1c;color:#fff;font-weight:700;cursor:pointer}
+.task{padding:13px;margin:10px 0;border-radius:10px;background:#f5f5fa;border-left:7px solid #28a36a}
+.task.importante{border-color:#e7a000}
+.task.urgente{border-color:#e53935;background:#fff0f0}
+.task small{display:block;margin-top:7px;color:#555}
+.task button{margin-top:10px;margin-right:6px;padding:8px;border:0;border-radius:7px;cursor:pointer}
+.dia-calendario{width:100%;min-height:54px;padding:8px 2px;border:2px solid #ddd;border-radius:9px;background:#f5f5fa;color:#252744;font-size:16px;font-weight:700;cursor:pointer}
+.dia-calendario:hover{border-color:#5546d8}
+.dia-calendario.seleccionado{background:#315fe8!important;color:#fff;border:3px solid #1d3ea8}
 .dia-calendario.hoy{box-shadow:inset 0 0 0 2px #5546d8}
-.dia-calendario .cantidad{display:block;font-size:10px;margin-top:2px}
-.detalle-dia{margin-top:16px;padding:14px;background:#f4f5fb;border-radius:10px;border:1px solid #dedff2}
-.semana-dia{padding:12px;margin:10px 0;border:1px solid #dedff2;border-radius:10px;background:#f8f8ff}
-.semana-dia h3{margin:0 0 6px}
+.dia-calendario .cantidad{display:block;font-size:11px;margin-top:4px}
+.detalle-dia{margin-top:18px;padding:16px;background:#f4f5fb;border-radius:12px;border:1px solid #dedff2}
+.semana-dia{padding:13px;margin:12px 0;border:1px solid #dedff2;border-radius:12px;background:#f8f8ff}
+.semana-dia h3{margin:0 0 8px}
 .semana-dia.hoy{border:2px solid #5546d8;background:#f0efff}
-.semana-dia-vacio{font-size:14px;color:#666;margin:6px 0}
+.semana-dia-vacio{font-size:14px;color:#666;margin:8px 0}
 .hidden{display:none}
-.estadisticas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:4px 0}
-.estadistica{min-height:110px;padding:14px;border-radius:12px;background:#315fe8;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:4px}
-.estadistica strong{font-size:30px;line-height:1}
+.estadisticas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:5px 2px 10px}
+.estadistica{min-height:130px;padding:16px;border-radius:14px;background:#315fe8;color:#fff;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.estadistica strong{font-size:34px;line-height:1}
+.estadistica span{font-size:14px;font-weight:700}
 .estadistica.hoy{background:#c77b00}
 .estadistica.atrasadas{background:#cf303b}
 .estadistica.urgentes{background:#14804a}
-footer{text-align:center;color:#666;padding:16px;font-size:12px}
-@media(min-width:600px){.estadisticas{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:650px){.estadisticas{grid-template-columns:repeat(4,minmax(0,1fr))}}
+footer{text-align:center;color:#666;padding:20px;font-size:13px}
 </style>
 </head>
 <body>
+<a class="skip-link" href="#contenido">Saltar al contenido principal</a>
 <header>
 <h1>📚 ORDENANDO MIS ACTIVIDADES</h1>
 <p>Organizá tus tareas a tu manera. ¡Vos podés!</p>
 </header>
 
-<!-- MENÚ SUPERIOR DIRECTO -->
 <nav aria-label="Navegación principal">
-<button type="button" class="active" id="btn-inicio" onclick="mostrarSeccion('inicio')">🏠 Inicio</button>
-<button type="button" id="btn-guardadas" onclick="mostrarSeccion('guardadas')">➕ Tareas</button>
-<button type="button" id="btn-organizacion" onclick="mostrarSeccion('organizacion')">🗓️ Organización</button>
-<button type="button" id="btn-materias" onclick="mostrarSeccion('materias')">📚 Materias</button>
-<button type="button" id="btn-copias" onclick="mostrarSeccion('copias')">💾 Copia</button>
+<button type="button" class="active" data-tab="inicio" onclick="mostrar('inicio')">🏠 Inicio</button>
+<button type="button" data-tab="guardadas" onclick="mostrar('guardadas')">➕ Tareas</button>
+<button type="button" data-tab="organizacion" onclick="mostrar('organizacion')">🗓️ Organización</button>
+<button type="button" data-tab="materias" onclick="mostrar('materias')">📚 Materias</button>
+<button type="button" data-tab="copias" onclick="mostrar('copias')">💾 Copia</button>
 </nav>
 
-<main id="contenido">
+<main id="contenido" tabindex="-1">
 <section id="inicio">
 <div id="avisos"></div>
 <div class="panel">
 <h2>¡Hola! 👋</h2>
-<p>Este es tu espacio para organizar el estudio y recordar entregas.</p>
+<p>Este es tu espacio para organizar el estudio, recordar entregas y avanzar paso a paso.</p>
 <p id="resumen"></p>
-<button class="primary" onclick="mostrarSeccion('guardadas')">➕ Agregar una tarea</button>
+<button class="primary" onclick="mostrar('guardadas')">➕ Agregar una tarea</button>
 <button class="primary" type="button" id="activarRecordatorios" onclick="activarRecordatorios()" style="margin-top:10px;background:#14804a">🔔 Activar recordatorios</button>
 </div>
 <div class="panel">
-<h2>📊 Tus tareas</h2>
+<h2>📊 Tus tareas de un vistazo</h2>
 <div id="estadisticasInicio" class="estadisticas"></div>
 </div>
 </section>
@@ -105,9 +112,9 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 </select>
 <label for="detalle">Notas (opcional)</label>
 <textarea id="detalle" rows="2" placeholder="¿Qué necesitás recordar?"></textarea>
-<p id="mensajeGuardado" role="status" aria-live="polite" style="display:none;padding:10px;background:#e7f7ed;color:#17633a;border-radius:9px;font-weight:bold"></p>
+<p id="mensajeGuardado" role="status" aria-live="polite" style="display:none;padding:10px 12px;margin:12px 0 0;background:#e7f7ed;color:#17633a;border-radius:9px;font-weight:bold"></p>
 <button class="primary" id="guardarTarea" type="submit">Guardar tarea</button>
-<button type="button" id="cancelarEdicion" class="hidden" style="margin-top:8px;padding:12px;border:0;border-radius:9px;background:#ccc;cursor:pointer;width:100%" onclick="cancelarEdicionTarea()">Cancelar edición</button>
+<button type="button" id="cancelarEdicion" class="hidden" style="margin-left:8px;padding:12px;border:0;border-radius:9px;cursor:pointer" onclick="cancelarEdicionTarea()">Cancelar edición</button>
 </form>
 </div>
 </section>
@@ -116,7 +123,7 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 <div class="panel">
 <h2>📋 Lista de tareas</h2>
 <div style="margin:12px 0"><input id="buscarTareas" type="search" placeholder="Buscar tarea o materia…" autocomplete="off"></div>
-<div style="display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px">
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px">
 <select id="filtroMateria"><option value="">Todas las materias</option></select>
 <select id="filtroPrioridad"><option value="">Todas las prioridades</option><option value="normal">🟢 Normal</option><option value="importante">🟡 Importante</option><option value="urgente">🔴 Urgente</option></select>
 <select id="filtroEstado"><option value="pendientes">Pendientes</option><option value="">Todas</option><option value="completadas">Completadas</option></select>
@@ -127,8 +134,8 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 
 <section id="semana" class="hidden">
 <div class="panel">
-<h2>🗓️ Plan semanal</h2>
-<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+<h2>🗓️ Plan semanal de estudio</h2>
+<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
 <button type="button" class="primary" onclick="cambiarSemana(-1)">⬅️ Semana anterior</button>
 <button type="button" class="primary" onclick="irASemanaActual()">📍 Esta semana</button>
 <button type="button" class="primary" onclick="cambiarSemana(1)">Semana siguiente ➡️</button>
@@ -140,9 +147,9 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 
 <section id="calendario" class="hidden">
 <div class="panel">
-<h2>📅 Calendario</h2>
-<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px">
-<input id="mes" type="month">
+<h2>📅 Calendario de actividades</h2>
+<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+<input id="mes" type="month" style="max-width:200px;margin:0">
 <button type="button" class="primary" onclick="irAHoy()">📍 Ir a hoy</button>
 </div>
 <div id="calendarioColores"></div>
@@ -153,14 +160,14 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 <section id="organizacion" class="hidden">
 <div class="panel">
 <h2>🗓️ Organización</h2>
-<button type="button" class="primary" onclick="mostrarSeccion('semana')" style="margin-bottom:10px">Plan semanal</button>
-<button type="button" class="primary" onclick="mostrarSeccion('calendario')">Calendario</button>
+<button type="button" class="primary" onclick="mostrar('semana')" style="margin-right:8px;margin-bottom:8px">Plan semanal</button>
+<button type="button" class="primary" onclick="mostrar('calendario')">Calendario</button>
 </div>
 </section>
 
 <section id="materias" class="hidden">
 <div class="panel">
-<h2>📚 Materias</h2>
+<h2>📚 Administrar materias</h2>
 <input id="nuevaMateriaPagina" maxlength="80" placeholder="Nombre de nueva materia">
 <button type="button" class="primary" id="agregarMateriaPagina">➕ Agregar materia</button>
 <p id="mensajeMateriaPagina" role="status" aria-live="polite"></p>
@@ -171,7 +178,7 @@ footer{text-align:center;color:#666;padding:16px;font-size:12px}
 <section id="copias" class="hidden">
 <div class="panel">
 <h2>🛟 Copia de seguridad</h2>
-<button class="primary" type="button" onclick="exportarCopia()">⬇️ Descargar copia</button>
+<button class="primary" type="button" onclick="exportarCopia()">⬇️ Descargar copia de seguridad</button>
 <label for="archivoCopia" style="display:block;margin-top:14px">Recuperar copia</label>
 <input id="archivoCopia" type="file" accept=".json,application/json">
 </div>
@@ -199,7 +206,7 @@ function actualizarOpcionesMaterias(){
   $("opcionesMaterias").innerHTML=materias.map(m=>`<option value="${escapar(m)}"></option>`).join("");
   const zona=$("administrarMateriasPagina");
   if(zona){
-    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
+    zona.innerHTML=materias.length?materias.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee"><span>${escapar(m)}</span><button type="button" onclick="borrarMateria('${escapar(m)}')">🗑</button></div>`).join(""):"<p>No hay materias.</p>";
   }
 }
 function guardarMateriaNueva(nombre){
@@ -265,11 +272,9 @@ return `<div class="task ${t.prioridad}">
 <small>${escapar(t.materia||"General")} · ${fechaTexto(t.fecha)}</small>
 ${t.detalle?`<p>${escapar(t.detalle)}</p>`:""}
 <small>${vencida?"⚠️ Vencida":t.prioridad==="urgente"?"🔴 Urgente":t.prioridad==="importante"?"🟡 Importante":"🟢 Normal"}</small>
-<div style="margin-top:8px">
 <button onclick="cambiarEstado('${t.id}')">${t.hecha?'↩️ Pendiente':'✓ Completar'}</button>
 <button onclick="editarTarea('${t.id}')">✏️ Editar</button>
 <button onclick="eliminar('${t.id}')">🗑 Eliminar</button>
-</div>
 </div>`;
 }
 function escapar(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
@@ -282,7 +287,7 @@ const atrasadas=pendientes.filter(t=>t.fecha<hoy);
 const urgentes=pendientes.filter(t=>t.prioridad==="urgente");
 $("estadisticasInicio").innerHTML=`<div class="estadistica"><strong>${pendientes.length}</strong><span>Pendientes</span></div><div class="estadistica hoy"><strong>${vencenHoy.length}</strong><span>Vencen hoy</span></div><div class="estadistica atrasadas"><strong>${atrasadas.length}</strong><span>Atrasadas</span></div><div class="estadistica urgentes"><strong>${urgentes.length}</strong><span>Urgentes</span></div>`;
 $("resumen").textContent=`Tenés ${pendientes.length} tareas pendientes y ${tareas.filter(t=>t.hecha).length} completadas.`;
-$("avisos").innerHTML=pendientes.filter(t=>t.fecha<=new Date(Date.now()+3*86400000).toLocaleDateString("sv-SE")).length?`<div class="panel" style="background:#fff0c9;border:2px solid #e53935"><strong>🚨 TAREAS PRÓXIMAS</strong><p>Tenés tareas pendientes para los próximos días.</p><button type="button" class="primary" onclick="mostrarSeccion('guardadas')">VER TAREAS</button></div>`:"";
+$("avisos").innerHTML=pendientes.filter(t=>t.fecha<=new Date(Date.now()+3*86400000).toLocaleDateString("sv-SE")).length?`<div class="notice" role="alert"><strong>🚨 TAREAS PRÓXIMAS</strong><p>Tenés tareas pendientes para los próximos días.</p><button type="button" onclick="mostrar('guardadas')">VER TAREAS</button></div>`:"";
 renderizarLista();
 consultarDia();
 renderizarPlanSemanal();
@@ -315,23 +320,11 @@ function actualizarMateriasFiltro(){
   $(id)?.addEventListener(id==="buscarTareas"?"input":"change",()=>renderizarLista());
 });
 
-function mostrarSeccion(tab){
-  const secciones = ['inicio', 'tareas', 'guardadas', 'semana', 'calendario', 'organizacion', 'materias', 'copias'];
-  secciones.forEach(s => {
-    const el = $(s);
-    if(el) el.classList.add('hidden');
-  });
-  
-  const objetivo = $(tab === 'tareas' ? 'tareas' : tab);
-  if(objetivo) objetivo.classList.remove('hidden');
-
-  document.querySelectorAll('nav button').forEach(b => {
-    b.classList.remove('active');
-  });
-  
-  const botonActivo = $('btn-' + tab) || document.querySelector(`[onclick*="${tab}"]`);
-  if(botonActivo) botonActivo.classList.add('active');
-
+function mostrar(tab){
+  document.querySelectorAll("main section").forEach(s=>s.classList.add("hidden"));
+  const seccionObjetivo = $(tab);
+  if(seccionObjetivo) seccionObjetivo.classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
   actualizar();
 }
 
@@ -350,12 +343,12 @@ if(tareaEditando){
   $("fecha").value=new Date().toLocaleDateString("sv-SE");
 }
 guardar();
-mostrarSeccion('guardadas');
+mostrar("guardadas");
 });
 function editarTarea(id){
 const t=tareas.find(t=>t.id===id);if(!t)return;
-tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia\vert{}\vert{}"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad\vert{}\vert{}"normal";$("detalle").value=t.detalle||"";
-$("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrarSeccion('tareas');
+tareaEditando=id;$("titulo").value=t.titulo||"";$("materia").value=t.materia||"";$("fecha").value=t.fecha||"";$("prioridad").value=t.prioridad||"normal";$("detalle").value=t.detalle||"";
+$("tituloFormulario").textContent="✏️ Editar tarea";$("guardarTarea").textContent="Guardar cambios";$("cancelarEdicion").classList.remove("hidden");mostrar("tareas");
 }
 function cancelarEdicionTarea(){tareaEditando=null;$("formulario").reset();$("tituloFormulario").textContent="➕ Agregar una tarea";$("guardarTarea").textContent="Guardar tarea";$("cancelarEdicion").classList.add("hidden");}
 function cambiarEstado(id){const t=tareas.find(t=>t.id===id);if(t){t.hecha=!t.hecha;guardar();}}
@@ -393,3 +386,36 @@ function irAHoy(){
   const hoy=new Date().toLocaleDateString("sv-SE");
   $("mes").value=hoy.slice(0,7);
   verTareasDelDia(hoy);
+}
+function consultarDia(){
+  const mes=$("mes");
+  const calendario=$("calendarioColores");
+  if(!mes||!calendario||!mes.value)return;
+  const partes=mes.value.split("-");
+  const anio=Number(partes[0]);
+  const numeroMes=Number(partes[1]);
+  const cantidad=new Date(anio,numeroMes,0).getDate();
+  let html='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px">';
+  ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"].forEach(d=>{html+='<div style="text-align:center;font-weight:bold;font-size:12px">'+d+'</div>';});
+  const inicio=(new Date(anio,numeroMes-1,1).getDay()+6)%7;
+  for(let i=0;i<inicio;i++)html+='<div></div>';
+  const hoy=new Date().toLocaleDateString("sv-SE");
+  for(let dia=1;dia<=cantidad;dia++){
+    const fecha=anio+"-"+String(numeroMes).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
+    const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha&&!t.hecha);
+    const clases="dia-calendario"+(fecha===fechaCalendarioSeleccionada?" seleccionado":"")+(fecha===hoy?" hoy":"");
+    html+='<button type="button" class="'+clases+'" onclick="verTareasDelDia(\''+fecha+'\')">'+dia+(delDia.length?'<span class="cantidad">'+delDia.length+' tarea(s)</span>':'')+'</button>';
+  }
+  html+='</div>';
+  calendario.innerHTML=html;
+}
+
+$("mes").value=new Date().toLocaleDateString("sv-SE").slice(0,7);
+consultarDia();
+verTareasDelDia(fechaCalendarioSeleccionada);
+$("fecha").value=new Date().toLocaleDateString("sv-SE");
+actualizarOpcionesMaterias();
+actualizar();
+</script>
+</body>
+</html>
