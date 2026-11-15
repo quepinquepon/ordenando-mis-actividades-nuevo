@@ -43,11 +43,18 @@ button:disabled{cursor:not-allowed;opacity:.7}
 .task.urgente{border-color:#e53935;background:#fff0f0}
 .task small{display:block;margin-top:7px;color:#555}
 .task button{margin-top:10px;margin-right:6px;padding:8px;border:0;border-radius:7px;cursor:pointer}
-.dia-calendario{width:100%;min-height:54px;padding:8px 2px;border:2px solid #ddd;border-radius:9px;background:#f5f5fa;color:#252744;font-size:16px;font-weight:700;cursor:pointer}
+
+/* ESTILOS DEL CALENDARIO CON PUNTOS DE COLORES */
+.dia-calendario{position:relative;width:100%;min-height:58px;padding:6px 2px;border:2px solid #ddd;border-radius:9px;background:#f5f5fa;color:#252744;font-size:15px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .dia-calendario:hover{border-color:#5546d8}
 .dia-calendario.seleccionado{background:#315fe8!important;color:#fff;border:3px solid #1d3ea8}
 .dia-calendario.hoy{box-shadow:inset 0 0 0 2px #5546d8}
-.dia-calendario .cantidad{display:block;font-size:11px;margin-top:4px}
+.puntos-dia{display:flex;gap:3px;margin-top:4px;min-height:8px}
+.punto{width:6px;height:6px;border-radius:50%}
+.punto.normal{background:#28a36a}
+.punto.importante{background:#e7a000}
+.punto.urgente{background:#e53935}
+
 .detalle-dia{margin-top:18px;padding:16px;background:#f4f5fb;border-radius:12px;border:1px solid #dedff2}
 .semana-dia{padding:13px;margin:12px 0;border:1px solid #dedff2;border-radius:12px;background:#f8f8ff}
 .semana-dia h3{margin:0 0 8px}
@@ -158,6 +165,11 @@ footer{text-align:center;color:#666;padding:20px;font-size:13px}
 <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;justify-content:center">
 <input id="mes" type="month" style="max-width:200px;margin:0">
 <button type="button" class="primary" onclick="irAHoy()">📍 Ir a hoy</button>
+</div>
+<div style="font-size:12px;color:#666;margin-bottom:10px;text-align:center">
+  <span style="display:inline-block;width:8px;height:8px;background:#28a36a;border-radius:50%;margin-right:2px"></span> Normal &nbsp;
+  <span style="display:inline-block;width:8px;height:8px;background:#e7a000;border-radius:50%;margin-right:2px"></span> Importante &nbsp;
+  <span style="display:inline-block;width:8px;height:8px;background:#e53935;border-radius:50%;margin-right:2px"></span> Urgente
 </div>
 <div id="calendarioColores"></div>
 <div id="dia" aria-live="polite"></div>
@@ -419,12 +431,22 @@ function consultarDia(){
     const fecha=anio+"-"+String(numeroMes).padStart(2,"0")+"-"+String(dia).padStart(2,"0");
     const delDia=tareas.filter(t=>String(t.fecha||"").slice(0,10)===fecha&&!t.hecha);
     const clases="dia-calendario"+(fecha===fechaCalendarioSeleccionada?" seleccionado":"")+(fecha===hoy?" hoy":"");
-    html+='<button type="button" class="'+clases+'" onclick="verTareasDelDia(\''+fecha+'\')">'+dia+(delDia.length?'<span class="cantidad">'+delDia.length+' tarea(s)</span>':'')+'</button>';
+    
+    // Generar los puntitos de colores según la prioridad de las tareas del día
+    let puntosHtml='<div class="puntos-dia">';
+    delDia.slice(0,3).forEach(t => {
+      const prio = t.prioridad || "normal";
+      puntosHtml += `<span class="punto ${prio}"></span>`;
+    });
+    puntosHtml += '</div>';
+
+    html+='<button type="button" class="'+clases+'" onclick="verTareasDelDia(\''+fecha+'\')"><span>'+dia+'</span>'+puntosHtml+'</button>';
   }
   html+='</div>';
   calendario.innerHTML=html;
 }
 
+$("mes")?.addEventListener("change", consultarDia);
 $("mes").value=new Date().toLocaleDateString("sv-SE").slice(0,7);
 consultarDia();
 verTareasDelDia(fechaCalendarioSeleccionada);
