@@ -406,18 +406,15 @@
 
         let tasks = JSON.parse(localStorage.getItem('app_tasks') || '[]');
         let subjects = JSON.parse(localStorage.getItem('app_subjects') || '["Matemática", "Lengua", "Ciencias"]');
-        
-        // FORZAR PRO AUTOMÁTICO PARA EL DESARROLLADOR: Tu celular se activa en Pro solo sin tocar nada
-        localStorage.setItem('app_is_pro', 'true');
-        if (!localStorage.getItem('app_buyer_id')) {
-            localStorage.setItem('app_buyer_id', 'Creador Pro');
-        }
-
-        let isPro = true;
-        let savedBuyerId = localStorage.getItem('app_buyer_id') || 'Creador Pro';
+        let isPro = localStorage.getItem('app_is_pro') === 'true';
+        let savedBuyerId = localStorage.getItem('app_buyer_id') || '';
         let currentMonth = new Date().getMonth();
         let currentYear = new Date().getFullYear();
         let selectedDateStr = null;
+
+        // PARA RECUPERAR TU PRO PERSONAL EN TU CELULAR AL INSTANTE:
+        // Si querés que tu celu sea Pro ya mismo, descomenta la línea de abajo borrando las dos barritas (//):
+        // isPro = true; savedBuyerId = "Tu Cuenta"; localStorage.setItem('app_is_pro', 'true');
 
         function calcularCodigo(identificador) {
             const clean = identificador.trim().toLowerCase();
@@ -436,10 +433,11 @@
             const urlParams = new URLSearchParams(window.location.search);
             const mpStatus = urlParams.get('status') || urlParams.get('collection_status');
             
-            if (mpStatus === 'approved' && savedBuyerId) {
+            if (mpStatus === 'approved' && savedBuyerId && !isPro) {
                 localStorage.setItem('app_is_pro', 'true');
+                localStorage.setItem('app_buyer_id', savedBuyerId);
                 isPro = true;
-                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia Pro activada.`);
+                alert(`🎉 ¡Pago aprobado por Mercado Pago! Licencia activada a nombre de ${savedBuyerId}.`);
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             updateLicenseUI();
@@ -456,13 +454,13 @@
             }
 
             if (isPro) {
-                badge.innerText = `⭐ Versión Pro (${savedBuyerId})`;
+                badge.innerText = `⭐ Versión Pro (${savedBuyerId || 'Activa'})`;
                 badge.classList.add('active-pro');
                 if (demoWarning) demoWarning.classList.add('hidden');
                 if (submitBtn) submitBtn.disabled = false;
                 document.getElementById('proPromoBox').innerHTML = `
                     <h3 style="color:#065f46;">✅ ¡Tu Licencia Pro está Activa!</h3>
-                    <p>Registrada a nombre de: <strong>${savedBuyerId}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
+                    <p>Registrada a nombre de: <strong>${savedBuyerId || 'Pro'}</strong><br>Disfrutá de tareas ilimitadas de por vida.</p>
                 `;
                 document.getElementById('proActivateBox').classList.add('hidden');
             } else {
@@ -509,7 +507,7 @@
             box.innerHTML = pending.map(t => `
                 <div class="alert-box">
                     <strong>🚨 VENCE HOY/ATRASADA: "${t.title}"</strong>
-                    <p style="margin-top:0.25rem;">Materia: ${t.subject} | Vencimiento: ${t.dueDate}</p>
+                    <p style="margin-top:0.25rem;">Materia: ${t.subject} \vert{} Vencimiento:${t.dueDate}</p>
                 </div>
             `).join('');
         }
@@ -521,10 +519,10 @@
                 return;
             }
             list.innerHTML = tasks.map((t, i) => `
-                <div class="task-card ${t.priority} ${t.completed ? 'completed' : ''}">
+                <div class="task-card ${t.priority}${t.completed ? 'completed' : ''}">
                     <div>
                         <strong>${t.title}</strong>
-                        <div style="font-size:0.8rem; color:var(--text-muted);">${t.subject} — Vence: ${t.dueDate}</div>
+                        <div style="font-size:0.8rem; color:var(--text-muted);">${t.subject} — Vence:${t.dueDate}</div>
                     </div>
                     <div style="display:flex; gap:0.3rem;">
                         <button class="btn" onclick="toggleTask(${i})" style="padding:0.3rem 0.6rem; font-size:0.75rem;">${t.completed ? '↩️' : '✅'}</button>
@@ -549,6 +547,10 @@
 
         document.getElementById('taskForm').addEventListener('submit', e => {
             e.preventDefault();
+            if (!isPro && tasks.length >= 5) {
+                alert('Llegaste al límite de la versión demo. ¡Pasate a Pro para guardar tareas ilimitadas!');
+                return;
+            }
             tasks.push({
                 title: document.getElementById('taskTitle').value,
                 subject: document.getElementById('taskSubject').value,
@@ -570,177 +572,4 @@
         function renderSubjects() {
             const list = document.getElementById('subjectsList');
             list.innerHTML = subjects.map((s, i) => `
-                <li style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:0.4rem 0.8rem; border-radius:6px; font-size:0.9rem;">
-                    <span>${s}</span>
-                    <button class="btn" onclick="deleteSub(${i})" style="background:var(--urgent); padding:0.2rem 0.4rem; font-size:0.7rem;">X</button>
-                </li>
-            `).join('');
-        }
-
-        document.getElementById('btnAddSubject').addEventListener('click', () => {
-            const inp = document.getElementById('newSubjectInput');
-            if (inp.value.trim()) {
-                subjects.push(inp.value.trim());
-                localStorage.setItem('app_subjects', JSON.stringify(subjects));
-                inp.value = '';
-                renderSubjects();
-            }
-        });
-
-        window.deleteSub = function(i) {
-            subjects.splice(i, 1);
-            localStorage.setItem('app_subjects', JSON.stringify(subjects));
-            renderSubjects();
-        };
-
-        document.getElementById('btnCopyAlias').addEventListener('click', () => {
-            navigator.clipboard.writeText('quepin.quepon').then(() => {
-                const btn = document.getElementById('btnCopyAlias');
-                btn.innerText = '✅ ¡Copiado!';
-                setTimeout(() => btn.innerText = '📋 Copiar', 2000);
-            });
-        });
-
-        document.getElementById('btnRequestWaTransfer').addEventListener('click', () => {
-            const buyerId = document.getElementById('buyerIdInput').value.trim();
-            if (!buyerId) {
-                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1.');
-                return;
-            }
-            savedBuyerId = buyerId;
-            localStorage.setItem('app_buyer_id', buyerId);
-            const msg = encodeURIComponent(`Hola! Hice una transferencia de $9.499 (con el 5% OFF) al alias quepin.quepon por la licencia Pro de Ordenando mis Actividades.\n\nMi identificador para la clave es: ${buyerId}\n\n(Adjunto comprobante 👇)`);
-            window.open(`https://wa.me/${WA_NUMBER}?text=${msg}`, '_blank');
-        });
-
-        document.getElementById('btnPayMp').addEventListener('click', (e) => {
-            const buyerId = document.getElementById('buyerIdInput').value.trim();
-            if (!buyerId) {
-                e.preventDefault();
-                alert('⚠️ Por favor, escribí primero tu Email o Nombre en el Paso 1 antes de ir a pagar.');
-                return;
-            }
-            savedBuyerId = buyerId;
-            localStorage.setItem('app_buyer_id', buyerId);
-        });
-
-        document.getElementById('btnActivate').addEventListener('click', () => {
-            const buyerId = document.getElementById('buyerIdInput').value.trim();
-            const code = document.getElementById('licenseInput').value.trim().toUpperCase();
-
-            if (!buyerId) {
-                alert('⚠️ Ingresá primero tu Email o Nombre en el Paso 1.');
-                return;
-            }
-
-            if (code === calcularCodigo(buyerId)) {
-                localStorage.setItem('app_is_pro', 'true');
-                localStorage.setItem('app_buyer_id', buyerId);
-                isPro = true;
-                savedBuyerId = buyerId;
-                updateLicenseUI();
-                alert(`🎉 ¡Licencia activada a nombre de ${buyerId}!`);
-            } else {
-                alert('❌ El código no coincide con tu Email/Nombre. Verificá que estén escritos exactamente igual.');
-            }
-        });
-
-        function renderCalendar() {
-            const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-            document.getElementById('calMonthTitle').innerText = `${months[currentMonth]} ${currentYear}`;
-            
-            const grid = document.getElementById('calendarDays');
-            grid.innerHTML = '';
-
-            const firstDay = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;
-            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const today = new Date().toISOString().split('T')[0];
-
-            for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
-
-            for (let d = 1; d <= totalDays; d++) {
-                const mStr = String(currentMonth + 1).padStart(2, '0');
-                const dStr = String(d).padStart(2, '0');
-                const dateStr = `${currentYear}-${mStr}-${dStr}`;
-
-                const dayTasks = tasks.filter(t => t.dueDate === dateStr && !t.completed);
-                let badgesHtml = '';
-                
-                if (dayTasks.length > 0) {
-                    badgesHtml = `<div class="cal-badges-container">` + dayTasks.map(t => `
-                        <div class="cal-badge ${t.priority}" title="${t.title} (${t.priority})"></div>
-                    `).join('') + `</div>`;
-                }
-
-                grid.innerHTML += `
-                    <div class="cal-day ${dateStr === today ? 'today' : ''} ${dateStr === selectedDateStr ? 'selected' : ''}" onclick="selectDate('${dateStr}')">
-                        <span>${d}</span>
-                        ${badgesHtml}
-                    </div>
-                `;
-            }
-        }
-
-        document.getElementById('prevMonth').addEventListener('click', () => {
-            currentMonth--; if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-            renderCalendar();
-        });
-
-        document.getElementById('nextMonth').addEventListener('click', () => {
-            currentMonth++; if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-            renderCalendar();
-        });
-
-        window.selectDate = function(dateStr) {
-            selectedDateStr = dateStr;
-            renderCalendar();
-            const dayTasks = tasks.filter(t => t.dueDate === dateStr);
-            const box = document.getElementById('dayTasks');
-            if (dayTasks.length === 0) {
-                box.innerHTML = `<strong>Día ${dateStr}:</strong> Sin tareas asignadas.`;
-                return;
-            }
-            box.innerHTML = `<strong>Tareas para el ${dateStr}:</strong>` + dayTasks.map(t => `
-                <div style="background:#f8fafc; padding:0.4rem; margin-top:0.3rem; border-radius:4px; border-left:3px solid var(--${t.priority})">
-                    📌 ${t.title} (${t.subject}) - <span style="text-transform:uppercase; font-size:0.75rem;">${t.priority}</span>
-                </div>
-            `).join('');
-        };
-
-        document.getElementById('btnExport').addEventListener('click', () => {
-            const data = JSON.stringify({ tasks, subjects }, null, 2);
-            const blob = new Blob([data], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'backup_ordenando_actividades.json';
-            a.click();
-        });
-
-        document.getElementById('btnImportTrigger').addEventListener('click', () => {
-            document.getElementById('importFile').click();
-        });
-
-        document.getElementById('importFile').addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const data = JSON.parse(evt.target.result);
-                    if (data.tasks && data.subjects) {
-                        tasks = data.tasks;
-                        subjects = data.subjects;
-                        localStorage.setItem('app_tasks', JSON.stringify(tasks));
-                        localStorage.setItem('app_subjects', JSON.stringify(subjects));
-                        alert('✅ Copia de seguridad importada con éxito.');
-                        location.reload();
-                    } else {
-                        alert('❌ El archivo no tiene el formato correcto.');
-                    }
-                } catch (err) {
-                    alert('❌ Error al leer el archivo JSON.');
-                }
-            };
-            reader.readAsText(file);
-        });
+                <li style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding
